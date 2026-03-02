@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFG Command Center</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+ font-family: 'EB Garamond', Georgia, serif;
+ background: linear-gradient(135deg, rgba(13, 26, 20, 0.95) 0%, rgba(26, 47, 35, 0.95) 50%, rgba(45, 74, 62, 0.95) 100%);
+ color: #DEC089;
+ min-height: 100vh;
+ line-height: 1.6;
+ padding: 15px;
+}
+
+/* ===== HEADER ===== */
+.header {
+ text-align: center;
+ padding: 15px 0 10px;
+ border-bottom: 2px solid #65381A;
+ margin-bottom: 15px;
+}
+.header h1 {
+ color: #DBAD4B;
+ font-size: 1.5em;
+ font-weight: 500;
+ letter-spacing: 0.5px;
+}
+.header .subtitle {
+ color: #D57553;
+ font-style: italic;
+ font-size: 1em;
+ margin-top: 2px;
+}
+.event-filter {
+ margin-top: 10px;
+ display: flex;
+ gap: 8px;
+ justify-content: center;
+ flex-wrap: wrap;
+}
+.event-filter select {
+ background: rgba(13, 26, 20, 0.5);
+ border: 2px solid #65381A;
+ border-radius: 10px;
+ color: #DEC089;
+ font-family: 'EB Garamond', Georgia, serif;
+ font-size: 0.95em;
+ padding: 6px 12px;
+}
+.event-filter select:focus {
+ outline: none;
+ border-color: #DBAD4B;
+}
+.refresh-btn {
+ background: #8C4427;
+ color: #DEC089;
+ border: none;
+ border-radius: 10px;
+ padding: 6px 16px;
+ font-family: 'EB Garamond', Georgia, serif;
+ font-size: 0.95em;
+ cursor: pointer;
+}
+.refresh-btn:hover { background: #a35230; }
+.last-refreshed {
+ font-size: 0.8em;
+ color: #65381A;
+ margin-top: 5px;
+}
+
+/* ===== STATS GRID ===== */
+.stats-grid {
+ display: grid;
+ grid-template-columns: 1fr 1fr;
+ gap: 10px;
+ margin-bottom: 15px;
+}
+.stat-card {
+ background: linear-gradient(180deg, rgba(45, 74, 62, 0.85) 0%, rgba(26, 47, 35, 0.88) 100%);
+ border: 2px solid #65381A;
+ border-radius: 15px;
+ padding: 15px;
+ text-align: center;
+}
+.stat-card.full-width {
+ grid-column: 1 / -1;
+}
+.stat-number {
+ font-size: 2.5em;
+ color: #DBAD4B;
+ font-weight: 600;
+ line-height: 1.1;
+}
+.stat-label {
+ font-size: 0.85em;
+ color: #D57553;
+ margin-top: 2px;
+}
+.stat-detail {
+ font-size: 0.8em;
+ color: #DEC089;
+ margin-top: 5px;
+ opacity: 0.8;
+}
+
+/* ===== SECTION CARDS ===== */
+.section-card {
+ background: linear-gradient(180deg, rgba(45, 74, 62, 0.85) 0%, rgba(26, 47, 35, 0.88) 100%);
+ border: 2px solid #65381A;
+ border-radius: 15px;
+ padding: 18px;
+ margin-bottom: 12px;
+}
+.section-card h2 {
+ color: #DBAD4B;
+ font-size: 1.15em;
+ font-weight: 500;
+ margin-bottom: 12px;
+ border-bottom: 1px solid #65381A;
+ padding-bottom: 8px;
+}
+
+/* ===== TIER FUNNEL ===== */
+.funnel-bar {
+ display: flex;
+ align-items: center;
+ margin-bottom: 8px;
+ gap: 10px;
+}
+.funnel-label {
+ width: 110px;
+ font-size: 0.85em;
+ text-align: right;
+ flex-shrink: 0;
+}
+.funnel-track {
+ flex: 1;
+ height: 28px;
+ background: rgba(101, 56, 26, 0.3);
+ border-radius: 8px;
+ overflow: hidden;
+ position: relative;
+}
+.funnel-fill {
+ height: 100%;
+ border-radius: 8px;
+ display: flex;
+ align-items: center;
+ justify-content: flex-end;
+ padding-right: 8px;
+ font-size: 0.85em;
+ font-weight: 600;
+ color: rgba(13, 26, 20, 0.9);
+ min-width: 30px;
+ transition: width 0.5s ease;
+}
+.funnel-fill.warm { background: rgba(155, 191, 107, 0.8); }
+.funnel-fill.warmer { background: rgba(113, 148, 91, 0.8); }
+.funnel-fill.warmest { background: rgba(71, 101, 83, 0.8); }
+.funnel-fill.fyp { background: rgba(219, 173, 75, 0.6); }
+
+/* ===== MATCH QUALITY BARS ===== */
+.quality-row {
+ display: flex;
+ align-items: center;
+ margin-bottom: 6px;
+ gap: 8px;
+}
+.quality-label {
+ width: 100px;
+ font-size: 0.8em;
+ text-align: right;
+ flex-shrink: 0;
+}
+.quality-bar-track {
+ flex: 1;
+ height: 20px;
+ background: rgba(101, 56, 26, 0.3);
+ border-radius: 6px;
+ overflow: hidden;
+}
+.quality-bar-fill {
+ height: 100%;
+ border-radius: 6px;
+ display: flex;
+ align-items: center;
+ padding-left: 8px;
+ font-size: 0.75em;
+ font-weight: 600;
+ transition: width 0.5s ease;
+}
+.quality-bar-fill.strong { background: rgba(155, 191, 107, 0.8); color: rgba(13, 26, 20, 0.9); }
+.quality-bar-fill.good { background: rgba(219, 173, 75, 0.6); color: rgba(13, 26, 20, 0.9); }
+.quality-bar-fill.worth { background: rgba(213, 117, 83, 0.6); color: rgba(13, 26, 20, 0.9); }
+
+/* ===== MESSAGES LIST ===== */
+.message-item {
+ background: rgba(101, 56, 26, 0.2);
+ border: 1px solid #65381A;
+ border-radius: 10px;
+ padding: 12px;
+ margin-bottom: 8px;
+}
+.message-meta {
+ display: flex;
+ justify-content: space-between;
+ font-size: 0.8em;
+ margin-bottom: 4px;
+}
+.message-from { color: #DBAD4B; }
+.message-date { color: #65381A; }
+.message-subject { color: #D57553; font-style: italic; font-size: 0.9em; }
+.message-body { font-size: 0.9em; margin-top: 4px; }
+.no-data {
+ text-align: center;
+ color: #65381A;
+ font-style: italic;
+ padding: 15px;
+}
+
+/* ===== LOADING ===== */
+.loading-state {
+ text-align: center;
+ padding: 20px;
+ color: #D57553;
+}
+.spinner {
+ display: inline-block;
+ width: 24px;
+ height: 24px;
+ border: 3px solid #65381A;
+ border-top-color: #DBAD4B;
+ border-radius: 50%;
+ animation: spin 0.8s linear infinite;
+ margin-bottom: 8px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 400px) {
+ .stats-grid { grid-template-columns: 1fr; }
+ .stat-number { font-size: 2em; }
+ .funnel-label, .quality-label { width: 80px; font-size: 0.75em; }
+}
+@media (min-width: 600px) {
+ body { max-width: 700px; margin: 0 auto; }
+ .stats-grid { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+ <h1>AFG Command Center</h1>
+ <div class="subtitle">Event Dashboard</div>
+ <div class="event-filter">
+  <select id="event-select" onchange="refreshDashboard()">
+   <option value="all">All Events</option>
+  </select>
+  <select id="time-select" onchange="refreshDashboard()">
+   <option value="today">Today</option>
+   <option value="week">This Week</option>
+   <option value="all">All Time</option>
+  </select>
+  <button class="refresh-btn" onclick="refreshDashboard()">Refresh</button>
+ </div>
+ <div class="last-refreshed" id="last-refreshed"></div>
+</div>
+
+<!-- TOP-LINE STATS -->
+<div class="stats-grid">
+ <div class="stat-card">
+  <div class="stat-number" id="stat-total">--</div>
+  <div class="stat-label">Total Signups</div>
+  <div class="stat-detail" id="stat-path-split"></div>
+ </div>
+ <div class="stat-card">
+  <div class="stat-number" id="stat-match-views">--</div>
+  <div class="stat-label">Viewed Matches</div>
+  <div class="stat-detail" id="stat-avg-shown"></div>
+ </div>
+ <div class="stat-card">
+  <div class="stat-number" id="stat-avg-score">--</div>
+  <div class="stat-label">Avg Match Score</div>
+  <div class="stat-detail" id="stat-score-detail"></div>
+ </div>
+ <div class="stat-card">
+  <div class="stat-number" id="stat-strong">--</div>
+  <div class="stat-label">Strong Matches</div>
+  <div class="stat-detail">75%+ compatibility</div>
+ </div>
+</div>
+
+<!-- TIER FUNNEL -->
+<div class="section-card">
+ <h2>Completion Funnel</h2>
+ <div id="funnel-container">
+  <div class="loading-state"><div class="spinner"></div><br>Loading...</div>
+ </div>
+</div>
+
+<!-- MATCH QUALITY DISTRIBUTION -->
+<div class="section-card">
+ <h2>Match Quality Distribution</h2>
+ <div id="quality-container">
+  <div class="loading-state"><div class="spinner"></div><br>Loading...</div>
+ </div>
+</div>
+
+<!-- RECENT MESSAGES -->
+<div class="section-card">
+ <h2>Recent "Talk to Me" Messages</h2>
+ <div id="messages-container">
+  <div class="loading-state"><div class="spinner"></div><br>Loading...</div>
+ </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ===== SUPABASE CONFIG =====
+const SUPABASE_URL = 'https://lammxquhngmfmtxnqzdl.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxhbW14cXVobmdtZm10eG5xemRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1MDIxNjgsImV4cCI6MjA4NDA3ODE2OH0.hAWkvtx3qAdi45hHw_ou8Bk1ab0OhsF0YUK63tO91cw';
+
+let db;
+try {
+ db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+} catch (e) {
+ console.error('Supabase init failed:', e);
+ document.body.innerHTML = '<div style="text-align:center;padding:40px;color:#D57553;">Database connection failed. Check your internet connection.</div>';
+}
+
+// ===== TIME HELPERS =====
+function getTimeFilter(period) {
+ const now = new Date();
+ if (period === 'today') {
+  const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return start.toISOString();
+ } else if (period === 'week') {
+  const start = new Date(now);
+  start.setDate(start.getDate() - 7);
+  return start.toISOString();
+ }
+ return null; // 'all' = no filter
+}
+
+function formatTime(dateStr) {
+ const d = new Date(dateStr);
+ const now = new Date();
+ const diffMs = now - d;
+ const diffMins = Math.floor(diffMs / 60000);
+ if (diffMins < 1) return 'just now';
+ if (diffMins < 60) return diffMins + 'm ago';
+ const diffHrs = Math.floor(diffMins / 60);
+ if (diffHrs < 24) return diffHrs + 'h ago';
+ return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+// ===== MAIN DASHBOARD REFRESH =====
+async function refreshDashboard() {
+ if (!db) return;
+
+ const eventFilter = document.getElementById('event-select').value;
+ const timeFilter = document.getElementById('time-select').value;
+ const timeStart = getTimeFilter(timeFilter);
+
+ try {
+  // ----- FETCH RESPONSES -----
+  let responsesQuery = db.from('responses').select('*');
+  if (eventFilter !== 'all') {
+   responsesQuery = responsesQuery.eq('event', eventFilter);
+  }
+  if (timeStart) {
+   responsesQuery = responsesQuery.gte('created_at', timeStart);
+  }
+  const { data: responses, error: respErr } = await responsesQuery;
+  if (respErr) throw respErr;
+
+  // ----- FETCH MATCH LOGS -----
+  let logsQuery = db.from('match_logs').select('*');
+  if (eventFilter !== 'all') {
+   logsQuery = logsQuery.eq('event_name', eventFilter);
+  }
+  if (timeStart) {
+   logsQuery = logsQuery.gte('viewed_at', timeStart);
+  }
+  const { data: matchLogs, error: logErr } = await logsQuery;
+  // match_logs table might not exist yet - that's OK
+  const logs = logErr ? [] : (matchLogs || []);
+
+  // ----- FETCH CONTACT MESSAGES -----
+  let msgQuery = db.from('contact_messages').select('*').order('created_at', { ascending: false }).limit(10);
+  const { data: messages, error: msgErr } = await msgQuery;
+  const msgs = msgErr ? [] : (messages || []);
+
+  // ----- POPULATE EVENT DROPDOWN -----
+  populateEventDropdown(responses || []);
+
+  // ----- CALCULATE STATS -----
+  const users = responses || [];
+  const total = users.length;
+  const eventUsers = users.filter(u => u.path === 'event' || !u.path).length;
+  const onlineUsers = users.filter(u => u.path === 'online').length;
+
+  // Top-line stats
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-path-split').textContent = total > 0 ? eventUsers + ' event / ' + onlineUsers + ' online' : '';
+
+  // Match viewing stats
+  const uniqueViewers = logs.length;
+  document.getElementById('stat-match-views').textContent = uniqueViewers;
+  if (logs.length > 0) {
+   const avgShown = logs.reduce((sum, l) => sum + (l.matches_shown || 0), 0) / logs.length;
+   document.getElementById('stat-avg-shown').textContent = avgShown.toFixed(1) + ' avg matches/person';
+  } else {
+   document.getElementById('stat-avg-shown').textContent = 'No match views yet';
+  }
+
+  // Match score stats
+  if (logs.length > 0) {
+   const allAvgs = logs.filter(l => l.avg_score > 0).map(l => parseFloat(l.avg_score));
+   const overallAvg = allAvgs.length > 0 ? allAvgs.reduce((a, b) => a + b, 0) / allAvgs.length : 0;
+   document.getElementById('stat-avg-score').textContent = overallAvg.toFixed(0) + '%';
+
+   const totalStrong = logs.reduce((sum, l) => sum + (l.strong_count || 0), 0);
+   const totalGood = logs.reduce((sum, l) => sum + (l.good_count || 0), 0);
+   const totalWorth = logs.reduce((sum, l) => sum + (l.worth_meeting_count || 0), 0);
+
+   document.getElementById('stat-strong').textContent = totalStrong;
+   document.getElementById('stat-score-detail').textContent = totalGood + ' good / ' + totalWorth + ' worth meeting';
+  } else {
+   document.getElementById('stat-avg-score').textContent = '--';
+   document.getElementById('stat-strong').textContent = '--';
+   document.getElementById('stat-score-detail').textContent = '';
+  }
+
+  // ----- TIER FUNNEL -----
+  renderFunnel(users);
+
+  // ----- MATCH QUALITY -----
+  renderMatchQuality(logs);
+
+  // ----- MESSAGES -----
+  renderMessages(msgs);
+
+  // Update timestamp
+  document.getElementById('last-refreshed').textContent = 'Updated: ' + new Date().toLocaleTimeString();
+
+ } catch (err) {
+  console.error('Dashboard error:', err);
+  document.getElementById('last-refreshed').textContent = 'Error loading data - check console';
+ }
+}
+
+// ===== EVENT DROPDOWN =====
+function populateEventDropdown(responses) {
+ const select = document.getElementById('event-select');
+ const current = select.value;
+ const events = [...new Set(responses.map(r => r.event).filter(Boolean))];
+
+ // Keep "All Events" option, rebuild rest
+ select.innerHTML = '<option value="all">All Events</option>';
+ events.forEach(ev => {
+  const opt = document.createElement('option');
+  opt.value = ev;
+  opt.textContent = ev;
+  select.appendChild(opt);
+ });
+ select.value = current || 'all';
+}
+
+// ===== TIER FUNNEL =====
+function renderFunnel(users) {
+ const container = document.getElementById('funnel-container');
+ if (users.length === 0) {
+  container.innerHTML = '<div class="no-data">No signups yet</div>';
+  return;
+ }
+
+ const tierOrder = ['warm', 'warmer', 'warmest', 'findyourpeople'];
+ const tierLabels = { warm: 'Warm', warmer: 'Warmer', warmest: 'Warmest', findyourpeople: 'Find Your People' };
+ const tierClasses = { warm: 'warm', warmer: 'warmer', warmest: 'warmest', findyourpeople: 'fyp' };
+
+ // Count users who reached each tier (cumulative - if they're at warmest, they also did warm and warmer)
+ const counts = {};
+ tierOrder.forEach(t => counts[t] = 0);
+
+ users.forEach(u => {
+  const tier = u.tier || 'warm';
+  const tierIdx = tierOrder.indexOf(tier);
+  // Count this user at their tier and all tiers below
+  for (let i = 0; i <= tierIdx; i++) {
+   counts[tierOrder[i]]++;
+  }
+ });
+
+ const maxCount = Math.max(...Object.values(counts), 1);
+
+ let html = '';
+ tierOrder.forEach(tier => {
+  const count = counts[tier];
+  const pct = (count / maxCount) * 100;
+  html += `
+   <div class="funnel-bar">
+    <div class="funnel-label">${tierLabels[tier]}</div>
+    <div class="funnel-track">
+     <div class="funnel-fill ${tierClasses[tier]}" style="width: ${Math.max(pct, 8)}%">${count}</div>
+    </div>
+   </div>
+  `;
+ });
+
+ container.innerHTML = html;
+}
+
+// ===== MATCH QUALITY =====
+function renderMatchQuality(logs) {
+ const container = document.getElementById('quality-container');
+ if (logs.length === 0) {
+  container.innerHTML = '<div class="no-data">No match data yet -- users need to view their matches</div>';
+  return;
+ }
+
+ const totalStrong = logs.reduce((sum, l) => sum + (l.strong_count || 0), 0);
+ const totalGood = logs.reduce((sum, l) => sum + (l.good_count || 0), 0);
+ const totalWorth = logs.reduce((sum, l) => sum + (l.worth_meeting_count || 0), 0);
+ const totalAll = totalStrong + totalGood + totalWorth;
+ const maxBar = Math.max(totalStrong, totalGood, totalWorth, 1);
+
+ const rows = [
+  { label: 'Strong (75%+)', count: totalStrong, cls: 'strong' },
+  { label: 'Good (55-74%)', count: totalGood, cls: 'good' },
+  { label: 'Worth meeting', count: totalWorth, cls: 'worth' }
+ ];
+
+ let html = '';
+ rows.forEach(r => {
+  const pct = (r.count / maxBar) * 100;
+  html += `
+   <div class="quality-row">
+    <div class="quality-label">${r.label}</div>
+    <div class="quality-bar-track">
+     <div class="quality-bar-fill ${r.cls}" style="width: ${Math.max(pct, 5)}%">${r.count}</div>
+    </div>
+   </div>
+  `;
+ });
+
+ if (totalAll > 0) {
+  const strongPct = Math.round((totalStrong / totalAll) * 100);
+  html += `<div style="text-align:center; margin-top:10px; font-size:0.85em; color:#D57553;">${strongPct}% of all matches are strong connections</div>`;
+ }
+
+ container.innerHTML = html;
+}
+
+// ===== MESSAGES =====
+function renderMessages(messages) {
+ const container = document.getElementById('messages-container');
+ if (!messages || messages.length === 0) {
+  container.innerHTML = '<div class="no-data">No messages yet</div>';
+  return;
+ }
+
+ let html = '';
+ messages.slice(0, 5).forEach(msg => {
+  html += `
+   <div class="message-item">
+    <div class="message-meta">
+     <span class="message-from">${msg.first_name || ''} ${msg.last_name || ''}</span>
+     <span class="message-date">${msg.created_at ? formatTime(msg.created_at) : ''}</span>
+    </div>
+    <div class="message-subject">${msg.subject || ''}</div>
+    <div class="message-body">${msg.message || ''}</div>
+   </div>
+  `;
+ });
+
+ container.innerHTML = html;
+}
+
+// ===== AUTO-REFRESH =====
+let autoRefreshInterval = null;
+
+function startAutoRefresh() {
+ // Refresh every 60 seconds
+ autoRefreshInterval = setInterval(refreshDashboard, 60000);
+}
+
+// ===== INIT =====
+refreshDashboard();
+startAutoRefresh();
+</script>
+</body>
+</html>
