@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Play a Game — A Friendly Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Aunt Mildred';
+            src: url('https://app.afriendlygame.com/Aunt_Mildred_Small_Caps.otf') format('opentype'),
+                 local('Aunt Mildred');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'EB Garamond', Georgia, serif;
+            background-color: #0d1a14;
+            background-image: url('https://app.afriendlygame.com/trees-background.webp');
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            color: #DEC089;
+            line-height: 1.6;
+        }
+        
+        .app-container {
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+        
+        .card {
+            background: linear-gradient(180deg, rgba(45, 74, 62, 0.65) 0%, rgba(26, 47, 35, 0.70) 100%);
+            border: 2px solid #65381A;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(3px);
+        }
+        
+        /* Centered Logo */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .logo-link {
+            display: inline-block;
+            cursor: pointer;
+        }
+        
+        .logo-img {
+            max-width: 200px;
+            height: auto;
+            border-radius: 12px;
+            border: 3px solid #9D5F29;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            background-color: #C9A86C;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .logo-link:hover .logo-img {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* Page Header */
+        .page-subtitle {
+            font-family: 'Aunt Mildred', Georgia, serif;
+            text-align: center;
+            color: #DBAD4B;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            letter-spacing: 0.03em;
+        }
+        
+        .tagline {
+            font-family: 'EB Garamond', Georgia, serif;
+            text-align: center;
+            color: #DEC089;
+            margin-bottom: 25px;
+            font-size: 1.1em;
+        }
+        
+        /* Accordion Styles */
+        .accordion {
+            margin-top: 10px;
+        }
+        
+        .accordion-item {
+            margin-bottom: 12px;
+        }
+        
+        .accordion-header {
+            background: linear-gradient(135deg, rgba(101, 56, 26, 0.5) 0%, rgba(101, 56, 26, 0.3) 100%);
+            border: 2px solid #65381A;
+            border-radius: 10px;
+            padding: 18px 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+        
+        .accordion-header:hover {
+            border-color: #DBAD4B;
+            background: linear-gradient(135deg, rgba(101, 56, 26, 0.6) 0%, rgba(101, 56, 26, 0.4) 100%);
+        }
+        
+        .accordion-header.active {
+            border-radius: 10px 10px 0 0;
+            border-color: #DBAD4B;
+            border-bottom: none;
+        }
+        
+        .accordion-title {
+            font-family: 'Aunt Mildred', Georgia, serif;
+            color: #DBAD4B;
+            font-size: 1.3em;
+            letter-spacing: 0.03em;
+        }
+        
+        /* CSS Triangle Arrow - prevents mojibake */
+        .accordion-arrow {
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            border-top: 9px solid #DBAD4B;
+            transition: transform 0.3s ease;
+        }
+        
+        .accordion-header.active .accordion-arrow {
+            transform: rotate(180deg);
+        }
+        
+        .accordion-content {
+            display: none;
+            background: rgba(26, 47, 35, 0.7);
+            border: 2px solid #DBAD4B;
+            border-top: none;
+            border-radius: 0 0 10px 10px;
+            padding: 20px;
+        }
+        
+        .accordion-content.active {
+            display: block;
+        }
+        
+        .accordion-content h3 {
+            font-family: 'Aunt Mildred', Georgia, serif;
+            color: #D57553;
+            font-size: 1.2em;
+            margin-bottom: 12px;
+            letter-spacing: 0.02em;
+        }
+        
+        .accordion-content p {
+            color: #DEC089;
+            margin-bottom: 15px;
+        }
+        
+        .accordion-content ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .accordion-content li {
+            color: #DEC089;
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .accordion-content li::before {
+            content: "•";
+            color: #DBAD4B;
+            position: absolute;
+            left: 0;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-family: 'Aunt Mildred', Georgia, serif;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            letter-spacing: 0.02em;
+        }
+        
+        .btn-primary {
+            background: #8C4427;
+            color: #DEC089;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: #a35230;
+        }
+        
+        /* Responsive */
+        @media (max-width: 480px) {
+            .card {
+                padding: 20px;
+            }
+            
+            .logo-img {
+                max-width: 160px;
+            }
+            
+            .page-subtitle {
+                font-size: 1.3em;
+            }
+            
+            .accordion-title {
+                font-size: 1.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="container">
+            <div class="card">
+                <!-- Centered Logo - clicks to main menu -->
+                <div class="logo-section">
+                    <a href="index.html" class="logo-link">
+                        <img src="https://app.afriendlygame.com/afg-logo.jpg" alt="A Friendly Game" class="logo-img" onerror="this.src='afg-logo.jpg'; this.onerror=null;">
+                    </a>
+                </div>
+                
+                <p class="tagline">After you create your profile, this is where we introduce you to other gamers with whom you have significant traits in common.</p>
+                
+                <!-- Menu Section -->
+                <h2 id="menu-section" class="page-subtitle">Choose Your Gaming Adventure</h2>
+                
+                <div class="accordion">
+                    <!-- Tournaments -->
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="accordion-title">Tournaments</span>
+                            <span class="accordion-arrow"></span>
+                        </div>
+                        <div class="accordion-content">
+                            <h3>Compete & Connect</h3>
+                            <p>Join structured competitive events where you'll face off against other matched gamers in organized brackets. Perfect for those who love the thrill of competition.</p>
+                            <ul>
+                                <li>Skill-based matchmaking</li>
+                                <li>Multiple game formats</li>
+                                <li>Prizes and recognition</li>
+                            </ul>
+                            <a href="index.html?subject=Interest%20in%20Tournaments" class="btn btn-primary">Sign Up for Tournament</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Gaming Circles -->
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="accordion-title">Gaming Circles</span>
+                            <span class="accordion-arrow"></span>
+                        </div>
+                        <div class="accordion-content">
+                            <h3>Find Your People</h3>
+                            <p>Find your regular gaming group — people who share your play style and values.</p>
+                            <ul>
+                                <li>Personality-based matching</li>
+                                <li>Regular weekly sessions</li>
+                                <li>Build lasting friendships</li>
+                            </ul>
+                            <a href="index.html?subject=Interest%20in%20Gaming%20Circles" class="btn btn-primary">Find My Circle</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Game Dates -->
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="accordion-title">Game Dates</span>
+                            <span class="accordion-arrow"></span>
+                        </div>
+                        <div class="accordion-content">
+                            <h3>One-on-One Gaming</h3>
+                            <p>Perfect for two-player games or getting to know a potential gaming friend.</p>
+                            <ul>
+                                <li>Matched interests</li>
+                                <li>Flexible scheduling</li>
+                                <li>Low-pressure meetups</li>
+                            </ul>
+                            <a href="index.html?subject=Interest%20in%20Game%20Dates" class="btn btn-primary">Schedule a Date</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Drop-in Sessions -->
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="accordion-title">Drop-in Sessions</span>
+                            <span class="accordion-arrow"></span>
+                        </div>
+                        <div class="accordion-content">
+                            <h3>Spontaneous Play</h3>
+                            <p>Jump into games happening right now with compatible players.</p>
+                            <ul>
+                                <li>Real-time availability</li>
+                                <li>Quick matching</li>
+                                <li>Meet new players</li>
+                            </ul>
+                            <a href="index.html?subject=Interest%20in%20Drop-in%20Sessions" class="btn btn-primary">Find a Session</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Learn & Play -->
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="accordion-title">Learn & Play</span>
+                            <span class="accordion-arrow"></span>
+                        </div>
+                        <div class="accordion-content">
+                            <h3>New to Gaming?</h3>
+                            <p>Patient teachers matched with eager learners.</p>
+                            <ul>
+                                <li>Expert game teachers</li>
+                                <li>Beginner-friendly environment</li>
+                                <li>Learn at your pace</li>
+                            </ul>
+                            <a href="index.html?subject=Interest%20in%20Learn%20%26%20Play" class="btn btn-primary">Start Learning</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Campaign Finder -->
+                    <div class="accordion-item">
+                        <div class="accordion-header" onclick="toggleAccordion(this)">
+                            <span class="accordion-title">Campaign Finder</span>
+                            <span class="accordion-arrow"></span>
+                        </div>
+                        <div class="accordion-content">
+                            <h3>Long-term Adventures</h3>
+                            <p>Find your next long-term RPG campaign or legacy game group.</p>
+                            <ul>
+                                <li>Commitment-matched players</li>
+                                <li>Campaign style preferences</li>
+                                <li>Schedule compatibility</li>
+                            </ul>
+                            <a href="index.html?subject=Interest%20in%20Campaign%20Finder" class="btn btn-primary">Find a Campaign</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Accordion functionality
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            const isActive = header.classList.contains('active');
+            
+            // Close all accordions
+            document.querySelectorAll('.accordion-header').forEach(h => {
+                h.classList.remove('active');
+                h.nextElementSibling.classList.remove('active');
+            });
+            
+            // Open clicked one if it wasn't already open
+            if (!isActive) {
+                header.classList.add('active');
+                content.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
