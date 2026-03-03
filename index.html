@@ -1382,7 +1382,7 @@
   <div class="tier-card warm" onclick="selectCard(this).then(() => startTier('warm', false))">
    <p class="tier-card-desc">Find friendly gamers for a session today</p>
    <div class="tier-card-name">Warm</div>
-   <div class="tier-time">~2 minutes · 12 questions</div>
+   <div class="tier-time">~5 minutes · 14 questions</div>
   </div>
   
   <div class="tier-card warmer" onclick="selectCard(this).then(() => startTier('warmer', false))">
@@ -1480,13 +1480,6 @@
  
  <div id="question-content"></div>
  
- <div class="privacy-footer-subtle" id="privacy-footer">
- <a href="#" onclick="showPrivacyDetails(); return false;">Privacy</a> | 
- <a href="#" onclick="showTerms(); return false;">Terms</a> | 
- <a href="#" onclick="showDeleteInfo(); return false;">Delete my data</a> | 
- <a href="#" onclick="goToSection('section-hub'); return false;">Back to Menu</a>
- </div>
- 
  <div class="button-row">
  <button type="button" class="btn btn-secondary" id="back-btn" onclick="prevQuestion()">&larr; Back</button>
  <button type="button" class="btn btn-primary" id="next-btn" onclick="nextQuestion()">Next &rarr;</button>
@@ -1564,15 +1557,17 @@
   <p class="description">Your callsign is your unique identity in A Friendly Game - how other gamers will find and recognize you.</p>
  
  <input type="text" class="text-input" style="min-height:auto;" id="user-name" placeholder="Your name (or nickname)...">
+ <p style="font-size:0.85em; color:#D57553; margin-top:6px; margin-bottom:0;">e.g., 'Alex,' 'Dice Goblin,' or 'Prof. Chaos' &rarr; you'll be Alex the Owl</p>
  
  <p class="description" style="margin-top:20px;">Pick your animal:</p>
- <div class="options-grid" id="animal-options"></div>
+ <div id="animal-options" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"></div>
  
- <p class="description" style="margin-top:10px; font-family:'MVB Aunt Mildred Bd LF', Georgia, serif; font-size:1.1em; color:#D57553;">Choose carefully - your callsign is permanent!</p>
+ <p class="description" style="margin-top:10px; font-family:'MVB Aunt Mildred Bd LF', Georgia, serif; font-size:1.1em; color:#D57553;">Your callsign is how matches will know you — pick something you love!</p>
  
  <div class="privacy-box" style="margin-top:25px; padding:20px; background:rgba(155, 191, 107, 0.1); border-color:#65381A;">
  <p class="description" style="margin-bottom:12px; font-family:'MVB Aunt Mildred Bd LF', Georgia, serif; font-size:1.15em; color:#DBAD4B;">Where can we notify you of matches?</p>
- <input type="email" class="text-input" style="min-height:auto; margin-bottom:15px;" id="user-email" placeholder="Your email address...">
+ <input type="email" class="text-input" style="min-height:auto; margin-bottom:6px;" id="user-email" placeholder="Your email address...">
+ <p style="font-size:0.85em; color:#D57553; margin-top:0; margin-bottom:12px;">(optional — for match notifications when you're away from the app)</p>
  
  <label style="display:flex; align-items:center; gap:12px; cursor:pointer; margin-bottom:15px;">
  <input type="checkbox" id="allow-contact" checked style="width:20px; height:20px; accent-color:#DBAD4B;" onclick="toggleContactPreference(event)">
@@ -1661,7 +1656,7 @@
  
  <div class="privacy-box" style="margin:20px 0; text-align:left; background:rgba(155, 191, 107, 0.15); border-color:#9BBF6B; padding:20px;">
  <p style="font-family:'MVB Aunt Mildred Bd LF', Georgia, serif; font-size:1.25em; color:#DBAD4B; margin-bottom:10px;">At the event:</p>
- <p style="margin-bottom:18px; font-size:1.1em; line-height:1.5;">Leave this page open in your phone's browser - don't close the tab! That's how you'll hear when matches arrive.</p>
+ <p style="margin-bottom:18px; font-size:1.1em; line-height:1.5;">Leave this tab open in the background on your phone — we'll notify you here and by email when your matches are ready.</p>
  <p style="font-family:'MVB Aunt Mildred Bd LF', Georgia, serif; font-size:1.25em; color:#DBAD4B; margin-bottom:10px;">Away from the event:</p>
  <p style="font-size:1.1em;">We'll email you at <span id="result-email" style="color:#9BBF6B;"></span></p>
  </div>
@@ -2357,15 +2352,14 @@
  
  // Gaming Personality - Both flows, persistent
  const gamingPersonality = [
- { id: 'noise', text: "Table talk preference?", type: 'radio', options: ['Quiet focus', 'Some chat', 'Lots of banter', 'Whatever happens'] },
- { id: 'phones', text: "Phones at the table?", type: 'radio', options: ['Put them away', 'Quick checks OK', 'No big deal'] },
- { id: 'communication', text: "Table talk style?", type: 'radio', options: ['Anything goes', 'Mostly clean', 'Family-friendly'] },
-{ id: 'music', text: "What kind of music speaks to you?", type: 'check', subtext: 'Choose all that resonate', options: ['Mellow & Atmospheric (ambient, lo-fi, folk)', 'Easygoing & Familiar (classic rock, country, pop)', 'Complex & Refined (jazz, classical, prog)', 'Loud & Energetic (metal, punk, EDM)', 'Rhythmic & Current (hip-hop, R&B, dance)', 'Soundtracks & Scores (film, game, orchestral)', 'Silence preferred'] },
- { id: 'gamer-describe', text: "How would you describe yourself as a gamer?", type: 'text-voice', placeholder: 'What kind of player are you? What do you bring to the table?' },
- { id: 'great-experience', text: "What would make this a great experience for you?", type: 'text-voice', placeholder: 'What are you hoping to get out of today?' },
- { id: 'anything-warm', text: "Anything else that would help us match you today?", type: 'text-voice', placeholder: 'Optional - share what feels right' }
- ];
- 
+    { id: 'gamer-describe', text: "How would you describe yourself as a gamer?", type: 'text-voice', placeholder: 'What are your best gaming moments like? What do you bring to the table?' },
+    { id: 'noise', text: "Table talk preference?", type: 'radio', options: ['Quiet focus', 'Some chat', 'Lots of banter', 'Whatever happens'] },
+    { id: 'phones', text: "Phones at the table?", type: 'radio', options: ['Put them away', 'Quick checks OK', 'No big deal'] },
+    { id: 'communication', text: "What's your table humor style?", type: 'radio', options: ['Anything goes', 'Mostly clean', 'Family-friendly'] },
+    { id: 'great-experience', text: "What would make this a great experience for you?", type: 'text-voice', placeholder: 'What are your best gaming moments like? What makes them great?' },
+    { id: 'music', text: "What kind of music speaks to you?", type: 'check', subtext: 'Choose all that resonate', options: ['Mellow & Atmospheric (ambient, lo-fi, folk)', 'Easygoing & Familiar (classic rock, country, pop)', 'Complex & Refined (jazz, classical, prog)', 'Loud & Energetic (metal, punk, EDM)', 'Rhythmic & Current (hip-hop, R&B, dance)', 'Soundtracks & Scores (film, game, orchestral)', 'Silence preferred'] },
+    { id: 'anything-warm', text: "Anything else that would help us match you today?", type: 'text-voice', placeholder: 'Optional - share what feels right' }
+  ]; 
  // Warmer Content - Values, interests alignment, teaching preference
  const warmerContent = [
  { id: 'conflict', text: "When things get tense?", type: 'radio', options: ['Address it directly', 'Smooth it over', 'Take a break', 'Roll with it'] },
@@ -3012,7 +3006,7 @@
  });
  html += '</div>';
  } else if (q.type === 'check') {
- html += q.id === 'game-types' ? '<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">' : '<div class="options-grid">';
+ html += (q.id === 'game-types' || q.id === 'music') ? '<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">' : '<div class="options-grid">';
  q.options.forEach(opt => {
  const checked = (state.answers[q.id] || []).includes(opt) ? 'checked' : '';
  const escapedOpt = opt.replace(/'/g, "\\'");
@@ -3059,6 +3053,12 @@
  inp.closest('.option-item').classList.toggle('selected', inp.checked);
  });
  saveSession();
+
+ // Auto-advance on radio (single-select) questions after brief highlight pause
+ const currentQ = state.currentQuestions[state.questionIndex];
+ if (currentQ && currentQ.type === 'radio') {
+   setTimeout(() => nextQuestion(), 350);
+ }
  
  // Inline age capture: if they chose an age-relative preference but never gave their own age
  if (qid === 'age' && ['Similar to me', 'Prefer older'].includes(value)) {
