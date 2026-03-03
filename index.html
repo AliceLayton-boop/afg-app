@@ -5427,12 +5427,7 @@ Respond with JSON only, no other text:
  
  function goHome() {
  closeHubMenu();
- // If user has a profile, show welcome-back screen — otherwise go to landing
- if (state.name && state.animal) {
-  showWelcomeBack();
- } else {
-  goToSection('section-landing');
- }
+ goToSection('section-landing');
  }
  
  function goToProfile() {
