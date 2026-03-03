@@ -7,6 +7,14 @@
  <title>Find Your People | A Friendly Game</title>
  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
  <link href="https://fastly-cloud.typenetwork.com/projects/8991/fontface.css?69a62fc7" rel="stylesheet" type="text/css">
+  <style>
+   @font-face {
+    font-family: 'Aunt Mildred MVB SC';
+    src: url('Aunt_Mildred_Small_Caps.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+   }
+  </style>
  <!-- Supabase Client -->
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.47.12"></script>
  <style>
@@ -84,7 +92,7 @@
  }
  
  .logo img {
- max-width: 200px;
+ max-width: 160px;
  height: auto;
  border-radius: 12px;
  border: 3px solid #9D5F29;
@@ -105,6 +113,40 @@
 
  .logo-small img {
   max-width: 80px;
+ }
+
+ .card-nav {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(101, 56, 26, 0.5);
+ }
+
+ .card-nav-logo img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 3px solid #9D5F29;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  background-color: #C9A86C;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: block;
+ }
+
+ .card-nav-logo img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+ }
+
+ .card-nav-title {
+  font-family: 'Aunt Mildred MVB SC', Georgia, serif;
+  font-size: 1.4em;
+  color: #D57553;
+  line-height: 1.2;
  }
  
  /* Hub Menu Overlay */
@@ -137,7 +179,7 @@
  }
  
  .hub-menu-title {
- font-family: 'MVB Aunt Mildred Bd LF', Georgia, serif;
+ font-family: 'Aunt Mildred MVB SC', Georgia, serif;
  color: #F5E6C8;
  font-size: 1.4em;
  text-align: center;
@@ -178,7 +220,7 @@
  .hub-btn-title {
  display: block;
  color: #DBAD4B;
- font-family: 'MVB Aunt Mildred Bd LF', Georgia, serif;
+ font-family: 'Aunt Mildred MVB SC', Georgia, serif;
  font-size: 1.1em;
  letter-spacing: 0.03em;
  }
@@ -222,7 +264,7 @@
  }
  
  .tagline-line {
- font-family: 'MVB Aunt Mildred Bd LF', Georgia, serif;
+ font-family: 'Aunt Mildred MVB SC', Georgia, serif;
  margin-bottom: 8px;
  font-size: 1.2em;
  }
@@ -249,7 +291,7 @@
  }
  
  h2 {
- font-family: 'MVB Aunt Mildred Bd LF', Georgia, serif;
+ font-family: 'Aunt Mildred MVB SC', Georgia, serif;
  color: #DBAD4B;
  text-align: center;
  margin-bottom: 15px;
@@ -257,7 +299,7 @@
  }
  
  h3 {
- font-family: 'MVB Aunt Mildred Bd LF', Georgia, serif;
+ font-family: 'Aunt Mildred MVB SC', Georgia, serif;
  }
  
  .description {
@@ -304,7 +346,7 @@
  }
  
  .path-btn h3 {
- font-family: 'MVB Aunt Mildred Bd LF', Georgia, serif;
+ font-family: 'Aunt Mildred MVB SC', Georgia, serif;
  color: #DBAD4B;
  margin-bottom: 5px;
  font-size: 1.6em;
@@ -357,7 +399,7 @@
  }
  
  .tier-card h3 {
- font-family: 'MVB Aunt Mildred Bd LF', Georgia, serif;
+ font-family: 'Aunt Mildred MVB SC', Georgia, serif;
  color: #DBAD4B;
  margin-bottom: 5px;
  }
@@ -381,7 +423,7 @@
 
  .tier-card-name {
   color: #DBAD4B;
-  font-family: 'MVB Aunt Mildred Bd LF', Georgia, serif;
+  font-family: 'Aunt Mildred MVB SC', Georgia, serif;
   font-size: 0.85em;
   margin-bottom: 6px;
   opacity: 0.75;
@@ -424,7 +466,7 @@
  border-radius: 10px;
  padding: 15px 20px;
  color: #DBAD4B;
- font-family: 'MVB Aunt Mildred Bd LF', Georgia, serif;
+ font-family: 'Aunt Mildred MVB SC', Georgia, serif;
  font-size: 1.15em;
  letter-spacing: 0.03em;
  cursor: pointer;
@@ -821,7 +863,7 @@
  }
  
  .callsign {
- font-family: 'MVB Aunt Mildred Bd LF', Georgia, serif;
+ font-family: 'Aunt Mildred MVB SC', Georgia, serif;
  font-size: 2em;
  color: #DBAD4B;
  margin: 20px 0;
@@ -861,7 +903,7 @@
  
  .privacy-footer {
  text-align: center;
- font-family: 'MVB Aunt Mildred Bd LF', Georgia, serif;
+ font-family: 'Aunt Mildred MVB SC', Georgia, serif;
  font-size: 0.95em;
  margin-top: 15px;
  padding: 12px;
@@ -1126,7 +1168,7 @@
   }
 
   .why-label {
-    font-family: 'MVB Aunt Mildred Bd LF', Georgia, serif;
+    font-family: 'Aunt Mildred MVB SC', Georgia, serif;
     color: #DBAD4B;
     font-size: 1em;
     font-style: normal;
@@ -1250,8 +1292,10 @@
  <!-- ========== WELCOME BACK (Returning Users) ========== -->
  <div class="section" id="section-welcome-back">
  <div class="card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- <div class="tagline" style="font-family:'MVB Aunt Mildred Bd LF', Georgia, serif;">Welcome back!</div>
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">Welcome back!</div>
+</div>
  
  <div id="welcome-animal" style="display:flex; justify-content:center; align-items:center; margin:25px 0;">
  <div style="width:220px; height:220px;"></div>
@@ -1286,10 +1330,10 @@
  <!-- ========== EVENT: SELECT EVENT ========== -->
  <div class="section" id="section-event-select">
  <div class="card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- <div class="tagline">Find your people</div>
- 
- <h2>Which event?</h2>
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">Which event?</div>
+</div>
  <p class="description" style="font-size:0.95em; margin-bottom:18px;">We'll match you with other players registered at the same event.</p>
  
  <div class="options-grid">
@@ -1320,9 +1364,11 @@
  <!-- ========== EVENT: SELECT TIER ========== -->
  <div class="section" id="section-event-tiers">
  <div class="card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- <div class="tagline">Find your people</div>
- 
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">Choose your tier</div>
+</div>
+
  <div class="event-banner" id="event-banner">
  <div class="event-name" id="selected-event-name">Geekway to the West</div>
  <div class="event-details">Find compatible players at the event</div>
@@ -1368,10 +1414,10 @@
  <!-- ========== ONLINE: SELECT TIER ========== -->
  <div class="section" id="section-online-tiers">
  <div class="card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- <div class="tagline">Find your people</div>
- 
- <h2>How deep do you want to go?</h2>
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">How deep do you want to go?</div>
+</div>
  <p class="description">More questions = better matches. Choose what feels right.</p>
  <p class="description" style="font-size:0.9em; color:#D57553; margin-top:-10px; margin-bottom:18px;">Each level adds personality depth for better matches.</p>
  
@@ -1411,7 +1457,10 @@
  <!-- ========== QUESTIONS SCREEN (shared by all tiers) ========== -->
  <div class="section" id="section-questions">
  <div class="card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">Questions</div>
+</div>
 
  <!-- WHY WE ASK THIS fixture -->
  <div class="why-we-ask" id="why-trigger" onclick="toggleSnippet()">
@@ -1448,10 +1497,10 @@
  <!-- ========== ONLINE MATCHING TRANSITION ========== -->
  <div class="section" id="section-online-transition">
  <div class="card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- <div class="tagline">Ready to go deeper?</div>
- 
- <h2 style="color:#D57553; margin:15px 0;">Online Matching Assessment</h2>
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">Online Matching</div>
+</div>
  
  <div class="privacy-box" style="background:rgba(155, 191, 107, 0.1); border-color:#65381A; padding:20px; margin-bottom:20px;">
  <p style="font-size:1.1em; color:#DEC089; line-height:1.6;">These next questions go beyond today's event. They help us find <strong style="color:#DBAD4B;">lasting gaming friendships</strong> based on your values, personality, and what you're really looking for in a gaming group.</p>
@@ -1475,9 +1524,10 @@
  <!-- ========== SKIPPED QUESTIONS WARNING ========== -->
  <div class="section" id="section-skipped-warning">
  <div class="card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- 
- <h2>We need a bit more</h2>
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">We need a bit more</div>
+</div>
  
  <div class="privacy-box" style="background: rgba(213, 117, 83, 0.15); border-color: #D57553;">
  <p style="color:#D57553; font-size:1.1em; margin-bottom: 10px;">
@@ -1507,10 +1557,10 @@
  <!-- ========== CALLSIGN SCREEN ========== -->
  <div class="section" id="section-callsign">
  <div class="card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- <div class="tagline">Almost done!</div>
- 
- <h2>Create Your Callsign</h2>
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">Create Your Callsign</div>
+</div>
   <p class="description">Your callsign is your unique identity in A Friendly Game - how other gamers will find and recognize you.</p>
  
  <input type="text" class="text-input" style="min-height:auto;" id="user-name" placeholder="Your name (or nickname)...">
@@ -1596,9 +1646,10 @@
  <!-- ========== RESULT SCREEN ========== -->
  <div class="section" id="section-result">
  <div class="card result-card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- 
- <h2>You're all set!</h2>
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">You're all set!</div>
+</div>
  
  <div class="callsign-animal" id="result-animal"></div>
  <div class="callsign" id="result-callsign">Amy the Owl</div>
@@ -1634,8 +1685,11 @@
  <!-- ========== MATCHES SCREEN ========== -->
  <div class="section" id="section-matches">
  <div class="card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- 
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">Your Matches</div>
+</div>
+
  <div id="matches-content">
  <div class="loading">
  <div class="spinner"></div>
@@ -1659,10 +1713,10 @@
  <!-- ========== RETURNING USER LOOKUP ========== -->
  <div class="section" id="section-returning">
  <div class="card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- <div class="tagline">Welcome back!</div>
- 
- <h2>Find your profile</h2>
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">Find your profile</div>
+</div>
  <p class="description">Enter your call sign to see your matches.</p>
  
  <input type="text" class="text-input" style="min-height:auto;" id="returning-name" placeholder="Your name...">
@@ -1688,8 +1742,11 @@
  <!-- ========== HUB SCREEN ========== -->
  <div class="section" id="section-hub">
  <div class="card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- 
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">Menu</div>
+</div>
+
  <div style="text-align:center; margin-bottom:20px;">
  <div id="hub-animal" style="width:150px; height:150px; margin:0 auto 15px;"></div>
  <div class="callsign" id="hub-callsign">Welcome!</div>
@@ -1738,9 +1795,10 @@
  <!-- ========== MY PROFILE ========== -->
  <div class="section" id="section-profile">
  <div class="card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- 
- <h2 style="color:#DBAD4B; margin-bottom:5px;">My Callsign</h2>
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">My Callsign</div>
+</div>
  
  <div class="callsign-animal" id="profile-animal"></div>
  <div class="callsign" id="profile-callsign">Your Callsign</div>
@@ -1772,9 +1830,11 @@
  <!-- ========== PLAY A GAME ========== -->
  <div class="section" id="section-play-a-game">
  <div class="card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- <div class="tagline" style="font-family:'MVB Aunt Mildred Bd LF', Georgia, serif;">Play a Game</div>
- 
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">Play a Game</div>
+</div>
+
  <p class="description" style="font-size:1.1em;">After you create your profile, this is where we introduce you to other gamers with whom you have significant traits in common.</p>
  
  <h2 style="margin:20px 0 15px;">Choose Your Gaming Adventure:</h2>
@@ -1888,11 +1948,11 @@
  <!-- ========== TALK TO ME ========== -->
  <div class="section" id="section-talk-to-me">
  <div class="card">
- <!-- Clickable logo opens hub menu -->
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- 
- <!-- Page heading -->
- <h2 style="font-family:'MVB Aunt Mildred Bd LF', Georgia, serif; text-align:center; color:#D57553; font-size:1.5em; margin:15px 0 25px; letter-spacing:0.05em;">Talk to Me</h2>
+
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">Talk to Me</div>
+</div>
  
  <div style="text-align:center; margin-bottom:20px;">
  <button type="button" class="btn btn-secondary" onclick="goToSection('section-hub')">&larr; Back to Menu</button>
@@ -1956,11 +2016,11 @@
  <!-- ========== SEARCH THE MERCH ========== -->
  <div class="section" id="section-merch">
  <div class="card">
- <!-- Clickable logo opens hub menu -->
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- 
- <!-- Page heading -->
- <h2 style="font-family:'MVB Aunt Mildred Bd LF', Georgia, serif; text-align:center; color:#D57553; font-size:1.5em; margin:15px 0 25px; letter-spacing:0.05em;">Search the Merch</h2>
+
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">Search the Merch</div>
+</div>
  
  <div style="text-align:center; padding:20px;">
  <p class="description" style="font-size:1.1em; margin-bottom:20px;">We're curating a collection of games and gear for our community.</p>
@@ -1982,9 +2042,10 @@
  <!-- ========== VALUES: INTRO ========== -->
  <div class="section" id="section-values-intro">
  <div class="card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- 
- <h2>What drives you?</h2>
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">What drives you?</div>
+</div>
  <p class="description">Understanding your values helps us find people you'll really click with - not just for gaming, but for friendship.</p>
  
  <div class="privacy-box">
@@ -2007,9 +2068,10 @@
  <!-- ========== VALUES: SELECT ALL ========== -->
  <div class="section" id="section-values-select">
  <div class="card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- 
- <h2>What matters to you?</h2>
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">What matters to you?</div>
+</div>
  <p class="description">Choose all that resonate with you.</p>
  
  <div class="selection-grid" id="values-grid"></div>
@@ -2030,9 +2092,10 @@
  <!-- ========== VALUES: TOP 2 ========== -->
  <div class="section" id="section-values-top">
  <div class="card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- 
- <h2>Now pick your top 2</h2>
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">Your top 2 values</div>
+</div>
  <p class="description">Which matter MOST to you?</p>
  
  <div class="options-grid" id="values-top-grid"></div>
@@ -2055,9 +2118,10 @@
  <!-- ========== INTERESTS: SELECT ALL ========== -->
  <div class="section" id="section-interests-select">
  <div class="card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- 
- <h2>What kind of activities appeal?</h2>
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">What appeals to you?</div>
+</div>
  <p class="description">Choose all that interest you.</p>
  
  <div class="selection-grid" id="interests-grid"></div>
@@ -2078,9 +2142,10 @@
  <!-- ========== INTERESTS: TOP 2 ========== -->
  <div class="section" id="section-interests-top">
  <div class="card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- 
- <h2>Pick your top 2</h2>
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">Your top 2 interests</div>
+</div>
  <p class="description">Which appeal MOST?</p>
  
  <div class="options-grid" id="interests-top-grid"></div>
@@ -2103,9 +2168,10 @@
  <!-- ========== PROFILE COMPLETE ========== -->
  <div class="section" id="section-profile-complete">
  <div class="card result-card">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
- 
- <h2>Profile Complete!</h2>
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">Profile Complete!</div>
+</div>
  
  <div class="callsign-animal" id="complete-animal"></div>
  <div class="callsign" id="complete-callsign">Amy the Owl</div>
@@ -2137,8 +2203,10 @@
  <!-- ========== PRIVACY POLICY ========== -->
  <div class="section" id="section-privacy">
  <div class="card" style="max-width:600px; width:100%; margin:0 auto;">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game"></div>
- <h2 style="margin-bottom:5px;">Privacy Policy</h2>
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game"></div>
+  <div class="card-nav-title">Privacy Policy</div>
+</div>
  <p class="description" style="margin-bottom:20px; color:#D57553; font-style:italic;">Last updated: February 8, 2026</p>
 
  <div style="text-align:left; line-height:1.7; color:#DEC089;">
@@ -2200,8 +2268,10 @@
  <!-- ========== TERMS OF USE ========== -->
  <div class="section" id="section-terms">
  <div class="card" style="max-width:600px; width:100%; margin:0 auto;">
- <div class="logo logo-small"><img src="afg-logo.jpg" alt="A Friendly Game"></div>
- <h2 style="margin-bottom:5px;">Terms of Use</h2>
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game"></div>
+  <div class="card-nav-title">Terms of Use</div>
+</div>
  <p class="description" style="margin-bottom:20px; color:#D57553; font-style:italic;">Last updated: February 8, 2026</p>
 
  <div style="text-align:left; line-height:1.7; color:#DEC089;">
