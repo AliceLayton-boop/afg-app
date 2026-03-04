@@ -2367,23 +2367,23 @@
  // Gaming Personality - Both flows, persistent
  const gamingPersonality = [
     { id: 'winning', text: "How important is winning?", type: 'radio', options: ['Very important', 'Nice but not essential', 'Not at all', 'Depends on the game'] },
-    { id: 'noise', text: "Table talk preference?", type: 'radio', options: ['Quiet focus', 'Some chat', 'Lots of banter', 'Whatever happens'] },
-    { id: 'phones', text: "Phones at the table?", type: 'radio', options: ['Put them away', 'Quick checks OK', 'No big deal'] },
+    { id: 'noise', text: "How much table talk do you like?", type: 'radio', options: ['Quiet focus', 'Some chat', 'Lots of banter', 'Whatever happens'] },
+    { id: 'phones', text: "What's your policy on phones at the table?", type: 'radio', options: ['Put them away', 'Quick checks OK', 'No big deal'] },
     { id: 'communication', text: "What's your table humor style?", type: 'radio', options: ['Family-friendly', 'Mostly clean', 'Anything goes'] },
     { id: 'great-experience', text: "What would make this a great experience for you?", type: 'text-voice', placeholder: "Picture your ideal gaming session. What's happening?" },
     { id: 'music', text: "What kind of music speaks to you?", type: 'check', subtext: 'Choose all that resonate', options: ['Silence preferred', 'Mellow & Atmospheric (ambient, lo-fi, folk)', 'Easygoing & Familiar (classic rock, country, pop)', 'Complex & Refined (jazz, classical, prog)', 'Loud & Energetic (metal, punk, EDM)', 'Rhythmic & Current (hip-hop, R&B, dance)', 'Soundtracks & Scores (film, game, orchestral)'] },
-    { id: 'anything-warm', text: "Anything else that would help us match you today?", type: 'text-voice', placeholder: 'Optional - share what feels right' }
   ]; 
  // Warmer Content - Values, interests alignment, teaching preference
  const warmerContent = [
  { id: 'gamer-describe', text: "How would you describe yourself as a gamer?", type: 'text-voice', placeholder: 'What do you bring to a gaming group?' },
- { id: 'conflict', text: "When things get tense?", type: 'radio', options: ['Address it directly', 'Smooth it over', 'Take a break', 'Roll with it'] },
- { id: 'rules', text: "Rules debates?", type: 'radio', options: ['Look it up', 'House rule it', 'Majority decides', 'Skip and move on'] },
- { id: 'teaching', text: "When it comes to new games...", type: 'radio', options: ['Love discovering them - teach me or let me teach you', 'Happy to try, but I love my favorites too', "I'd rather stick with games I already know", 'Depends on who I\'m with'] },
- { id: 'schedule', text: "Gaming schedule?", type: 'radio', options: ['Regular weekly', 'Whenever we can manage it', 'Spontaneous only', 'Events only'] },
+ { id: 'conflict', text: "How do you respond to tension at the table?", type: 'radio', options: ['Address it directly', 'Smooth it over', 'Take a break', 'Roll with it'] },
+ { id: 'rules', text: "How do you handle rules debates?", type: 'radio', options: ['Look it up', 'House rule it', 'Majority decides', 'Skip and move on'] },
+ { id: 'anything-warm', text: "Anything else that would help us match you today?", type: 'text-voice', placeholder: 'Optional - share what feels right' },
+ { id: 'teaching', text: "How do you feel about new games?", type: 'radio', options: ['Love discovering them - teach me or let me teach you', 'Happy to try, but I love my favorites too', "I'd rather stick with games I already know", 'Depends on who I\'m with'] },
+ { id: 'schedule', text: "How often do you like to game?", type: 'radio', options: ['Regular weekly', 'Whenever we can manage it', 'Spontaneous only', 'Events only'] },
  { id: 'online', text: "Online tabletop gaming (Board Game Arena, Tabletop Simulator, etc.)?", type: 'radio', options: ['Love it', 'Prefer in-person', 'Both equally', 'Never tried'] },
- { id: 'collection', text: "Your game collection?", type: 'radio', options: ['Huge and always growing', 'Curated favorites I know inside out', 'Just starting to explore', 'Borrow/rent - I like variety without commitment', 'Small but I\'ll try anything'] },
- { id: 'dealbreaker', text: "Gaming dealbreaker?", type: 'text-voice', placeholder: "What's a hard no for you at the table?" },
+ { id: 'collection', text: "How would you describe your game collection?", type: 'radio', options: ['Huge and always growing', 'Curated favorites I know inside out', 'Just starting to explore', 'Borrow/rent - I like variety without commitment', 'Small but I\'ll try anything'] },
+ { id: 'dealbreaker', text: "What's your gaming dealbreaker?", type: 'text-voice', placeholder: "What's a hard no for you at the table?" },
  // N/S (Intuition vs Sensing) - similarity matching
  { 
  id: 'ns-1', 
@@ -2763,6 +2763,12 @@
  function goToSection(sectionId) {
  // Stop callsign loop when navigating away
  if (callsignLooping) stopCallsignLoop();
+ // Silence any playing audio to prevent Android media session pinging
+ if (currentAudio) {
+   currentAudio.volume = 0;
+   currentAudio = null;
+   try { if ('mediaSession' in navigator) { navigator.mediaSession.metadata = null; navigator.mediaSession.playbackState = 'none'; } } catch(e) {}
+ }
  const currentSection = document.querySelector('.section.active');
  if (currentSection) {
  state.previousSection = currentSection.id;
@@ -3016,12 +3022,12 @@
  });
  html += '</div>';
  } else if (q.type === 'check') {
- html += (q.id === 'game-types' || q.id === 'music') ? '<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">' : '<div class="options-grid">';
+ html += (q.id === 'game-types') ? '<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">' : (q.id === 'music') ? '<div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;">' : '<div class="options-grid">';
  q.options.forEach(opt => {
  const checked = (state.answers[q.id] || []).includes(opt) ? 'checked' : '';
  const escapedOpt = opt.replace(/'/g, "\\'");
- const displayOpt = (q.id === 'game-types') ? (opt.includes('(') ? opt.replace(/^([^(]+)\((.+)\)$/, '<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089; display:block; line-height:1.2;">$1</span><span style="color:#D57553; font-size:0.95em; display:block; margin-top:1px;">$2</span>') : `<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089; display:block;">$1</span>`) : (q.id === 'music') ? (opt.includes('(') ? opt.replace(/^([^(]+)\((.+)\)$/, '<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089;">$1</span><span style="color:#D57553; font-size:0.95em;"> ($2)</span>') : `<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089;">${opt}</span>`) : opt;
- const itemStyle = q.id === 'game-types' ? ' style="align-items:flex-start; flex-direction:row; gap:8px; padding:8px 12px;"' : '';
+ const displayOpt = (q.id === 'game-types') ? (opt.includes('(') ? opt.replace(/^([^(]+)\((.+)\)$/, '<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089; display:block; line-height:1.2;">$1</span><span style="color:#D57553; font-size:0.95em; display:block; margin-top:1px;">$2</span>') : `<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089; display:block;">$1</span>`) : (q.id === 'music') ? (opt.includes('(') ? opt.replace(/^([^(]+)\((.+)\)$/, '<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:0.85em; color:#DEC089;">$1</span><span style="color:#D57553; font-size:0.85em;"> ($2)</span>') : `<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:0.85em; color:#DEC089;">${opt}</span>`) : opt;
+ const itemStyle = q.id === 'game-types' ? ' style="align-items:flex-start; flex-direction:row; gap:8px; padding:8px 12px;"' : (q.id === 'music') ? ' style="padding:7px 10px; min-height:0;"' : '';
  const contentStyle = q.id === 'game-types' ? ' style="display:flex; flex-direction:column;"' : '';
  html += `<label class="option-item ${checked ? 'selected' : ''}"${itemStyle}><input type="checkbox" name="${q.id}" value="${opt}" ${checked} onchange="toggleCheck('${q.id}', '${escapedOpt}')"><span${contentStyle}>${displayOpt}</span></label>`;
  });
