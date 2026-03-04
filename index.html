@@ -364,6 +364,26 @@
  margin: 20px 0;
  }
  
+ /* Scroll indicator fade on tier selection */
+ .tier-options-wrap {
+   position: relative;
+ }
+ .tier-options-wrap::after {
+   content: '';
+   position: absolute;
+   bottom: 0;
+   left: 0;
+   right: 0;
+   height: 48px;
+   background: linear-gradient(to bottom, transparent, rgba(26, 47, 35, 0.88));
+   pointer-events: none;
+   border-radius: 0 0 12px 12px;
+   transition: opacity 0.3s ease;
+ }
+ .tier-options-wrap.scrolled-to-bottom::after {
+   opacity: 0;
+ }
+ 
  .tier-card {
  border: 2px solid rgba(155, 191, 107, 0.6);
  border-radius: 12px;
@@ -1360,7 +1380,7 @@
  <div id="other-event-input" style="display:none;">
  <input type="text" class="text-input" style="min-height:auto;" id="other-event-name" placeholder="Event name...">
  <button type="button" class="btn btn-primary" onclick="confirmOtherEvent()">Continue &rarr;</button>
- </div>
+ </div></div>
  
  <div class="button-row">
  <button type="button" class="btn btn-secondary" onclick="goToSection('section-landing')">&larr; Back</button>
@@ -1391,7 +1411,7 @@
  <p class="description">Answer a few questions and we'll help you find congenial players.</p>
  <p class="description" style="font-size:0.9em; color:#D57553; margin-top:-10px; margin-bottom:18px;">Each level adds personality depth for better matches.</p>
  
- <div class="tier-options">
+ <div class="tier-options-wrap"><div class="tier-options">
   <div class="tier-card warm" onclick="selectCard(this).then(() => startTier('warm', false))">
    <p class="tier-card-desc">Find friendly gamers for a session today</p>
    <div class="tier-card-name">Warm</div>
@@ -1410,7 +1430,7 @@
    <div class="tier-card-name">Warmest</div>
    <div class="tier-time">~12 minutes · 38 questions</div>
   </div>
- </div>
+ </div></div>
  
  <div class="button-row">
  <button type="button" class="btn btn-secondary" onclick="goToSection('section-event-select')">&larr; Back</button>
@@ -1434,7 +1454,7 @@
  <p class="description">More questions = better matches. Choose what feels right.</p>
  <p class="description" style="font-size:0.9em; color:#D57553; margin-top:-10px; margin-bottom:18px;">Each level adds personality depth for better matches.</p>
  
- <div class="tier-options">
+ <div class="tier-options-wrap"><div class="tier-options">
   <div class="tier-card warmer" onclick="selectCard(this).then(() => startTier('warmer', true))">
    <p class="tier-card-desc">Good matches based on your gaming personality</p>
    <div class="tier-card-name">Warmer</div>
@@ -2376,9 +2396,8 @@
  // Warmer Content - Values, interests alignment, teaching preference
  const warmerContent = [
  { id: 'gamer-describe', text: "How would you describe yourself as a gamer?", type: 'text-voice', placeholder: 'What do you bring to a gaming group?' },
- { id: 'conflict', text: "How do you respond to tension at the table?", type: 'radio', options: ['Address it directly', 'Smooth it over', 'Take a break', 'Roll with it'] },
+ { id: 'conflict', text: "How do you respond to tension at the table?", subtext: 'Think interpersonal friction — disagreements, bad behavior, someone having a rough time.', type: 'radio', options: ['Address it directly', 'Smooth it over', 'Take a break', 'Roll with it'] },
  { id: 'rules', text: "How do you handle rules debates?", type: 'radio', options: ['Look it up', 'House rule it', 'Majority decides', 'Skip and move on'] },
- { id: 'anything-warm', text: "Anything else that would help us match you today?", type: 'text-voice', placeholder: 'Optional - share what feels right' },
  { id: 'teaching', text: "How do you feel about new games?", type: 'radio', options: ['Love discovering them - teach me or let me teach you', 'Happy to try, but I love my favorites too', "I'd rather stick with games I already know", 'Depends on who I\'m with'] },
  { id: 'schedule', text: "How often do you like to game?", type: 'radio', options: ['Regular weekly', 'Whenever we can manage it', 'Spontaneous only', 'Events only'] },
  { id: 'online', text: "Online tabletop gaming (Board Game Arena, Tabletop Simulator, etc.)?", type: 'radio', options: ['Love it', 'Prefer in-person', 'Both equally', 'Never tried'] },
@@ -2419,7 +2438,8 @@
  },
  { 
  id: 'tf-2', 
- text: "A player at your table is having a rough game - bad luck, bad decisions, clearly frustrated. You...",
+ text: "How do you respond?",
+ subtext: 'A player at your table is having a rough game — bad luck, bad decisions, clearly frustrated.',
  type: 'radio',
  dimension: 'TF',
  options: ['Give them strategic advice to improve their position', 'Offer encouragement and make sure they\'re still having fun'],
@@ -2470,6 +2490,7 @@
  options: ['Prefer women-only spaces', 'Prefer men-only spaces', 'Want trans-affirming spaces', 'No preference'],
  skipIf: (answers) => !answers['gateway-topics'] || !answers['gateway-topics'].includes('Gender preferences')
  },
+ { id: 'anything-warm', text: "Anything else that would help us match you today?", type: 'text-voice', placeholder: 'Optional - share what feels right' },
  { id: 'anything-warmer', text: "Anything else we should know?", type: 'text-voice', placeholder: 'Optional - share what feels right' }
  ];
  
@@ -5883,6 +5904,27 @@ Respond with JSON only, no other text:
  }
 
  document.addEventListener('DOMContentLoaded', init);
+
+// Scroll indicator: hide bottom fade when tier-options scrolled to bottom
+document.addEventListener('scroll', function(e) {
+  const wrap = e.target.closest && e.target.closest('.tier-options-wrap');
+  if (wrap) {
+    const atBottom = wrap.scrollHeight - wrap.scrollTop <= wrap.clientHeight + 4;
+    wrap.classList.toggle('scrolled-to-bottom', atBottom);
+  }
+}, true);
+
+// Also check on section show (card itself may scroll)
+document.addEventListener('scroll', function() {
+  document.querySelectorAll('.tier-options-wrap').forEach(wrap => {
+    const card = wrap.closest('.card');
+    if (card) {
+      const rect = wrap.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+      wrap.classList.toggle('scrolled-to-bottom', rect.bottom <= cardRect.bottom + 4);
+    }
+  });
+}, true);
  </script>
 
  <!-- Hub Menu Overlay -->
