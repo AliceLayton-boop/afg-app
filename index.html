@@ -1556,25 +1556,24 @@
 </div>
   <p class="description">Your callsign is your unique identity in A Friendly Game - how other gamers will find and recognize you.</p>
  
- <input type="text" class="text-input" style="min-height:auto;" id="user-name" placeholder="Your name (or nickname)...">
- <p style="font-size:0.85em; color:#D57553; margin-top:6px; margin-bottom:0;">e.g., 'Alex,' 'Dice Goblin,' or 'Prof. Chaos' &rarr; you'll be Alex the Owl</p>
+ <input type="text" class="text-input" style="min-height:auto;" id="user-name" placeholder="Choose a nickname — not your legal name.">
  
  <p class="description" style="margin-top:20px;">Pick your animal:</p>
  <div id="animal-options" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"></div>
  
- <p class="description" style="margin-top:10px; font-family:'MVB Aunt Mildred Bd LF', Georgia, serif; font-size:1.1em; color:#D57553;">Your callsign is how matches will know you — pick something you love!</p>
+ <p class="description" style="margin-top:10px; color:#D57553;">Your callsign is how matches will know you — pick something you love!</p>
  
  <div class="privacy-box" style="margin-top:25px; padding:20px; background:rgba(155, 191, 107, 0.1); border-color:#65381A;">
- <p class="description" style="margin-bottom:12px; font-family:'MVB Aunt Mildred Bd LF', Georgia, serif; font-size:1.15em; color:#DBAD4B;">Where can we notify you of matches?</p>
- <input type="email" class="text-input" style="min-height:auto; margin-bottom:6px;" id="user-email" placeholder="Your email address...">
- <p style="font-size:0.85em; color:#D57553; margin-top:0; margin-bottom:12px;">(optional — for match notifications when you're away from the app)</p>
+ <p class="description" style="margin-bottom:6px; color:#DBAD4B; font-size:1.1em;">Where can we notify you of matches?</p>
+ <p class="description" style="margin-bottom:14px; font-size:0.95em; color:#DEC089;">This is how we notify you of matches when you're away from the app.</p>
+ <input type="email" class="text-input" style="min-height:auto; margin-bottom:15px;" id="user-email" placeholder="Your email address...">
  
  <label style="display:flex; align-items:center; gap:12px; cursor:pointer; margin-bottom:15px;">
  <input type="checkbox" id="allow-contact" checked style="width:20px; height:20px; accent-color:#DBAD4B;" onclick="toggleContactPreference(event)">
- <span style="font-family:'MVB Aunt Mildred Bd LF', Georgia, serif; font-size:1.1em; color:#DBAD4B;">Let my matches message me</span>
+ <span style="font-size:1em; color:#DBAD4B;">Let my matches message me</span>
  </label>
  
- <p style="font-size:1.15em; color:#DEC089; line-height:1.5;">Your email is never shown to others. We use it only to notify you of matches. <a href="#" onclick="showDeleteInfo(); return false;" style="color:#9BBF6B;">Delete anytime</a>.</p>
+ <p style="font-size:0.95em; color:#DEC089; line-height:1.5;">Your email is never shown to others. We use it only to notify you of matches. <a href="#" onclick="showDeleteInfo(); return false;" style="color:#9BBF6B;">Delete anytime</a>.</p>
  </div>
  
  <!-- Timezone check — shown only for warmer+ tiers, hidden by default -->
@@ -3002,7 +3001,7 @@
  q.options.forEach(opt => {
  const checked = state.answers[q.id] === opt ? 'checked' : '';
  const escapedOpt = opt.replace(/'/g, "\\'");
- html += `<label class="option-item ${checked ? 'selected' : ''}" onclick="selectAnswer('${q.id}', '${escapedOpt}')"><input type="radio" name="${q.id}" value="${opt}" ${checked}> ${opt}</label>`;
+ html += `<label class="option-item ${checked ? 'selected' : ''}" onclick="selectAnswer('${q.id}', '${escapedOpt}')"><input type="radio" name="${q.id}" value="${opt}" ${checked} onclick="event.stopPropagation()"> ${opt}</label>`;
  });
  html += '</div>';
  } else if (q.type === 'check') {
@@ -3010,7 +3009,7 @@
  q.options.forEach(opt => {
  const checked = (state.answers[q.id] || []).includes(opt) ? 'checked' : '';
  const escapedOpt = opt.replace(/'/g, "\\'");
- const displayOpt = (q.id === 'game-types') ? (opt.includes('(') ? opt.replace(/^([^(]+)\((.+)\)$/, '<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089; display:block; line-height:1.2;">$1</span><span style="color:#D57553; font-size:0.85em; display:block; margin-top:1px;">$2</span>') : `<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089; display:block;">$1</span>`) : (q.id === 'music') ? (opt.includes('(') ? opt.replace(/^([^(]+)\((.+)\)$/, '<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089;">$1</span><span style="color:#D57553; font-size:0.85em;"> ($2)</span>') : `<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089;">${opt}</span>`) : opt;
+ const displayOpt = (q.id === 'game-types') ? (opt.includes('(') ? opt.replace(/^([^(]+)\((.+)\)$/, '<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089; display:block; line-height:1.2;">$1</span><span style="color:#D57553; font-size:0.95em; display:block; margin-top:1px;">$2</span>') : `<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089; display:block;">$1</span>`) : (q.id === 'music') ? (opt.includes('(') ? opt.replace(/^([^(]+)\((.+)\)$/, '<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089;">$1</span><span style="color:#D57553; font-size:0.95em;"> ($2)</span>') : `<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089;">${opt}</span>`) : opt;
  const itemStyle = q.id === 'game-types' ? ' style="align-items:flex-start; flex-direction:row; gap:8px; padding:8px 12px;"' : '';
  const contentStyle = q.id === 'game-types' ? ' style="display:flex; flex-direction:column;"' : '';
  html += `<label class="option-item ${checked ? 'selected' : ''}"${itemStyle}><input type="checkbox" name="${q.id}" value="${opt}" ${checked} onchange="toggleCheck('${q.id}', '${escapedOpt}')"><span${contentStyle}>${displayOpt}</span></label>`;
@@ -3046,7 +3045,12 @@
  }
  }
 
+ let _autoAdvancingQid = null;
+
  function selectAnswer(qid, value) {
+ // Guard: ignore if we already scheduled an advance for this exact question
+ if (_autoAdvancingQid === qid) return;
+
  state.answers[qid] = value;
  document.querySelectorAll(`input[name="${qid}"]`).forEach(inp => {
  inp.checked = (inp.value === value);
@@ -3057,7 +3061,8 @@
  // Auto-advance on radio (single-select) questions after brief highlight pause
  const currentQ = state.currentQuestions[state.questionIndex];
  if (currentQ && currentQ.type === 'radio') {
-   setTimeout(() => nextQuestion(), 350);
+   _autoAdvancingQid = qid;
+   setTimeout(() => { _autoAdvancingQid = null; nextQuestion(); }, 350);
  }
  
  // Inline age capture: if they chose an age-relative preference but never gave their own age
