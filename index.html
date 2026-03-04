@@ -2366,24 +2366,24 @@
  
  // Gaming Personality - Both flows, persistent
  const gamingPersonality = [
-    { id: 'gamer-describe', text: "How would you describe yourself as a gamer?", type: 'text-voice', placeholder: 'What are your best gaming moments like? What do you bring to the table?' },
+    { id: 'winning', text: "How important is winning?", type: 'radio', options: ['Very important', 'Nice but not essential', 'Not at all', 'Depends on the game'] },
     { id: 'noise', text: "Table talk preference?", type: 'radio', options: ['Quiet focus', 'Some chat', 'Lots of banter', 'Whatever happens'] },
     { id: 'phones', text: "Phones at the table?", type: 'radio', options: ['Put them away', 'Quick checks OK', 'No big deal'] },
-    { id: 'communication', text: "What's your table humor style?", type: 'radio', options: ['Anything goes', 'Mostly clean', 'Family-friendly'] },
-    { id: 'great-experience', text: "What would make this a great experience for you?", type: 'text-voice', placeholder: 'What are your best gaming moments like? What makes them great?' },
-    { id: 'music', text: "What kind of music speaks to you?", type: 'check', subtext: 'Choose all that resonate', options: ['Mellow & Atmospheric (ambient, lo-fi, folk)', 'Easygoing & Familiar (classic rock, country, pop)', 'Complex & Refined (jazz, classical, prog)', 'Loud & Energetic (metal, punk, EDM)', 'Rhythmic & Current (hip-hop, R&B, dance)', 'Soundtracks & Scores (film, game, orchestral)', 'Silence preferred'] },
+    { id: 'communication', text: "What's your table humor style?", type: 'radio', options: ['Family-friendly', 'Mostly clean', 'Anything goes'] },
+    { id: 'great-experience', text: "What would make this a great experience for you?", type: 'text-voice', placeholder: "Picture your ideal gaming session. What's happening?" },
+    { id: 'music', text: "What kind of music speaks to you?", type: 'check', subtext: 'Choose all that resonate', options: ['Silence preferred', 'Mellow & Atmospheric (ambient, lo-fi, folk)', 'Easygoing & Familiar (classic rock, country, pop)', 'Complex & Refined (jazz, classical, prog)', 'Loud & Energetic (metal, punk, EDM)', 'Rhythmic & Current (hip-hop, R&B, dance)', 'Soundtracks & Scores (film, game, orchestral)'] },
     { id: 'anything-warm', text: "Anything else that would help us match you today?", type: 'text-voice', placeholder: 'Optional - share what feels right' }
   ]; 
  // Warmer Content - Values, interests alignment, teaching preference
  const warmerContent = [
+ { id: 'gamer-describe', text: "How would you describe yourself as a gamer?", type: 'text-voice', placeholder: 'What do you bring to a gaming group?' },
  { id: 'conflict', text: "When things get tense?", type: 'radio', options: ['Address it directly', 'Smooth it over', 'Take a break', 'Roll with it'] },
- { id: 'winning', text: "How important is winning?", type: 'radio', options: ['Very important', 'Nice but not essential', 'Not at all', 'Depends on the game'] },
- { id: 'rules', text: "Rules debates?", type: 'radio', options: ['Look it up', 'House rule it', 'Majority decides', 'Avoid them'] },
+ { id: 'rules', text: "Rules debates?", type: 'radio', options: ['Look it up', 'House rule it', 'Majority decides', 'Skip and move on'] },
  { id: 'teaching', text: "When it comes to new games...", type: 'radio', options: ['Love discovering them - teach me or let me teach you', 'Happy to try, but I love my favorites too', "I'd rather stick with games I already know", 'Depends on who I\'m with'] },
- { id: 'schedule', text: "Gaming schedule?", type: 'radio', options: ['Regular weekly', 'When we can', 'Spontaneous only', 'Events only'] },
- { id: 'online', text: "Online gaming?", type: 'radio', options: ['Love it', 'Prefer in-person', 'Both equally', 'Never tried'] },
+ { id: 'schedule', text: "Gaming schedule?", type: 'radio', options: ['Regular weekly', 'Whenever we can manage it', 'Spontaneous only', 'Events only'] },
+ { id: 'online', text: "Online tabletop gaming (Board Game Arena, Tabletop Simulator, etc.)?", type: 'radio', options: ['Love it', 'Prefer in-person', 'Both equally', 'Never tried'] },
  { id: 'collection', text: "Your game collection?", type: 'radio', options: ['Huge and always growing', 'Curated favorites I know inside out', 'Just starting to explore', 'Borrow/rent - I like variety without commitment', 'Small but I\'ll try anything'] },
- { id: 'dealbreaker', text: "Gaming dealbreaker?", type: 'text-voice', placeholder: 'What would make you leave a table?' },
+ { id: 'dealbreaker', text: "Gaming dealbreaker?", type: 'text-voice', placeholder: "What's a hard no for you at the table?" },
  // N/S (Intuition vs Sensing) - similarity matching
  { 
  id: 'ns-1', 
@@ -2430,8 +2430,8 @@
  text: "A win feels most satisfying when...",
  type: 'radio',
  dimension: 'TF',
- options: ['You played optimally and outmaneuvered your opponents', 'Everyone had a great time and the game was close'],
- poles: { 'You played optimally and outmaneuvered your opponents': 'T', 'Everyone had a great time and the game was close': 'F' }
+ options: ['You played your best game and it showed', 'Everyone had a great time and the game was close', 'Everyone overcame the challenge together - co-op all the way'],
+ poles: { 'You played your best game and it showed': 'T', 'Everyone had a great time and the game was close': 'F', 'Everyone overcame the challenge together - co-op all the way': 'F' }
  },
  // Gateway questions - identity/belief layer (checklist FIRST so they can see what's being asked)
  { 
@@ -2877,10 +2877,6 @@
  if (state.currentQuestions.length === 0) {
  // All questions already answered - check if we need values/interests
  proceedAfterQuestions();
- } else if (isOnlineFlow && !state.onlineTransitionShown) {
- // Show transition screen first time entering online tiers
- state.onlineTransitionShown = true;
- goToSection('section-online-transition');
  } else {
  renderQuestion();
  goToSection('section-questions');
@@ -3050,6 +3046,13 @@
 
  // Clear any pending clarification from previous question
  pendingClarification = null;
+
+ // Update next button label on last question
+ const nextBtn = document.getElementById('next-btn');
+ if (nextBtn) {
+   const remainingNonSkipped = state.currentQuestions.slice(state.questionIndex + 1).filter(q => !q.skipIf || !q.skipIf(state.answers));
+   nextBtn.innerHTML = remainingNonSkipped.length === 0 ? 'See My Matches &rarr;' : 'Next &rarr;';
+ }
 
  // Update back button behavior
  const backBtn = document.getElementById('back-btn');
@@ -5905,7 +5908,7 @@ Respond with JSON only, no other text:
  </div>
 
 <!-- ========== DEBUG PANEL ========== -->
-<div id="afg-debug" style="
+<div id="afg-debug" style="display:none;
   position: fixed;
   bottom: 10px;
   right: 10px;
