@@ -1239,6 +1239,19 @@
  </div>
  </div>
 
+ <!-- ========== AGE GATE MODAL ========== -->
+ <div id="age-gate-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.75); z-index:1000; align-items:center; justify-content:center; padding:20px; box-sizing:border-box;">
+ <div style="background:linear-gradient(180deg, rgba(45,74,62,0.98) 0%, rgba(26,47,35,0.98) 100%); border:2px solid #DBAD4B; border-radius:20px; padding:30px; max-width:420px; width:100%; box-shadow:0 10px 40px rgba(0,0,0,0.7); text-align:center;">
+ <div style="font-size:2em; margin-bottom:10px;">🌿</div>
+ <h2 style="color:#DBAD4B; font-size:1.3em; margin-bottom:12px;">Just one thing before we start</h2>
+ <p style="color:#DEC089; font-size:1em; line-height:1.6; margin-bottom:24px;">A Friendly Game is designed for adults 18 and older. Are you 18 or over?</p>
+ <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+ <button type="button" class="btn btn-primary" onclick="confirmAgeGate()" style="padding:12px 30px;">Yes, I'm 18+ &rarr;</button>
+ <button type="button" class="btn btn-secondary" onclick="denyAgeGate()" style="padding:12px 30px;">No</button>
+ </div>
+ </div>
+ </div>
+
  <!-- ========== LANDING PAGE ========== -->
  <div class="section active" id="section-landing">
  <div class="card">
@@ -1256,12 +1269,12 @@
  <p class="description">Answer a few questions. We'll match you with your most compatible players.</p>
  
  <div class="path-options">
- <button type="button" class="path-btn light-green" onclick="selectCard(this).then(() => goToSection('section-event-select'))">
+ <button type="button" class="path-btn light-green" onclick="checkAgeGate('section-event-select')">
  <h3>I'm at an event</h3>
  <p>Quick match for gaming today</p>
  </button>
  
- <button type="button" class="path-btn dark-green" onclick="selectCard(this).then(() => goToSection('section-online-tiers'))">
+ <button type="button" class="path-btn dark-green" onclick="checkAgeGate('section-online-tiers')">
  <h3>Looking for online players</h3>
  <p>Find lasting friendships through gaming</p>
  </button>
@@ -1694,6 +1707,9 @@
  <div class="button-row">
  <button type="button" class="btn btn-secondary" onclick="goBack()">&larr; Back</button>
  <button type="button" class="btn btn-primary" onclick="viewMatches()">Refresh </button>
+ </div>
+ <div id="matches-upgrade-banner" style="display:none; margin-top:15px; text-align:center; padding:14px 18px; background:rgba(219,173,75,0.12); border:1px solid rgba(219,173,75,0.4); border-radius:12px;">
+ <p style="color:#DEC089; font-size:0.95em; margin:0;">Want stronger matches? <a href="#" onclick="upgradeTier('warmer'); return false;" style="color:#DBAD4B; text-decoration:none; font-weight:500;">Go Warmer for stronger matches →</a></p>
  </div>
  </div>
  <div class="privacy-footer">
@@ -2340,13 +2356,12 @@
  
  // Session Preferences - Event flow only, ephemeral
  const sessionPreferences = [
- { id: 'mood', text: "What are you most hoping for today?", type: 'radio', options: ['Ready to compete', 'Want to discover something new', 'Here to meet people', 'Just curious'] },
+ { id: 'mood', text: "What are you most hoping for today?", type: 'radio', options: ['Ready to compete', 'Want to discover something new', 'Here to meet people'] },
  { id: 'complexity', text: "How complex do you like your games?", type: 'radio', options: ['Simple and quick', 'Medium strategy', 'Brain-burner', 'Love the weird and experimental', 'Anything goes'] },
  { id: 'length', text: "How long do you want to play?", type: 'radio', options: ['Under 30 min', '30-60 min', '1-2 hours', 'Epic all-day'] },
  { id: 'players', text: "Group size preference?", type: 'radio', options: ['2 players', '3-4 players', '5+ players', 'Any size'] },
- { id: 'style', text: "Your play style?", type: 'radio', options: ['Competitive', 'Cooperative', 'Social/party', 'Story-driven / immersive', 'Mix of all'] },
- { id: 'game-types', text: "What types of games do you enjoy?", type: 'check', subtext: 'Choose all that apply', options: ['Strategy (Catan, Terraforming Mars, Agricola)', 'Party & Trivia (Codenames, Scrabble, Wavelength)', 'RPGs/Dungeon Crawlers (D&D, Gloomhaven)', 'Deck & Engine Builders (Dominion, Wingspan, Everdell)', 'Competitive Card Games (Magic: The Gathering, Pokemon TCG)', 'Social Deduction (Werewolf, Secret Hitler, The Resistance)', 'War/Area Control (Risk, Root)', 'Tabletop Wargames (Warhammer, Bolt Action)', 'Cooperative (Pandemic, Spirit Island)', 'Dexterity (Jenga, Crokinole, Klask)', 'Legacy/Campaign (Pandemic Legacy, King\'s Dilemma)', 'Abstract & Puzzle (Azul, Cartographers, Chess)'] },
- { id: 'age-range', text: "What's your age range?", type: 'radio', options: ['Under 18', '18-25', '26-35', '36-50', '50+', 'Prefer not to answer'] }
+ { id: 'style', text: "Your play style?", type: 'radio', options: ['Competitive', 'Cooperative', 'Social/party', 'Story-driven / immersive', 'It depends on the game'] },
+ { id: 'game-types', text: "What types of games do you enjoy?", type: 'check', subtext: 'Choose all that apply', options: ['Strategy (Catan, Terraforming Mars, Agricola)', 'Party & Trivia (Codenames, Scrabble, Wavelength)', 'RPGs/Dungeon Crawlers (D&D, Gloomhaven)', 'Deck & Engine Builders (Dominion, Wingspan, Everdell)', 'Competitive Card Games (Magic: The Gathering, Pokemon TCG)', 'Social Deduction (Werewolf, The Resistance, Coup)', 'War/Area Control (Risk, Root)', 'Tabletop Wargames (Warhammer, Bolt Action)', 'Cooperative (Pandemic, Spirit Island)', 'Dexterity (Jenga, Crokinole, Klask)', 'Legacy/Campaign (Pandemic Legacy, King\'s Dilemma)', 'Abstract & Puzzle (Azul, Cartographers, Chess)'] },
  ];
  
  // Gaming Personality - Both flows, persistent
@@ -3120,6 +3135,22 @@
  function nextQuestion() {
  // Save any text input before moving
  const currentQ = state.currentQuestions[state.questionIndex];
+
+ // Require at least one selection for game-types
+ if (currentQ.id === 'game-types') {
+   const selected = state.answers['game-types'] || [];
+   if (selected.length === 0) {
+     let errEl = document.getElementById('game-types-error');
+     if (!errEl) {
+       errEl = document.createElement('p');
+       errEl.id = 'game-types-error';
+       errEl.style.cssText = 'color:#D57553; font-size:0.95em; margin-top:10px; font-style:italic; text-align:center;';
+       errEl.textContent = 'Pick at least one — we promise there\'s no wrong answer.';
+       document.getElementById('question-content').appendChild(errEl);
+     }
+     return;
+   }
+ }
  if (currentQ.type === 'text' || currentQ.type === 'text-voice') {
  const textarea = document.getElementById(`text-${currentQ.id}`);
  if (textarea) {
@@ -3624,9 +3655,12 @@
  <div class="upgrade-box">
  <p>Research shows that deeper questions lead to better matches. If you're willing to spend a few more minutes, we can find people you'll really click with.</p>
  <div class="upgrade-options">
- <button type="button" class="btn btn-tier" onclick="upgradeTier('warmer')">Go Warmer</button>
- <button type="button" class="btn btn-tier" onclick="upgradeTier('warmest')">Go Warmest</button>
- <button type="button" class="btn btn-tier" onclick="upgradeTier('findyourpeople')">Find Your People</button>
+ <div style="position:relative; display:inline-block;">
+   <div class="tier-recommended" style="position:absolute; top:-10px; left:50%; transform:translateX(-50%); white-space:nowrap; font-size:0.75em; z-index:1;">Recommended</div>
+   <button type="button" class="btn btn-tier" onclick="upgradeTier('warmer')" style="margin-top:8px;">Go Warmer <span style="font-size:0.85em; opacity:0.8;">(~7 min more)</span></button>
+ </div>
+ <button type="button" class="btn btn-tier" onclick="upgradeTier('warmest')">Go Warmest <span style="font-size:0.85em; opacity:0.8;">(~12 min more)</span></button>
+ <button type="button" class="btn btn-tier" onclick="upgradeTier('findyourpeople')">Find Your People <span style="font-size:0.85em; opacity:0.8;">(~15 min more)</span></button>
  </div>
  </div>
  `;
@@ -4609,7 +4643,7 @@ Respond with JSON only, no other text:
  }
  
  // Flexible answers that count as compatible with any response
- const flexibleAnswers = ['Whatever happens', 'Anything goes', 'Any size', 'Mix of all', 'No big deal', 'Either way', 'Depends on the game', 'All of the above'];
+ const flexibleAnswers = ['Whatever happens', 'Anything goes', 'Any size', 'It depends on the game', 'No big deal', 'Either way', 'All of the above'];
  
  // ============================================================
  // RESEARCH-WEIGHTED MATCHING ALGORITHM v2
@@ -4876,6 +4910,9 @@ Respond with JSON only, no other text:
  
  matchesContent.innerHTML = html;
  }
+ // Show upgrade banner only for warm tier users
+ const banner = document.getElementById('matches-upgrade-banner');
+ if (banner) banner.style.display = (state.tier === 'warm') ? 'block' : 'none';
  }
 
  // ========== RETURNING USER ==========
@@ -5333,6 +5370,31 @@ Respond with JSON only, no other text:
  function dismissMatchNotification(goToMatches) {
  document.getElementById('match-notification-modal').style.display = 'none';
  if (goToMatches) viewMatches();
+ }
+
+ let _ageGateDestination = null;
+ function checkAgeGate(destination) {
+   _ageGateDestination = destination;
+   const modal = document.getElementById('age-gate-modal');
+   modal.style.display = 'flex';
+ }
+ function confirmAgeGate() {
+   document.getElementById('age-gate-modal').style.display = 'none';
+   if (_ageGateDestination) goToSection(_ageGateDestination);
+   _ageGateDestination = null;
+ }
+ function denyAgeGate() {
+   document.getElementById('age-gate-modal').style.display = 'none';
+   _ageGateDestination = null;
+   // Show a friendly message in place
+   const modal = document.getElementById('age-gate-modal');
+   modal.style.display = 'flex';
+   modal.querySelector('div').innerHTML = `
+     <div style="font-size:2em; margin-bottom:10px;">🌿</div>
+     <h2 style="color:#DBAD4B; font-size:1.3em; margin-bottom:12px;">Thanks for being honest!</h2>
+     <p style="color:#DEC089; font-size:1em; line-height:1.6; margin-bottom:24px;">A Friendly Game is currently for adults 18 and older. We hope to have options for younger gamers in the future!</p>
+     <button type="button" class="btn btn-secondary" onclick="document.getElementById('age-gate-modal').style.display='none'" style="padding:12px 30px;">Close</button>
+   `;
  }
 
  async function sendMatchNotificationEmail(matches) {
