@@ -3461,25 +3461,12 @@
          if (callsignLooping) callsignLoopTimeout = setTimeout(playCallsignLoop, 3000);
          return;
      }
-     // Suppress Android media session BEFORE creating audio — prevents system ping
-     try {
-         if ('mediaSession' in navigator) {
-             navigator.mediaSession.metadata = null;
-             navigator.mediaSession.playbackState = 'none';
-             navigator.mediaSession.setActionHandler('play', null);
-             navigator.mediaSession.setActionHandler('pause', null);
-             navigator.mediaSession.setActionHandler('stop', null);
-             afgLog('audio: mediaSession suppressed (loop)', '#888');
-         }
-     } catch(e) { afgLog('audio: mediaSession suppress failed: ' + e.message, '#f00'); }
      const audio = new Audio(url);
      audio.volume = 1.0;
      currentAudio = audio;
      // Let the full sound play to natural end, then schedule next iteration
      audio.onended = () => {
          if (currentAudio === audio) currentAudio = null;
-         // Re-suppress after playback ends to clear any session the browser registered
-         try { if ('mediaSession' in navigator) { navigator.mediaSession.metadata = null; navigator.mediaSession.playbackState = 'none'; } } catch(e) {}
          if (callsignLooping) callsignLoopTimeout = setTimeout(playCallsignLoop, 1500);
      };
      // Safety ceiling only — if audio stalls/never ends, move on after 30s
@@ -3508,16 +3495,6 @@
  const url = animalSoundUrls[name];
  
  if (url) {
-     // Suppress Android media session BEFORE creating audio — prevents system ping
-     try {
-         if ('mediaSession' in navigator) {
-             navigator.mediaSession.metadata = null;
-             navigator.mediaSession.playbackState = 'none';
-             navigator.mediaSession.setActionHandler('play', null);
-             navigator.mediaSession.setActionHandler('pause', null);
-             navigator.mediaSession.setActionHandler('stop', null);
-         }
-     } catch(e) {}
      afgLog('audio: playing ' + name, '#0ff');
      const audio = new Audio(url);
      audio.volume = animalVolumes[name] || 0.6;
@@ -3527,8 +3504,6 @@
      audio.addEventListener('ended', () => {
          clearTimeout(currentTimeout);
          if (currentAudio === audio) currentAudio = null;
-         // Re-suppress after end to clear any session browser registered
-         try { if ('mediaSession' in navigator) { navigator.mediaSession.metadata = null; navigator.mediaSession.playbackState = 'none'; } } catch(e) {}
      });
      
      // Safety ceiling of 5s only — no hard cutoff, each animal plays its full sound
@@ -3566,26 +3541,12 @@
  const url = animalSoundUrls[name];
  
  if (url) {
-     // Suppress Android media session BEFORE creating audio — prevents system ping
-     try {
-         if ('mediaSession' in navigator) {
-             navigator.mediaSession.metadata = null;
-             navigator.mediaSession.playbackState = 'none';
-             navigator.mediaSession.setActionHandler('play', null);
-             navigator.mediaSession.setActionHandler('pause', null);
-             navigator.mediaSession.setActionHandler('stop', null);
-         }
-     } catch(e) {}
      const audio = new Audio(url);
      audio.volume = 1.0;
      currentAudio = audio;
-     // Suppress Android media session so system doesn't ping
-     try { if ('mediaSession' in navigator) { navigator.mediaSession.metadata = null; navigator.mediaSession.playbackState = 'none'; } } catch(e) {}
      audio.onended = () => {
          if (currentAudio === audio) currentAudio = null;
          if (soundBtn) soundBtn.classList.remove('recording');
-         // Re-suppress after end
-         try { if ('mediaSession' in navigator) { navigator.mediaSession.metadata = null; navigator.mediaSession.playbackState = 'none'; } } catch(e) {}
      };
      audio.play().catch(() => {
          if (currentAudio === audio) currentAudio = null;
@@ -3636,10 +3597,10 @@
  // Save to Supabase
  await saveToDatabase();
     
-    // Play animal sound for new callsign
-    playAnimalSound(state.animal.name);
- 
  goToSection('section-result');
+
+    // Play animal sound after navigation — goToSection silences audio, so must come after
+    setTimeout(() => playAnimalSound(state.animal.name), 50);
 
  // Check for matches and notify (runs after navigation, non-blocking)
  setTimeout(() => checkForNewMatches(), 1500);
