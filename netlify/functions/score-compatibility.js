@@ -1,15 +1,21 @@
 exports.handler = async function(event, context) {
-  // Only allow POST
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
-  }
-
   // CORS headers so the app can call this function
   const headers = {
     'Access-Control-Allow-Origin': 'https://app.afriendlygame.com',
     'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Content-Type': 'application/json'
   };
+
+  // Handle CORS preflight — must come before method check
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 200, headers, body: '' };
+  }
+
+  // Only allow POST
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, headers, body: 'Method Not Allowed' };
+  }
 
   try {
     const { profileA, profileB } = JSON.parse(event.body);

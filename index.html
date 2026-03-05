@@ -644,6 +644,16 @@
  background: linear-gradient(135deg, #7A9A4A 0%, #6B8D3A 100%);
  box-shadow: 0 0 8px rgba(219, 173, 75, 0.4);
  }
+
+ /* Checkmark indicator for multi-select (checkbox) questions */
+ .option-item.selected:has(input[type="checkbox"])::after {
+   content: '✓';
+   color: #DBAD4B;
+   font-size: 1.1em;
+   font-weight: bold;
+   margin-left: auto;
+   flex-shrink: 0;
+ }
  
  .option-item input {
  position: absolute;
@@ -1210,7 +1220,7 @@
   }
 
   .snippet-area.open {
-    max-height: 80px;
+    max-height: 200px;
     opacity: 1;
     margin-top: 8px;
     margin-bottom: 4px;
@@ -3102,22 +3112,18 @@
  });
  saveSession();
 
- // Auto-advance on radio (single-select) questions after brief highlight pause
- const currentQ = state.currentQuestions[state.questionIndex];
- if (currentQ && currentQ.type === 'radio') {
-   _autoAdvancingQid = qid;
-   setTimeout(() => { _autoAdvancingQid = null; nextQuestion(); }, 350);
- }
- 
  // Inline age capture: if they chose an age-relative preference but never gave their own age
+ // Must run BEFORE auto-advance check so we can suppress advance when capture is needed
+ let suppressAutoAdvance = false;
  if (qid === 'age' && ['Similar to me', 'Prefer older'].includes(value)) {
    const hasAge = state.answers['age-range'] && state.answers['age-range'] !== 'Prefer not to answer';
    if (!hasAge) {
+     suppressAutoAdvance = true;
      // Remove any existing prompt first
      const existing = document.getElementById('inline-age-capture');
      if (existing) existing.remove();
      
-     const ageOptions = ['Under 18', '18-25', '26-35', '36-50', '50+'];
+     const ageOptions = ['18-25', '26-35', '36-50', '50+'];
      let captureHtml = `<div id="inline-age-capture" style="margin-top:20px; padding:18px; background:rgba(26,47,35,0.7); border:2px solid #DBAD4B; border-radius:12px;">
        <p style="color:#DEC089; margin:0 0 12px 0; font-size:1.1em;">To match by age, we need your range too:</p>
        <div class="options-grid">`;
@@ -3133,6 +3139,14 @@
  if (qid === 'age' && value === 'Any age') {
    const existing = document.getElementById('inline-age-capture');
    if (existing) existing.remove();
+ }
+
+ // Auto-advance on radio (single-select) questions after brief highlight pause
+ // Suppressed when inline age capture widget is being shown
+ const currentQ = state.currentQuestions[state.questionIndex];
+ if (currentQ && currentQ.type === 'radio' && !suppressAutoAdvance) {
+   _autoAdvancingQid = qid;
+   setTimeout(() => { _autoAdvancingQid = null; nextQuestion(); }, 350);
  }
  }
  
