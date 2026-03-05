@@ -1499,8 +1499,8 @@
  </div>
 
  <!-- ========== QUESTIONS SCREEN (shared by all tiers) ========== -->
- <div class="section" id="section-questions">
- <div class="card">
+ <div class="section" id="section-questions" style="padding-top: 0;">
+ <div class="card" style="margin-top: 0;">
  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0; padding-bottom:14px; border-bottom:1px solid rgba(101,56,26,0.5);">
   <div class="card-nav" style="margin-bottom:0; padding-bottom:0; border-bottom:none;">
    <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
@@ -2409,9 +2409,9 @@
  { id: 'gamer-describe', text: "How would you describe yourself as a gamer?", type: 'text-voice', placeholder: 'What do you bring to a gaming group?' },
  { id: 'conflict', text: "How do you respond to tension at the table?", subtext: 'Think interpersonal friction — disagreements, bad behavior, someone having a rough time.', type: 'radio', options: ['Address it directly', 'Smooth it over', 'Take a break', 'Roll with it'] },
  { id: 'rules', text: "How do you handle rules debates?", type: 'radio', options: ['Look it up', 'House rule it', 'Majority decides', 'Skip and move on'] },
- { id: 'teaching', text: "How do you feel about new games?", type: 'radio', options: ['Love discovering them - teach me or let me teach you', 'Happy to try, but I love my favorites too', "I'd rather stick with games I already know", 'Depends on who I\'m with'] },
- { id: 'schedule', text: "How often do you like to game?", type: 'radio', options: ['Regular weekly', 'Whenever we can manage it', 'Spontaneous only', 'Events only'] },
- { id: 'online', text: "Online tabletop gaming (Board Game Arena, Tabletop Simulator, etc.)?", type: 'radio', options: ['Love it', 'Prefer in-person', 'Both equally', 'Never tried'] },
+ { id: 'teaching', text: "How do you feel about new games?", type: 'radio', options: ['Love discovering new games', 'Happy to try, but I love my favorites too', "I'd rather stick with games I already know", 'Depends on who I\'m with'] },
+ { id: 'schedule', text: "How often do you like to game?", type: 'radio', options: ['Regular weekly', 'Whenever it works out', 'Spontaneous only', 'Events only'] },
+ { id: 'online', text: "Do you play tabletop games online (BGA, Tabletop Simulator, etc.)?", type: 'radio', options: ['Love it', 'Prefer in-person', 'Both equally', 'Never tried'] },
  { id: 'collection', text: "How would you describe your game collection?", type: 'radio', options: ['Huge and always growing', 'Curated favorites I know inside out', 'Just starting to explore', 'Borrow/rent - I like variety without commitment', 'Small but I\'ll try anything'] },
  { id: 'dealbreaker', text: "What's your gaming dealbreaker?", type: 'text-voice', placeholder: "What's a hard no for you at the table?" },
  // N/S (Intuition vs Sensing) - similarity matching
@@ -2507,7 +2507,7 @@
  // Warmest Content - Group composition, deeper preferences
  const warmestContent = [
  { id: 'outside', text: "Hang out outside gaming?", type: 'radio', options: ['Definitely', 'Maybe eventually', 'Prefer not', 'Open to it'] },
- { id: 'topics', text: "What conversation topics are you comfortable with?", type: 'check', subtext: 'Check all that apply', options: ['Work/career', 'Family', 'Politics', 'Religion', 'Keep it light'] },
+ { id: 'topics', text: "What conversation topics are you comfortable with?", type: 'check', subtext: 'Check all that apply', options: ['Keep it light', 'Work/career', 'Family', 'Politics', 'Religion'] },
  { id: 'humor', text: "Your humor style?", type: 'radio', options: ['Dry/sarcastic', 'Silly/goofy', 'Dark humor', 'Wholesome', 'All of the above'] },
  { id: 'age', text: "Age range preference?", type: 'radio', options: ['Similar to me', 'Any age', 'Prefer older'] },
  { id: 'ideal', text: "Describe your ideal gaming friend:", type: 'text-voice', placeholder: 'What qualities matter most?' },
@@ -2533,8 +2533,8 @@
  text: "You're joining a new gaming group for the first time. You...",
  type: 'radio',
  dimension: 'EI',
- options: ['Jump into conversation, introduce yourself, ask about favorite games', 'Friendly but selective - I\'ll chat when something clicks', 'Hang back at first, observe the group dynamic, warm up gradually'],
- poles: { 'Jump into conversation, introduce yourself, ask about favorite games': 'E', 'Hang back at first, observe the group dynamic, warm up gradually': 'I' }
+ options: ['Jump into conversation, introduce yourself, ask about favorite games', 'Friendly but selective - I\'ll chat when something clicks', 'Hang back and warm up as I get a feel for the group'],
+ poles: { 'Jump into conversation, introduce yourself, ask about favorite games': 'E', 'Hang back and warm up as I get a feel for the group': 'I' }
  },
  // J/P (Judging vs Perceiving) - complementarity matching for groups
  { 
@@ -2567,8 +2567,7 @@
  // Find Your People Content - Story prompts for deep matching
  const findYourPeopleContent = [
  { id: 'story-best', text: "Tell me about the best gaming session you've ever had.", type: 'text-voice', subtext: 'The one that sticks with you. What made it special?', placeholder: 'What happened? Who was there? What made it great?' },
- { id: 'story-worst', text: "What's the worst experience you've had with other players?", type: 'text-voice', subtext: 'The one that made you want to walk away.', placeholder: 'What happened? What made it bad?' },
- { id: 'story-ideal', text: "Describe your ideal gaming group.", type: 'text-voice', subtext: 'The perfect people, perfect vibe.', placeholder: "What's the vibe? What matters most?" }
+ { id: 'story-ideal', text: "Describe your ideal gaming group.", type: 'text-voice', subtext: "You're almost there — paint us a picture.", placeholder: "What's the vibe? What matters most?" }
  ];
  
  // Question pool IDs for checking what's been answered
@@ -2981,7 +2980,7 @@
    'anything-warmest': "Tell us if we overlooked something important to you",
    // Find Your People
    'story-best':  "The best matches often come from people who've had similar peak experiences",
-   'story-worst': "Help us ensure history doesn't repeat itself",
+ 
    'story-ideal': "We like to aim high"
  };
 
@@ -2994,6 +2993,10 @@
  }
 
  function renderQuestion() {
+ // Scroll to top on every question change so card top is always in the same position
+ window.scrollTo(0, 0);
+ document.documentElement.scrollTop = 0;
+ document.body.scrollTop = 0;
  const q = state.currentQuestions[state.questionIndex];
  // Update Why We Ask snippet
  const snippetText = document.getElementById('snippet-text');
@@ -3044,24 +3047,43 @@
  }
  
  if (q.type === 'radio') {
+ const isCompact = q.options.length >= 5;
  html += '<div class="options-grid">';
  q.options.forEach(opt => {
  const checked = state.answers[q.id] === opt ? 'checked' : '';
  const escapedOpt = opt.replace(/'/g, "\\'");
- html += `<label class="option-item ${checked ? 'selected' : ''}" onclick="selectAnswer('${q.id}', '${escapedOpt}')"><input type="radio" name="${q.id}" value="${opt}" ${checked} onclick="event.stopPropagation()"> ${opt}</label>`;
+ const compactStyle = isCompact ? ' style="padding:9px 15px;"' : '';
+ html += `<label class="option-item ${checked ? 'selected' : ''}"${compactStyle} onclick="selectAnswer('${q.id}', '${escapedOpt}')"><input type="radio" name="${q.id}" value="${opt}" ${checked} onclick="event.stopPropagation()"> ${opt}</label>`;
  });
  html += '</div>';
  } else if (q.type === 'check') {
- html += (q.id === 'game-types') ? '<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">' : (q.id === 'music') ? '<div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;">' : '<div class="options-grid">';
+ if (q.id === 'music') {
+ // Silence preferred spans full width; remaining 6 options in 2-column grid
+ const silenceOpt = q.options[0];
+ const silenceChecked = (state.answers[q.id] || []).includes(silenceOpt) ? 'checked' : '';
+ const silenceEscaped = silenceOpt.replace(/'/g, "\\'");
+ const silenceDisplay = `<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:0.85em; color:#DEC089;">${silenceOpt}</span>`;
+ html += `<div style="margin-bottom:5px;"><label class="option-item ${silenceChecked ? 'selected' : ''}" style="padding:7px 10px; min-height:0;"><input type="checkbox" name="${q.id}" value="${silenceOpt}" ${silenceChecked} onchange="toggleCheck('${q.id}', '${silenceEscaped}')">${silenceDisplay}</label></div>`;
+ html += '<div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;">';
+ q.options.slice(1).forEach(opt => {
+ const checked = (state.answers[q.id] || []).includes(opt) ? 'checked' : '';
+ const escapedOpt = opt.replace(/'/g, "\\'");
+ const displayOpt = opt.includes('(') ? opt.replace(/^([^(]+)\((.+)\)$/, '<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:0.85em; color:#DEC089;">$1</span><span style="color:#D57553; font-size:0.85em;"> ($2)</span>') : `<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:0.85em; color:#DEC089;">${opt}</span>`;
+ html += `<label class="option-item ${checked ? 'selected' : ''}" style="padding:7px 10px; min-height:0;"><input type="checkbox" name="${q.id}" value="${opt}" ${checked} onchange="toggleCheck('${q.id}', '${escapedOpt}')">${displayOpt}</label>`;
+ });
+ html += '</div>';
+ } else {
+ html += (q.id === 'game-types') ? '<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">' : '<div class="options-grid">';
  q.options.forEach(opt => {
  const checked = (state.answers[q.id] || []).includes(opt) ? 'checked' : '';
  const escapedOpt = opt.replace(/'/g, "\\'");
- const displayOpt = (q.id === 'game-types') ? (opt.includes('(') ? opt.replace(/^([^(]+)\((.+)\)$/, '<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089; display:block; line-height:1.2;">$1</span><span style="color:#D57553; font-size:0.95em; display:block; margin-top:1px;">$2</span>') : `<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089; display:block;">$1</span>`) : (q.id === 'music') ? (opt.includes('(') ? opt.replace(/^([^(]+)\((.+)\)$/, '<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:0.85em; color:#DEC089;">$1</span><span style="color:#D57553; font-size:0.85em;"> ($2)</span>') : `<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:0.85em; color:#DEC089;">${opt}</span>`) : opt;
- const itemStyle = q.id === 'game-types' ? ' style="align-items:flex-start; flex-direction:row; gap:8px; padding:8px 12px;"' : (q.id === 'music') ? ' style="padding:7px 10px; min-height:0;"' : '';
+ const displayOpt = (q.id === 'game-types') ? (opt.includes('(') ? opt.replace(/^([^(]+)\((.+)\)$/, '<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089; display:block; line-height:1.2;">$1</span><span style="color:#D57553; font-size:0.95em; display:block; margin-top:1px;">$2</span>') : `<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089; display:block;">$1</span>`) : opt;
+ const itemStyle = q.id === 'game-types' ? ' style="align-items:flex-start; flex-direction:row; gap:8px; padding:8px 12px;"' : '';
  const contentStyle = q.id === 'game-types' ? ' style="display:flex; flex-direction:column;"' : '';
  html += `<label class="option-item ${checked ? 'selected' : ''}"${itemStyle}><input type="checkbox" name="${q.id}" value="${opt}" ${checked} onchange="toggleCheck('${q.id}', '${escapedOpt}')"><span${contentStyle}>${displayOpt}</span></label>`;
  });
  html += '</div>';
+ }
  } else if (q.type === 'text') {
  const placeholder = q.placeholder || 'Type here...';
  html += `<textarea class="text-input" id="text-${q.id}" placeholder="${placeholder}" onchange="state.answers['${q.id}'] = this.value; saveSession();" onblur="checkForClarification('${q.id}')">${state.answers[q.id] || ''}</textarea>`;
@@ -4177,7 +4199,7 @@
  { id: 'dealbreaker',       label: 'Their gaming dealbreaker' },
  { id: 'ideal',             label: 'Their ideal gaming friend' },
  { id: 'story-best',        label: 'Their best gaming session ever' },
- { id: 'story-worst',       label: 'Their worst experience with other players' },
+
  { id: 'story-ideal',       label: 'Their ideal gaming group' },
  { id: 'anything-warmer',   label: 'Anything else they shared (warmer tier)' },
  { id: 'anything-warmest',  label: 'Anything else they shared (warmest tier)' },
@@ -5610,7 +5632,7 @@ Respond with JSON only, no other text:
  gamingPersonality.some(q => state.answers[q.id]);
  const hasWarmer = warmerContent.some(q => state.answers[q.id] && !q.skipIf);
  const hasWarmest = warmestContent.some(q => state.answers[q.id] && !q.skipIf);
- const hasFYP = state.answers['story-best'] || state.answers['story-worst'] || state.answers['story-ideal'];
+ const hasFYP = state.answers['story-best'] || state.answers['story-ideal'];
  
  if (hasFYP) {
  return { name: 'Find Your People', description: 'Full profile with story prompts - best matching!' };
