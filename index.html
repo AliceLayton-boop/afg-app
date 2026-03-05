@@ -3129,6 +3129,7 @@
  }
 
  let _autoAdvancingQid = null;
+ let _nextQuestionLocked = false;
 
  function selectAnswer(qid, value) {
  // Guard: ignore if we already scheduled an advance for this exact question
@@ -3205,6 +3206,10 @@
  }
 
  function nextQuestion() {
+ // Guard against double-fire on Android (touch events can trigger multiple rapid calls)
+ if (_nextQuestionLocked) return;
+ _nextQuestionLocked = true;
+ setTimeout(() => { _nextQuestionLocked = false; }, 600);
  // Save any text input before moving
  const currentQ = state.currentQuestions[state.questionIndex];
 
@@ -3220,6 +3225,7 @@
        errEl.textContent = 'Pick at least one — we promise there\'s no wrong answer.';
        document.getElementById('question-content').appendChild(errEl);
      }
+     _nextQuestionLocked = false;
      return;
    }
  }
@@ -3246,6 +3252,7 @@
    }
    pendingClarification = null;
    setTimeout(() => nextQuestion(), 1800);
+   _nextQuestionLocked = false;
    return;
   }
   pendingClarification = null;
