@@ -1600,7 +1600,11 @@
  <div class="privacy-box" style="margin-top:25px; padding:20px; background:rgba(155, 191, 107, 0.1); border-color:#65381A;">
  <p class="description" style="margin-bottom:6px; color:#DBAD4B; font-size:1.1em;">Where can we notify you of matches?</p>
  <p class="description" style="margin-bottom:14px; font-size:0.95em; color:#DEC089;">This is how we notify you of matches when you're away from the app.</p>
- <input type="email" class="text-input" style="min-height:auto; margin-bottom:15px;" id="user-email" placeholder="Your email address...">
+ <input type="email" class="text-input" style="min-height:auto; margin-bottom:10px;" id="user-email" placeholder="Your email address..." onkeydown="if(event.key==='Enter'){event.preventDefault();confirmEmail();}">
+ <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+  <button type="button" onclick="confirmEmail()" style="padding:8px 20px; background:#8C4427; color:#DEC089; border:none; border-radius:20px; font-family:'EB Garamond',Georgia,serif; font-size:0.95em; cursor:pointer;">Confirm</button>
+  <span id="email-confirm-msg" style="font-size:0.9em; color:#9BBF6B; display:none;">✓ Got it</span>
+ </div>
  
  <label style="display:flex; align-items:center; gap:12px; cursor:pointer; margin-bottom:15px;">
  <input type="checkbox" id="allow-contact" checked style="width:20px; height:20px; accent-color:#DBAD4B;" onclick="toggleContactPreference(event)">
@@ -5683,6 +5687,24 @@ Respond with JSON only, no other text:
  }
 
  // Called when entering the callsign screen for warmer+ tiers
+ function confirmEmail() {
+  const emailInput = document.getElementById('user-email');
+  const msg = document.getElementById('email-confirm-msg');
+  const val = emailInput.value.trim();
+  if (!val || !val.includes('@') || !val.includes('.')) {
+    emailInput.style.borderColor = '#D57553';
+    emailInput.focus();
+    return;
+  }
+  emailInput.style.borderColor = '#9BBF6B';
+  emailInput.blur();
+  if (msg) msg.style.display = 'inline';
+  const tzBox = document.getElementById('timezone-check');
+  if (tzBox && tzBox.style.display !== 'none') {
+    setTimeout(() => tzBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
+  }
+ }
+
  function initTimezoneCheck() {
   if (state.tier === 'warm') return; // Not needed for event-only tier
 
