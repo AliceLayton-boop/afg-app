@@ -2488,7 +2488,7 @@
  options: ['Prefer women-only spaces', 'Prefer men-only spaces', 'Want trans-affirming spaces', 'No preference'],
  skipIf: (answers) => !answers['gateway-topics'] || !answers['gateway-topics'].includes('Gender preferences')
  },
- { id: 'anything-warmer', text: "Anything else we should know?", type: 'text-voice', placeholder: 'Optional - share what feels right' }
+ { id: 'anything-warmer', text: "Anything else we should know?", type: 'text-voice', placeholder: 'Optional - share what feels right', skipIf: () => ['warmest','findyourpeople'].includes(state.tier) }
  ];
  
  // Warmest Content - Group composition, deeper preferences
