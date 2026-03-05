@@ -5689,6 +5689,7 @@ Respond with JSON only, no other text:
   const container = document.getElementById('timezone-check');
   if (!container) return;
   container.style.display = 'block';
+  setTimeout(() => container.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
 
   document.getElementById('tz-detected-label').textContent = label;
   document.getElementById('tz-detected-value').value = detected;
