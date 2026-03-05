@@ -3038,15 +3038,13 @@
    }
  }
  
- let html = `<h2 style="text-align:left; font-size:1.3em;">${q.text}</h2>`;
+ let html = `<h2 style="text-align:left; font-size:1.3em; margin-bottom:10px;">${q.text}</h2>`;
  
  // Add subtext if present - special styling for gateway questions
  if (q.subtext) {
  if (q.isGateway) {
- // Gateway privacy disclaimer gets prominent styling
- html += `<div class="privacy-banner" style="text-align:left; margin-bottom:20px;">
- <span class="lock-icon"></span> ${q.subtext}
- </div>`;
+ // Gateway privacy disclaimer - compact to fit on screen
+ html += `<div class="privacy-banner" style="text-align:left; margin-bottom:10px; padding:8px 11px; font-size:0.88em; line-height:1.4;"><span class="lock-icon"></span> ${q.subtext}</div>`;
  } else {
  html += `<p class="description" style="text-align:left; margin-bottom:15px; color:#D57553;">${q.subtext}</p>`;
  }
