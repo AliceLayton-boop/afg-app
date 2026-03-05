@@ -698,9 +698,9 @@
  background: rgba(101, 56, 26, 0.4);
  border: 1px solid #65381A;
  border-radius: 10px;
- padding: 12px 15px;
- margin-bottom: 20px;
- font-size: 1.15em;
+ padding: 9px 12px;
+ margin-bottom: 12px;
+ font-size: 0.95em;
  text-align: center;
  }
  
@@ -2710,12 +2710,18 @@
  
  function hasPoolAnswers(poolIds, answers) {
  // Check if we have answers for at least 50% of the pool
- const answered = poolIds.filter(id => answers[id] !== undefined && answers[id] !== '').length;
+ const answered = poolIds.filter(id => {
+   const a = answers[id];
+   return a !== undefined && a !== '' && !(Array.isArray(a) && a.length === 0);
+ }).length;
  return answered >= poolIds.length * 0.5;
  }
  
  function getMissingQuestions(pool, answers) {
- return pool.filter(q => answers[q.id] === undefined || answers[q.id] === '');
+ return pool.filter(q => {
+   const a = answers[q.id];
+   return a === undefined || a === '' || (Array.isArray(a) && a.length === 0);
+ });
  }
  
  function buildQuestionList(tier, isOnlineFlow) {
@@ -3073,12 +3079,13 @@
  });
  html += '</div>';
  } else {
- html += (q.id === 'game-types') ? '<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">' : '<div class="options-grid">';
+ const isCompactCheck = q.options.length >= 5;
+ html += (q.id === 'game-types') ? '<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">' : (isCompactCheck ? '<div class="options-grid" style="gap:7px; margin-bottom:12px;">' : '<div class="options-grid">');
  q.options.forEach(opt => {
  const checked = (state.answers[q.id] || []).includes(opt) ? 'checked' : '';
  const escapedOpt = opt.replace(/'/g, "\\'");
  const displayOpt = (q.id === 'game-types') ? (opt.includes('(') ? opt.replace(/^([^(]+)\((.+)\)$/, '<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089; display:block; line-height:1.2;">$1</span><span style="color:#D57553; font-size:0.95em; display:block; margin-top:1px;">$2</span>') : `<span style="font-family:Aunt Mildred MVB SC,serif; text-transform:uppercase; letter-spacing:0.03em; font-size:1em; color:#DEC089; display:block;">$1</span>`) : opt;
- const itemStyle = q.id === 'game-types' ? ' style="align-items:flex-start; flex-direction:row; gap:8px; padding:8px 12px;"' : '';
+ const itemStyle = q.id === 'game-types' ? ' style="align-items:flex-start; flex-direction:row; gap:8px; padding:8px 12px;"' : (isCompactCheck ? ' style="padding:9px 15px;"' : '');
  const contentStyle = q.id === 'game-types' ? ' style="display:flex; flex-direction:column;"' : '';
  html += `<label class="option-item ${checked ? 'selected' : ''}"${itemStyle}><input type="checkbox" name="${q.id}" value="${opt}" ${checked} onchange="toggleCheck('${q.id}', '${escapedOpt}')"><span${contentStyle}>${displayOpt}</span></label>`;
  });
