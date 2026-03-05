@@ -2488,7 +2488,6 @@
  options: ['Prefer women-only spaces', 'Prefer men-only spaces', 'Want trans-affirming spaces', 'No preference'],
  skipIf: (answers) => !answers['gateway-topics'] || !answers['gateway-topics'].includes('Gender preferences')
  },
- { id: 'anything-warm', text: "Anything else that would help us match you today?", type: 'text-voice', placeholder: 'Optional - share what feels right' },
  { id: 'anything-warmer', text: "Anything else we should know?", type: 'text-voice', placeholder: 'Optional - share what feels right' }
  ];
  
@@ -2931,7 +2930,6 @@
    'music':         "Music taste is a surprisingly strong signal of who you'll click with",
    'gamer-describe':   "This tells us more about you than almost any other question",
    'great-experience': "Helps us understand what matters most",
-   'anything-warm':    "Sometimes the most important thing doesn't fit a checkbox",
    // Warmer Content
    'conflict':    "How people handle conflict is one of the fastest ways to ruin a game group",
    'winning':     "Mismatched expectations here is where game nights go sideways",
@@ -3955,7 +3953,7 @@
  let pendingClarification = null;
 
  // Fields that are optional — skip clarification for these
- const OPTIONAL_FIELDS = new Set(['anything-warm', 'anything-warmer', 'anything-warmest']);
+ const OPTIONAL_FIELDS = new Set(['anything-warmer', 'anything-warmest']);
 
  // Called on textarea blur for text-voice questions
  async function checkForClarification(qid) {
@@ -4154,7 +4152,6 @@
  { id: 'story-best',        label: 'Their best gaming session ever' },
  { id: 'story-worst',       label: 'Their worst experience with other players' },
  { id: 'story-ideal',       label: 'Their ideal gaming group' },
- { id: 'anything-warm',     label: 'Anything else they shared (warm tier)' },
  { id: 'anything-warmer',   label: 'Anything else they shared (warmer tier)' },
  { id: 'anything-warmest',  label: 'Anything else they shared (warmest tier)' },
  ];
