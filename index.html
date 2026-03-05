@@ -1615,7 +1615,7 @@
  </div>
  
  <!-- Timezone check — shown only for warmer+ tiers, hidden by default -->
- <div id="timezone-check" style="display:none; margin-top:20px; padding:18px 20px; background:rgba(101,56,26,0.25); border:2px solid #65381A; border-radius:12px;">
+ <div id="timezone-check" style="display:none; margin-top:20px; padding:18px 20px; background:rgba(45,74,62,0.85); border:2px solid #DBAD4B; border-radius:12px;">
   <p style="color:#DBAD4B; font-size:1em; margin-bottom:12px;">One more thing — what time zone do you live in?</p>
   <p style="color:#DEC089; font-size:0.95em; margin-bottom:14px;">We use this to match you with people whose schedules align with yours.</p>
   <input type="hidden" id="tz-detected-value">
@@ -1694,7 +1694,7 @@
  <p style="font-family:'MVB Aunt Mildred Bd LF', Georgia, serif; font-size:1.25em; color:#DBAD4B; margin-bottom:10px;">At the event:</p>
  <p style="margin-bottom:18px; font-size:1.1em; line-height:1.5;">Leave this tab open in the background on your phone — we'll notify you here and by email when your matches are ready.</p>
  <p style="font-family:'MVB Aunt Mildred Bd LF', Georgia, serif; font-size:1.25em; color:#DBAD4B; margin-bottom:10px;">Away from the event:</p>
- <p style="font-size:1.1em;">We'll email you at <span id="result-email" style="color:#9BBF6B;"></span></p>
+ <p id="result-email-row" style="font-size:1.1em; display:none;">We'll email you at <span id="result-email" style="color:#9BBF6B;"></span></p>
  </div>
  
  <button type="button" class="btn btn-primary" onclick="viewMatches()" style="margin-bottom: 15px;">See Your Matches &rarr;</button>
@@ -3589,6 +3589,10 @@
  document.getElementById('result-animal').innerHTML = state.animal.svg || '';
  document.getElementById('result-callsign').textContent = callsign;
  document.getElementById('result-email').textContent = state.email;
+ if (state.email) {
+   const row = document.getElementById('result-email-row');
+   if (row) row.style.display = 'block';
+ }
 
  // Scroll timezone box into view now that email is confirmed
  const tzBox = document.getElementById('timezone-check');
