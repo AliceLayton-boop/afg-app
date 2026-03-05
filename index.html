@@ -1591,13 +1591,13 @@
   <p class="description">Your callsign is your unique identity in A Friendly Game - how other gamers will find and recognize you.</p>
  
  <input type="text" class="text-input" style="min-height:auto;" id="user-name" placeholder="Don't use your full name">
- 
- <p class="description" style="margin-top:20px;">Pick your animal:</p>
- <div id="animal-options" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"></div>
- 
- <p class="description" style="margin-top:10px; color:#D57553;">Your callsign is how matches will know you — pick something you love!</p>
- 
- <div class="privacy-box" style="margin-top:25px; padding:20px; background:rgba(155, 191, 107, 0.1); border-color:#65381A;">
+
+ <p class="description" style="margin-top:16px; color:#D57553;">Your callsign is how matches will know you — pick something you love!</p>
+ <div id="animal-options" style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px;"></div>
+
+ <button type="button" class="btn btn-primary" onclick="completeRegistration()" style="width:100%; margin-top:16px; margin-bottom:4px;">Create My Callsign &rarr;</button>
+
+ <div class="privacy-box" style="margin-top:20px; padding:20px; background:rgba(155, 191, 107, 0.1); border-color:#65381A;">
  <p class="description" style="margin-bottom:6px; color:#DBAD4B; font-size:1.1em;">Where can we notify you of matches?</p>
  <p class="description" style="margin-bottom:14px; font-size:0.95em; color:#DEC089;">This is how we notify you of matches when you're away from the app.</p>
  <input type="email" class="text-input" style="min-height:auto; margin-bottom:10px;" id="user-email" placeholder="Your email address..." onkeydown="if(event.key==='Enter'){event.preventDefault();confirmEmail();}">
@@ -1663,8 +1663,7 @@
  </div>
 
  <div class="button-row">
- <button type="button" class="btn btn-secondary" onclick="prevQuestion()">&larr; Back</button>
- <button type="button" class="btn btn-primary" onclick="completeRegistration()">Create My Callsign &rarr;</button>
+ <button type="button" class="btn btn-secondary" onclick="goBack()">&larr; Back</button>
  </div>
  </div>
  <div class="privacy-footer">
