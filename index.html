@@ -3034,10 +3034,12 @@
    }
  }
  
- let html = `<h2 style="text-align:left; font-size:1.3em; margin-bottom:10px;">${q.text}</h2>`;
+ let html = q.id === 'game-types'
+  ? `<h2 style="text-align:left; font-size:1.3em; margin-bottom:8px;">${q.text} <span style="font-family:'EB Garamond',Georgia,serif; font-size:0.6em; color:#D57553; text-transform:none; letter-spacing:0; font-weight:normal; font-style:normal; white-space:nowrap;">— choose all that apply</span></h2>`
+  : `<h2 style="text-align:left; font-size:1.3em; margin-bottom:10px;">${q.text}</h2>`;
  
  // Add subtext if present - special styling for gateway questions
- if (q.subtext) {
+ if (q.subtext && q.id !== 'game-types') {
  if (q.isGateway) {
  // Gateway privacy disclaimer - compact to fit on screen
  html += `<div class="privacy-banner" style="text-align:left; margin-bottom:10px; padding:8px 11px; font-size:0.88em; line-height:1.4;"><span class="lock-icon"></span> ${q.subtext}</div>`;
@@ -3074,7 +3076,7 @@
  html += '</div>';
  } else {
  const isCompactCheck = q.options.length >= 5;
- html += (q.id === 'game-types') ? '<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">' : (isCompactCheck ? '<div class="options-grid" style="gap:7px; margin-bottom:12px;">' : '<div class="options-grid">');
+ html += (q.id === 'game-types') ? '<div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; align-items:start;">' : (isCompactCheck ? '<div class="options-grid" style="gap:7px; margin-bottom:12px;">' : '<div class="options-grid">');
  q.options.forEach(opt => {
  const checked = (state.answers[q.id] || []).includes(opt) ? 'checked' : '';
  const escapedOpt = opt.replace(/'/g, "\\'");
