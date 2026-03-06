@@ -360,8 +360,8 @@
  .tier-options {
  display: flex;
  flex-direction: column;
- gap: 15px;
- margin: 20px 0;
+ gap: 10px;
+ margin: 12px 0;
  }
  
  /* Scroll indicator fade on tier selection */
@@ -387,7 +387,7 @@
  .tier-card {
  border: 2px solid rgba(155, 191, 107, 0.6);
  border-radius: 12px;
- padding: 20px;
+ padding: 14px 16px;
  cursor: pointer;
  transition: all 0.3s ease;
  }
@@ -431,13 +431,13 @@
  
  .tier-time {
  color: #D57553;
- font-size: 1.2em;
+ font-size: 1.05em;
  }
 
  .tier-card-desc {
   color: #DEC089;
-  font-size: 1.05em;
-  margin-bottom: 6px;
+  font-size: 0.95em;
+  margin-bottom: 4px;
   line-height: 1.4;
  }
 
@@ -445,7 +445,7 @@
   color: #DBAD4B;
   font-family: 'Aunt Mildred MVB SC', Georgia, serif;
   font-size: 0.85em;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   opacity: 0.75;
  }
 
@@ -464,20 +464,20 @@
  background: rgba(219, 173, 75, 0.15);
  border: 1px solid #DBAD4B;
  border-radius: 10px;
- padding: 15px;
- margin-bottom: 20px;
+ padding: 10px 15px;
+ margin-bottom: 12px;
  text-align: center;
  }
  
  .event-name {
  color: #DBAD4B;
- font-size: 1.2em;
+ font-size: 1.1em;
  font-weight: bold;
  }
  
  .event-details {
  color: #DEC089;
- font-size: 1.15em;
+ font-size: 0.95em;
  }
  
  .option-btn {
@@ -1417,9 +1417,7 @@
  <div class="event-details">Find compatible players at the event</div>
  </div>
  
- <h2 style="color: #D57553; font-size: 1.8em;">Quick Match</h2>
- <p class="description">Answer a few questions and we'll help you find congenial players.</p>
- <p class="description" style="font-size:0.9em; color:#D57553; margin-top:-10px; margin-bottom:18px;">Each level adds personality depth for better matches.</p>
+ <p class="description" style="font-size:0.9em; color:#D57553; margin-bottom:4px;">Each level adds personality depth for stronger matches.</p>
  
  <div class="tier-options-wrap"><div class="tier-options">
   <div class="tier-card warm" onclick="selectCard(this).then(() => startTier('warm', false))">
