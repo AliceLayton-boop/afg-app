@@ -2388,7 +2388,7 @@
  { id: 'length', text: "How long do you want to play?", type: 'radio', options: ['Under 30 min', '30-60 min', '1-2 hours', 'Epic all-day'] },
  { id: 'players', text: "Group size preference?", type: 'radio', options: ['2 players', '3-4 players', '5+ players', 'Any size'] },
  { id: 'style', text: "Your play style?", type: 'radio', options: ['Competitive', 'Cooperative', 'Social/party', 'Story-driven / immersive', 'It depends on the game'] },
- { id: 'game-types', text: "What types of games do you enjoy?", type: 'check', subtext: 'Choose all that apply', options: ['Strategy (Catan · Agricola)', 'Party & Trivia (Codenames · Wavelength)', 'RPGs & Dungeon Crawlers (D&D · Gloomhaven)', 'Engine Builders (Dominion · Wingspan)', 'Competitive Card Games (Magic · Pokemon)', 'Social Deduction (Werewolf · Coup)', 'War & Area Control (Risk · Root)', 'Wargames (Warhammer · Bolt Action)', 'Cooperative (Pandemic · Spirit Island)', 'Dexterity (Crokinole · Klask)', 'Legacy & Campaign (Pandemic Legacy · Gloomhaven)', 'Abstract & Puzzle (Azul · Chess)'] },
+ { id: 'game-types', text: "What types of games do you enjoy?", type: 'check', subtext: 'Choose all that apply', options: ['Strategy (Catan · Agricola)', 'Party & Trivia (Codenames · Wavelength)', 'Cooperative (Pandemic · Spirit Island)', 'Dexterity (Crokinole · Klask)', 'Social Deduction (Werewolf · Coup)', 'Wargames (Warhammer · Bolt Action)', 'Engine Builders (Dominion · Wingspan)', 'Abstract & Puzzle (Azul · Chess)', 'RPGs & Dungeon Crawlers (D&D · Gloomhaven)', 'Competitive Card Games (Magic · Pokemon)', 'War & Area Control (Risk · Root)', 'Legacy & Campaign (Pandemic Legacy · Gloomhaven)'] },
  ];
  
  // Gaming Personality - Both flows, persistent
@@ -3034,12 +3034,10 @@
    }
  }
  
- let html = q.id === 'game-types'
-  ? `<h2 style="text-align:left; font-size:1.3em; margin-bottom:8px;">${q.text} <span style="font-family:'EB Garamond',Georgia,serif; font-size:0.6em; color:#D57553; text-transform:none; letter-spacing:0; font-weight:normal; font-style:normal; white-space:nowrap;">— choose all that apply</span></h2>`
-  : `<h2 style="text-align:left; font-size:1.3em; margin-bottom:10px;">${q.text}</h2>`;
+ let html = `<h2 style="text-align:left; font-size:1.3em; margin-bottom:${q.id === 'game-types' ? '4px' : '10px'};">${q.text}</h2>`;
  
  // Add subtext if present - special styling for gateway questions
- if (q.subtext && q.id !== 'game-types') {
+ if (q.subtext) {
  if (q.isGateway) {
  // Gateway privacy disclaimer - compact to fit on screen
  html += `<div class="privacy-banner" style="text-align:left; margin-bottom:10px; padding:8px 11px; font-size:0.88em; line-height:1.4;"><span class="lock-icon"></span> ${q.subtext}</div>`;
