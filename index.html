@@ -125,8 +125,8 @@
  }
 
  .card-nav-logo img {
-  width: 90px;
-  height: 90px;
+  width: 72px;
+  height: 72px;
   object-fit: cover;
   border-radius: 12px;
   border: 3px solid #9D5F29;
@@ -1407,17 +1407,15 @@
  <!-- ========== EVENT: SELECT TIER ========== -->
  <div class="section" id="section-event-tiers">
  <div class="card">
- <div class="card-nav">
+ <div class="card-nav" style="margin-bottom:10px; padding-bottom:10px;">
   <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
-  <div class="card-nav-title">Choose your tier</div>
+  <div>
+    <div id="selected-event-name" style="font-family:'Aunt Mildred MVB SC',Georgia,serif; font-size:1.3em; color:#DBAD4B; line-height:1.2;">Geekway to the West</div>
+    <div style="font-size:0.9em; color:#DEC089; margin-top:2px;">Find compatible players at the event</div>
+  </div>
 </div>
 
- <div class="event-banner" id="event-banner">
- <div class="event-name" id="selected-event-name">Geekway to the West</div>
- <div class="event-details">Find compatible players at the event</div>
- </div>
- 
- <p class="description" style="font-size:0.9em; color:#D57553; margin-bottom:4px;">Each level adds personality depth for stronger matches.</p>
+ <p style="font-size:1.1em; color:#D57553; margin-bottom:10px; text-align:left; font-style:italic;">Each level adds personality depth for stronger matches.</p>
  
  <div class="tier-options-wrap"><div class="tier-options">
   <div class="tier-card warm" onclick="selectCard(this).then(() => startTier('warm', false))">
