@@ -92,7 +92,7 @@
  }
  
  .logo img {
- max-width: 160px;
+ max-width: 130px;
  height: auto;
  border-radius: 12px;
  border: 3px solid #9D5F29;
@@ -183,7 +183,7 @@
  color: #F5E6C8;
  font-size: 1.4em;
  text-align: center;
- margin-bottom: 20px;
+ margin-bottom: 5px;
  letter-spacing: 0.05em;
  }
  
@@ -260,13 +260,13 @@
  
  .tagline-block {
  text-align: center;
- margin-bottom: 20px;
+ margin-bottom: 5px;
  }
  
  .tagline-line {
  font-family: 'Aunt Mildred MVB SC', Georgia, serif;
- margin-bottom: 8px;
- font-size: 1.2em;
+ margin-bottom: 3px;
+ font-size: 1.05em;
  }
  
  .tagline-line.highlight {
@@ -319,7 +319,7 @@
  .path-btn {
  border: 2px solid rgba(155, 191, 107, 0.6);
  border-radius: 15px;
- padding: 20px;
+ padding: 12px;
  cursor: pointer;
  text-align: left;
  transition: all 0.3s ease;
@@ -348,13 +348,13 @@
  .path-btn h3 {
  font-family: 'Aunt Mildred MVB SC', Georgia, serif;
  color: #DBAD4B;
- margin-bottom: 5px;
- font-size: 1.6em;
+ margin-bottom: 4px;
+ font-size: 1.15em;
  }
  
  .path-btn p {
  color: #DEC089;
- font-size: 1.3em;
+ font-size: 0.9em;
  }
  
  .tier-options {
@@ -1285,20 +1285,18 @@
  <!-- ========== LANDING PAGE ========== -->
  <div class="section active" id="section-landing">
  <div class="card">
- <div class="logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+ <div class="logo" style="margin-top:-20px;"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
  
  <div class="tagline-block">
  <p class="tagline-line">They say it takes 90 hours to make a friend.</p>
- <p class="tagline-line highlight">Gamers already put in the hours!</p>
- <p class="tagline-line highlight">Let's make those hours more rewarding.</p>
+ <p class="tagline-line highlight" style="font-size:0.95em;">Gamers already put in the hours!</p>
+ <p class="tagline-line highlight" style="font-size:0.95em;">Let's make those hours more rewarding.</p>
  <p class="tagline-line italic orange">Let's help our people find their people.</p>
  </div>
  
- <div class="divider"><span></span></div>
+ <p class="description" style="margin-top:2px; margin-bottom:5px; font-size:0.9em;">Answer a few questions. We'll match you with your most compatible players.</p>
  
- <p class="description">Answer a few questions. We'll match you with your most compatible players.</p>
- 
- <div class="path-options">
+ <div class="path-options" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:5px 0;">
  <button type="button" class="path-btn light-green" onclick="checkAgeGate('section-event-select')">
  <h3>I'm at an event</h3>
  <p>Quick match for gaming today</p>
