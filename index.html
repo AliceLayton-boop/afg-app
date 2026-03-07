@@ -2958,10 +2958,7 @@
  if (currentAudio) {
    currentAudio.volume = 0;
    currentAudio = null;
-   // Do NOT suppress mediaSession when navigating TO section-callsign — it would kill animal sounds on that screen
-   if (sectionId !== 'section-callsign') {
-     try { if ('mediaSession' in navigator) { navigator.mediaSession.metadata = null; navigator.mediaSession.playbackState = 'none'; } } catch(e) {}
-   }
+   try { if ('mediaSession' in navigator) { navigator.mediaSession.metadata = null; navigator.mediaSession.playbackState = 'none'; } } catch(e) {}
  }
  const currentSection = document.querySelector('.section.active');
  if (currentSection) {
@@ -3479,33 +3476,12 @@
  if (textarea) {
  state.answers[currentQ.id] = textarea.value;
  saveSession();
- // Fire clarification check — async. Sets clarificationInFlight = true synchronously,
- // then resolves asynchronously. If in-flight, defer advancement until the API returns.
+ // Fire clarification check — called here because onblur alone is unreliable on mobile when tapping Next
+ // Safe because checkForClarification now checks question index and discards if user has moved on
  checkForClarification(currentQ.id);
- if (clarificationInFlight) {
-  // API call is in progress — wait for it, then decide whether to advance
-  const waitForClarification = () => {
-   if (clarificationInFlight) {
-    setTimeout(waitForClarification, 100); // Poll every 100ms
-    return;
-   }
-   // API returned — check if clarification is needed
-   if (pendingClarification && pendingClarification.qid === currentQ.id) {
-    // Clarification box is now visible — user must answer it before advancing
-    // nextQuestion will be called again after they answer (or via the warning auto-advance)
-    return;
-   }
-   // No clarification needed — advance now
-   _nextQuestionLocked = false;
-   nextQuestion();
-  };
-  setTimeout(waitForClarification, 100);
-  _nextQuestionLocked = false;
-  return; // Defer — waitForClarification will call nextQuestion when ready
- }
  }
 
- // If clarification was triggered and unanswered (from a prior onblur check), show warning
+ // If clarification was triggered and unanswered, show soft warning then auto-advance
  if (pendingClarification && pendingClarification.qid === currentQ.id) {
   const hasRadio = document.querySelector(`input[name="clarify-${pendingClarification.qid}"]:checked`);
   const freeText = document.getElementById('clarify-text-' + pendingClarification.qid);
@@ -4296,7 +4272,6 @@
  // Tracks pending clarification for the current freestyle field
  // { qid, followUp, optionA, optionB } or null
  let pendingClarification = null;
-let clarificationInFlight = false; // Set synchronously before API call; cleared when done
 
  // Fields that are optional — skip clarification for these
  const OPTIONAL_FIELDS = new Set(['anything-warmer', 'anything-warmest']);
@@ -4325,7 +4300,6 @@ let clarificationInFlight = false; // Set synchronously before API call; cleared
 
   // Clear any previous pending clarification
   pendingClarification = null;
-  clarificationInFlight = true; // Signal to nextQuestion that a check is in progress
 
   // Show loading indicator while API call is in flight
   const loadingId = 'clarify-loading-' + qid;
@@ -4363,7 +4337,6 @@ let clarificationInFlight = false; // Set synchronously before API call; cleared
 
    if (!response.ok) {
     afgLog('clarify: HTTP error ' + response.status, '#f00');
-    clarificationInFlight = false;
     return;
    }
 
@@ -4373,35 +4346,29 @@ let clarificationInFlight = false; // Set synchronously before API call; cleared
    // Only show if user hasn't moved to a different question while waiting
    if (state.questionIndex !== questionIndexAtCall) {
     afgLog('clarify: question changed while waiting, discarding', '#888');
-    clarificationInFlight = false;
     return;
    }
    // Only show if textarea still has same answer (user didn't change it while waiting)
    const currentAnswer = (document.getElementById('text-' + qid) || {}).value;
    if (currentAnswer && currentAnswer.trim() !== answer) {
     afgLog('clarify: answer changed while waiting, discarding', '#888');
-    clarificationInFlight = false;
     return;
    }
 
    if (result.clear === false && result.followUp && result.optionA && result.optionB) {
     afgLog('clarify: showing follow-up box', '#0ff');
     pendingClarification = { qid, ...result };
-    clarificationInFlight = false; // Done — clarify box now visible
     renderClarifyBox(qid, result, answer);
    } else if (result.clear === true && result.interpretation) {
     afgLog('clarify: stored interpretation: ' + result.interpretation.substring(0,40), '#0f0');
     // Store the interpretation alongside the raw answer for matching
     state.answers[qid + '_interpretation'] = result.interpretation;
     saveSession();
-    clarificationInFlight = false; // Done — answer was clear
    } else {
     afgLog('clarify: clear=true, no interpretation (answer was clear enough)', '#888');
-    clarificationInFlight = false; // Done — answer was clear
    }
   } catch (err) {
    // Fail silently — never block the user
-   clarificationInFlight = false;
    const ld = document.getElementById(loadingId);
    if (ld) ld.remove();
    afgLog('clarify: exception: ' + err.message, '#f00');
