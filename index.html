@@ -2517,6 +2517,9 @@
  </div>
 
  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+ // afgLog stub — real definition loads later with debug panel; this prevents ReferenceError crashes
+ function afgLog() {}
+
  // Global error handler to catch any JavaScript errors
  window.onerror = function(msg, url, lineNo, columnNo, error) {
  console.error('JS Error:', msg, 'at line', lineNo, 'col', columnNo);
@@ -3331,11 +3334,11 @@
  }
  } else if (q.type === 'text') {
  const placeholder = q.placeholder || 'Type here...';
- html += `<textarea class="text-input" id="text-${q.id}" placeholder="${placeholder}" onchange="state.answers['${q.id}'] = this.value; saveSession();" onblur="checkForClarification('${q.id}')">${state.answers[q.id] || ''}</textarea>`;
+ html += `<textarea class="text-input" id="text-${q.id}" placeholder="${placeholder}" onchange="state.answers['${q.id}'] = this.value; saveSession();" oninput="state.answers['${q.id}'] = this.value; clearTimeout(clarifyDebounceTimer); clarifyDebounceTimer = setTimeout(() => checkForClarification('${q.id}'), 1500);" onblur="checkForClarification('${q.id}')">${state.answers[q.id] || ''}</textarea>`;
  } else if (q.type === 'text-voice') {
  const placeholder = q.placeholder || 'Type here, or tap the mic to speak...';
  html += `
- <textarea class="text-input" id="text-${q.id}" placeholder="${placeholder}" onchange="state.answers['${q.id}'] = this.value; saveSession();" onblur="checkForClarification('${q.id}')">${state.answers[q.id] || ''}</textarea>
+ <textarea class="text-input" id="text-${q.id}" placeholder="${placeholder}" onchange="state.answers['${q.id}'] = this.value; saveSession();" oninput="state.answers['${q.id}'] = this.value; clearTimeout(clarifyDebounceTimer); clarifyDebounceTimer = setTimeout(() => checkForClarification('${q.id}'), 1500);" onblur="checkForClarification('${q.id}')">${state.answers[q.id] || ''}</textarea>
  <div class="input-controls">
  <button type="button" class="voice-btn" id="voice-btn-${q.id}" onclick="toggleVoiceInput('${q.id}')">
  <svg class="mic-icon" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
@@ -4271,6 +4274,7 @@
  // Tracks pending clarification for the current freestyle field
  // { qid, followUp, optionA, optionB } or null
  let pendingClarification = null;
+ let clarifyDebounceTimer = null;
 
  // Fields that are optional — skip clarification for these
  const OPTIONAL_FIELDS = new Set(['anything-warmer', 'anything-warmest']);
