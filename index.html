@@ -3686,9 +3686,9 @@
  function renderAnimalOptions(containerId) {
  const container = document.getElementById(containerId);
  container.innerHTML = animals.map(a => 
- `<label class="option-item" onclick="selectAnimal('${a.name}', '${containerId}')" data-animal="${a.name}">
+ `<button type="button" class="option-item" onclick="selectAnimal('${a.name}', '${containerId}')" data-animal="${a.name}" style="width:100%; text-align:left; background:rgba(101,56,26,0.3); border:2px solid #65381A; border-radius:10px; cursor:pointer; display:flex; align-items:center; gap:12px; padding:12px 15px; font-family:'EB Garamond',Georgia,serif; font-size:1em; color:#DEC089;">
  <span class="animal-icon">${a.svg}</span> ${a.name}
- </label>`
+ </button>`
  ).join('');
  }
 
