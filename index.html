@@ -1504,7 +1504,7 @@
   <!-- To field -->
   <div style="margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid rgba(101,56,26,0.4);">
    <span style="color:#D57553; font-size:0.85em; margin-right:8px;">To</span>
-   <span style="color:#DEC089; font-size:0.9em;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6a060b1f180b2a191e061a030f090f1944090507">[email&#160;protected]</a></span>
+   <span style="color:#DEC089; font-size:0.9em;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="620e031710032211160e120b070107114c010d0f">[email&#160;protected]</a></span>
   </div>
   <!-- Subject -->
   <div style="margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid rgba(101,56,26,0.4);">
@@ -3686,9 +3686,9 @@
  function renderAnimalOptions(containerId) {
  const container = document.getElementById(containerId);
  container.innerHTML = animals.map(a => 
- `<button type="button" class="option-item" onclick="selectAnimal('${a.name}', '${containerId}')" data-animal="${a.name}" style="width:100%; text-align:left; background:rgba(101,56,26,0.3); border:2px solid #65381A; border-radius:10px; cursor:pointer; display:flex; align-items:center; gap:12px; padding:12px 15px; font-family:'EB Garamond',Georgia,serif; font-size:1em; color:#DEC089;">
+ `<label class="option-item" onclick="selectAnimal('${a.name}', '${containerId}')" data-animal="${a.name}">
  <span class="animal-icon">${a.svg}</span> ${a.name}
- </button>`
+ </label>`
  ).join('');
  }
 
@@ -4974,22 +4974,13 @@ Respond with JSON only, no other text:
  }
  
  try {
- const { data: rawUsers, error } = await db
+ const { data: allUsers, error } = await db
  .from('responses')
- .select('*');
+ .select('*')
+ .not('name', 'ilike', state.name);
  
- if (error || !rawUsers) {
+ if (error || !allUsers) {
  console.error('Error fetching users:', error);
- return [];
- }
- 
- // Exclude self by matching both name and animal (the unique callsign)
- const allUsers = rawUsers.filter(u =>
- !(u.name && u.name.toLowerCase() === (state.name || '').toLowerCase() &&
-   u.animal && u.animal.toLowerCase() === (state.animal?.name || '').toLowerCase())
- );
- 
- if (!allUsers) {
  return [];
  }
  
@@ -5504,17 +5495,6 @@ Respond with JSON only, no other text:
 
  const existingText = ta ? ta.value : '';
  voiceTarget = { btnId, taId, qid, base: existingText, sessionBase: existingText };
- // Suppress media session before mic — SpeechRecognition can trigger Android media session
- try {
-     if ('mediaSession' in navigator) {
-         navigator.mediaSession.metadata = null;
-         navigator.mediaSession.playbackState = 'none';
-         navigator.mediaSession.setActionHandler('play', null);
-         navigator.mediaSession.setActionHandler('pause', null);
-         navigator.mediaSession.setActionHandler('stop', null);
-         afgLog('mic: mediaSession suppressed before start', '#888');
-     }
- } catch(e) { afgLog('mic: suppress failed: ' + e.message, '#f00'); }
  try {
      recognition.start();
      btn.classList.add('recording');
