@@ -2993,6 +2993,11 @@
  renderInterestsGrid();
  }
  
+ // Sync invite button state when showing venue admin
+ if (sectionId === 'section-venue-admin') {
+ setTimeout(updateInviteBtn, 50);
+ }
+ 
  // Pre-fill name and animal when showing callsign section
  if (sectionId === 'section-callsign') {
  if (state.name) {
