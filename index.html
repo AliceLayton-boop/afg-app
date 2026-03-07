@@ -334,6 +334,11 @@
  background: rgba(71, 101, 83, 0.5);
  }
  
+ .path-btn.mid-green {
+ background: rgba(125, 184, 145, 0.25);
+ border-color: rgba(125, 184, 145, 0.65);
+ }
+ 
  .path-btn:hover {
  border-color: #DBAD4B;
  transform: translateY(-2px);
@@ -1297,28 +1302,24 @@
  <p class="description" style="margin-top:2px; margin-bottom:15px; font-size:0.9em;">Answer a few questions. We'll match you with your most compatible players.</p>
  
  <div class="path-options" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:5px 0;">
- <button type="button" class="path-btn light-green" onclick="checkAgeGate('section-event-select')">
+ <button type="button" class="path-btn light-green" onclick="checkAgeGate('path:event')">
  <h3>I'm at an event</h3>
  <p>Quick match for gaming today</p>
  </button>
  
- <button type="button" class="path-btn dark-green" onclick="checkAgeGate('section-online-tiers')">
+ <button type="button" class="path-btn dark-green" onclick="checkAgeGate('path:online')">
  <h3>Looking for online players</h3>
  <p>Find lasting friendships through gaming</p>
  </button>
  </div>
- 
- <!-- Language selector -->
- <div style="text-align:center; margin-top:18px;">
-  <label style="color:#D57553; font-size:0.9em; display:block; margin-bottom:6px;">Language / Idioma / Langue</label>
-  <select id="language-select" class="text-input" style="min-height:auto; width:auto; padding:8px 14px; display:inline-block; cursor:pointer;">
-   <option value="en">English</option>
-  </select>
-  <p style="color:#DEC089; font-size:0.8em; opacity:0.6; margin-top:6px;">(more languages coming soon)</p>
+ <div style="margin-top:10px;">
+ <button type="button" class="path-btn mid-green" onclick="checkAgeGate('path:venue')" style="width:100%; text-align:center;">
+  <h3>At a game café</h3>
+  <p>Find compatible players at this location</p>
+ </button>
  </div>
 
  <div class="footer-links">
- <a href="#" onclick="showReturningUser(); return false;">Already registered? Find your matches</a>
  <p style="font-size:0.9em; color:#DEC089; margin-top:12px; line-height:1.4;">Your data is stored securely and never shared or sold.</p>
  </div>
  </div>
@@ -1359,6 +1360,11 @@
  <span class="hub-btn-title">Menu</span>
  </button>
  </div>
+ <div id="admin-btn-wrap" style="display:none; margin-top:10px;">
+ <button type="button" class="btn btn-primary" style="width:100%; background:rgba(101,56,26,0.7); border:2px solid #DBAD4B;" onclick="goToSection('section-venue-admin')">
+  &#9733; Admin
+ </button>
+ </div>
  </div>
  <div class="privacy-footer">
  <a href="#" onclick="showPrivacyDetails(); return false;">Privacy</a>
@@ -1367,6 +1373,160 @@
  <div style="margin-top:8px; font-size:0.8em; color:#DEC089; opacity:0.6;">&copy; 2025-2026 A Friendly Game. All rights reserved.</div>
  </div>
  </div>
+
+ <!-- ========== VENUE: SELECT VENUE ========== -->
+ <div class="section" id="section-venue-select">
+ <div class="card">
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div class="card-nav-title">Which venue?</div>
+ </div>
+ <p class="description" style="font-size:0.95em; margin-bottom:18px;">We'll match you with players checked in at the same venue.</p>
+ <div class="options-grid">
+  <button type="button" class="option-btn" onclick="selectVenue('pieces')">Pieces &middot; St. Louis MO</button>
+ </div>
+ <div style="text-align:center; margin-top:10px;">
+  <button type="button" class="option-btn" onclick="selectVenue('other')" style="background:rgba(101,56,26,0.15); border-color:rgba(101,56,26,0.5); color:#DEC089; font-size:0.9em; padding:10px 20px; width:auto;">+ Another venue</button>
+ </div>
+ <div id="other-venue-input" style="display:none; margin-top:12px;">
+  <input type="text" class="text-input" style="min-height:auto;" id="other-venue-name" placeholder="Venue name...">
+  <button type="button" class="btn btn-primary" style="margin-top:10px;" onclick="confirmOtherVenue()">Continue &rarr;</button>
+ </div>
+ <div class="button-row">
+  <button type="button" class="btn btn-secondary" onclick="goToSection('section-landing')">&larr; Back</button>
+ </div>
+ </div>
+ <div class="privacy-footer">
+ <a href="#" onclick="showPrivacyDetails(); return false;">Privacy</a>
+ <a href="#" onclick="showTerms(); return false;">Terms</a>
+ <a href="#" onclick="showDeleteInfo(); return false;">Delete My Data</a>
+ <div style="margin-top:8px; font-size:0.8em; color:#DEC089; opacity:0.6;">&copy; 2025-2026 A Friendly Game. All rights reserved.</div>
+ </div>
+ </div>
+
+ <!-- ========== VENUE ADMIN (Owner View) ========== -->
+ <div class="section" id="section-venue-admin">
+ <div class="card">
+ <div class="card-nav">
+  <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
+  <div>
+   <div style="font-family:'Aunt Mildred MVB SC',Georgia,serif; font-size:1.1em; color:#DBAD4B;">Pieces &middot; St. Louis</div>
+   <div style="font-size:0.85em; color:#DEC089; margin-top:2px;">Player Community</div>
+  </div>
+ </div>
+
+ <p style="color:#D57553; font-size:0.95em; margin-bottom:18px;">Your registered players, grouped by compatibility. Select players to compose an invite.</p>
+
+ <!-- GROUP 1 -->
+ <div style="margin-bottom:20px;">
+  <div style="color:#9BBF6B; font-size:0.85em; letter-spacing:0.05em; margin-bottom:8px; border-bottom:1px solid #65381A; padding-bottom:4px;">GROUP 1 &mdash; Strong match (85&ndash;91%)</div>
+  <label class="option-item" style="cursor:pointer;">
+   <input type="checkbox" class="venue-player-check" value="Marcus the Wolf|marcus.j@gmail.com" style="accent-color:#DBAD4B;"> <span style="color:#DEC089;">Marcus the Wolf &mdash; <span style="color:#9BBF6B;">91%</span></span>
+  </label>
+  <label class="option-item" style="cursor:pointer; margin-top:6px;">
+   <input type="checkbox" class="venue-player-check" value="Imani the Raven|imani.b@yahoo.com" style="accent-color:#DBAD4B;"> <span style="color:#DEC089;">Imani the Raven &mdash; <span style="color:#9BBF6B;">88%</span></span>
+  </label>
+  <label class="option-item" style="cursor:pointer; margin-top:6px;">
+   <input type="checkbox" class="venue-player-check" value="Emina the Bear|emina.h@outlook.com" style="accent-color:#DBAD4B;"> <span style="color:#DEC089;">Emina the Bear &mdash; <span style="color:#9BBF6B;">87%</span></span>
+  </label>
+  <label class="option-item" style="cursor:pointer; margin-top:6px;">
+   <input type="checkbox" class="venue-player-check" value="Rohan the Horse|rohan.p@gmail.com" style="accent-color:#DBAD4B;"> <span style="color:#DEC089;">Rohan the Horse &mdash; <span style="color:#9BBF6B;">85%</span></span>
+  </label>
+ </div>
+
+ <!-- GROUP 2 -->
+ <div style="margin-bottom:20px;">
+  <div style="color:#9BBF6B; font-size:0.85em; letter-spacing:0.05em; margin-bottom:8px; border-bottom:1px solid #65381A; padding-bottom:4px;">GROUP 2 &mdash; Good match (75&ndash;82%)</div>
+  <label class="option-item" style="cursor:pointer;">
+   <input type="checkbox" class="venue-player-check" value="Jasmine the Dolphin|jasmine.w@gmail.com" style="accent-color:#DBAD4B;"> <span style="color:#DEC089;">Jasmine the Dolphin &mdash; <span style="color:#9BBF6B;">82%</span></span>
+  </label>
+  <label class="option-item" style="cursor:pointer; margin-top:6px;">
+   <input type="checkbox" class="venue-player-check" value="Emir the Elk|emir.s@hotmail.com" style="accent-color:#DBAD4B;"> <span style="color:#DEC089;">Emir the Elk &mdash; <span style="color:#9BBF6B;">79%</span></span>
+  </label>
+  <label class="option-item" style="cursor:pointer; margin-top:6px;">
+   <input type="checkbox" class="venue-player-check" value="Carmen the Lion|carmen.r@gmail.com" style="accent-color:#DBAD4B;"> <span style="color:#DEC089;">Carmen the Lion &mdash; <span style="color:#9BBF6B;">75%</span></span>
+  </label>
+ </div>
+
+ <!-- PAIR -->
+ <div style="margin-bottom:20px;">
+  <div style="color:#9BBF6B; font-size:0.85em; letter-spacing:0.05em; margin-bottom:8px; border-bottom:1px solid #65381A; padding-bottom:4px;">PAIR &mdash; High two-player match (88%)</div>
+  <label class="option-item" style="cursor:pointer;">
+   <input type="checkbox" class="venue-player-check" value="Minh the Owl|minh.n@gmail.com" style="accent-color:#DBAD4B;"> <span style="color:#DEC089;">Minh the Owl &mdash; <span style="color:#9BBF6B;">88%</span></span>
+  </label>
+  <label class="option-item" style="cursor:pointer; margin-top:6px;">
+   <input type="checkbox" class="venue-player-check" value="Priya the Wolf|priya.s@outlook.com" style="accent-color:#DBAD4B;"> <span style="color:#DEC089;">Priya the Wolf &mdash; <span style="color:#9BBF6B;">88%</span></span>
+  </label>
+ </div>
+
+ <!-- NOT YET MATCHED -->
+ <div style="margin-bottom:24px;">
+  <div style="color:#D57553; font-size:0.85em; letter-spacing:0.05em; margin-bottom:8px; border-bottom:1px solid #65381A; padding-bottom:4px;">BELOW THRESHOLD &mdash; Not yet enough overlap</div>
+  <div class="option-item" style="opacity:0.6; cursor:default;">
+   <span style="color:#DEC089;">DeShawn the Bullfrog &mdash; <span style="color:#D57553;">61%</span></span>
+  </div>
+  <div class="option-item" style="opacity:0.6; cursor:default; margin-top:6px;">
+   <span style="color:#DEC089;">Lejla the Whale &mdash; <span style="color:#D57553;">58%</span></span>
+  </div>
+ </div>
+
+ <div style="text-align:center; margin-bottom:18px;">
+  <button type="button" class="btn btn-primary" onclick="openVenueInvite()" id="venue-invite-btn" style="opacity:0.4; cursor:default;" disabled>
+   Invite Selected &rarr;
+  </button>
+  <p style="color:#DEC089; font-size:0.82em; margin-top:8px; opacity:0.7;">Select players above to compose an invite</p>
+ </div>
+
+ <div class="button-row">
+  <button type="button" class="btn btn-secondary" onclick="goToSection('section-welcome-back')">&larr; Back</button>
+ </div>
+ </div>
+ <div class="privacy-footer">
+ <a href="#" onclick="showPrivacyDetails(); return false;">Privacy</a>
+ <a href="#" onclick="showTerms(); return false;">Terms</a>
+ <a href="#" onclick="showDeleteInfo(); return false;">Delete My Data</a>
+ <div style="margin-top:8px; font-size:0.8em; color:#DEC089; opacity:0.6;">&copy; 2025-2026 A Friendly Game. All rights reserved.</div>
+ </div>
+ </div>
+
+ <!-- VENUE INVITE MODAL -->
+ <div id="venue-invite-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.75); z-index:1000; align-items:center; justify-content:center; padding:20px; box-sizing:border-box;">
+ <div style="background:#1a2f23; border:2px solid #DBAD4B; border-radius:16px; padding:24px; width:100%; max-width:480px; max-height:90vh; overflow-y:auto;">
+  <!-- Gmail-style header -->
+  <div style="display:flex; align-items:center; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid #65381A;">
+   <div style="width:32px; height:32px; background:#D57553; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-right:10px; font-size:0.9em; color:white; font-weight:bold;">G</div>
+   <div>
+    <div style="color:#DBAD4B; font-size:1em;">New Message</div>
+    <div style="color:#DEC089; font-size:0.8em; opacity:0.7;">Gmail</div>
+   </div>
+   <button type="button" onclick="closeVenueInvite()" style="margin-left:auto; background:none; border:none; color:#DEC089; font-size:1.4em; cursor:pointer; opacity:0.7;">&times;</button>
+  </div>
+  <!-- To field -->
+  <div style="margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid rgba(101,56,26,0.4);">
+   <span style="color:#D57553; font-size:0.85em; margin-right:8px;">To</span>
+   <span style="color:#DEC089; font-size:0.9em;">laura@stlpieces.com</span>
+  </div>
+  <!-- Subject -->
+  <div style="margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid rgba(101,56,26,0.4);">
+   <span style="color:#D57553; font-size:0.85em; margin-right:8px;">Subject</span>
+   <span style="color:#DEC089; font-size:0.9em;">Matched Players &mdash; Pieces Game Night</span>
+  </div>
+  <!-- Body -->
+  <div style="color:#DEC089; font-size:0.9em; line-height:1.7; margin-bottom:20px;">
+   <p style="margin:0 0 12px 0;">Hi Laura,</p>
+   <p style="margin:0 0 12px 0;">Here are the selected players and their contact details for your event:</p>
+   <div id="invite-player-list" style="background:rgba(13,26,20,0.5); border:1px solid #65381A; border-radius:8px; padding:12px; margin-bottom:12px; font-size:0.9em;"></div>
+   <p style="margin:0; opacity:0.7; font-size:0.88em;">— Sent via A Friendly Game &middot; afriendlygame.com</p>
+  </div>
+  <!-- Copy button -->
+  <div style="display:flex; gap:10px;">
+   <button type="button" class="btn btn-primary" style="flex:1;" onclick="copyInviteText()">Copy to clipboard</button>
+   <button type="button" class="btn btn-secondary" onclick="closeVenueInvite()">Close</button>
+  </div>
+  <p id="invite-copy-confirm" style="color:#9BBF6B; font-size:0.85em; text-align:center; margin-top:8px; display:none;">Copied!</p>
+ </div>
+ </div>
+
 
  <!-- ========== EVENT: SELECT EVENT ========== -->
  <div class="section" id="section-event-select">
@@ -1409,7 +1569,7 @@
   <div class="card-nav-logo"><img src="afg-logo.jpg" alt="A Friendly Game" onclick="openHubMenu()"></div>
   <div>
     <div id="selected-event-name" style="font-family:'Aunt Mildred MVB SC',Georgia,serif; font-size:1.15em; color:#DBAD4B; line-height:1.2;">Geekway to the West</div>
-    <div style="font-size:0.9em; color:#DEC089; margin-top:2px;">Find compatible players at the event</div>
+    <div id="selected-event-subtitle" style="font-size:0.9em; color:#DEC089; margin-top:2px;">Find compatible players at the event</div>
   </div>
 </div>
 
@@ -2575,8 +2735,9 @@
 
  // ========== STATE ==========
  const state = {
- path: null, // 'event' or 'online'
+ path: null, // 'event', 'online', or 'venue'
  event: null,
+ venue: null,
  tier: null,
  isOnlineFlow: false,
  questionIndex: 0,
@@ -2888,6 +3049,92 @@
  goToSection('section-event-tiers');
  }
 
+ // ========== VENUE FUNCTIONS ==========
+ function selectVenue(venueKey) {
+   if (venueKey === 'other') {
+     document.getElementById('other-venue-input').style.display = 'block';
+     return;
+   }
+   const names = { pieces: 'Pieces · St. Louis MO' };
+   state.venue = venueKey;
+   state.event = 'venue:' + venueKey;
+   state.path = 'venue';
+   document.getElementById('selected-event-name').textContent = names[venueKey] || venueKey;
+   const subtitleEl = document.getElementById('selected-event-subtitle');
+   if (subtitleEl) subtitleEl.textContent = 'Find compatible players at this venue';
+   goToSection('section-event-tiers');
+ }
+
+ function confirmOtherVenue() {
+   const name = document.getElementById('other-venue-name').value.trim();
+   if (!name) { alert('Please enter the venue name'); return; }
+   state.venue = name;
+   state.event = 'venue:' + name.toLowerCase().replace(/\s+/g, '-');
+   state.path = 'venue';
+   document.getElementById('selected-event-name').textContent = name;
+   const subtitleEl2 = document.getElementById('selected-event-subtitle');
+   if (subtitleEl2) subtitleEl2.textContent = 'Find compatible players at this venue';
+   goToSection('section-event-tiers');
+ }
+
+ // Check if current user is a venue admin and show/hide admin button
+ function checkVenueAdmin() {
+   const VENUE_ADMINS = { 'Laura the Owl': 'pieces' };
+   const callsign = state.name && state.animal ? state.name + ' the ' + state.animal.name : '';
+   const adminWrap = document.getElementById('admin-btn-wrap');
+   if (adminWrap) {
+     if (VENUE_ADMINS[callsign]) {
+       adminWrap.style.display = 'block';
+       state.adminVenue = VENUE_ADMINS[callsign];
+     } else {
+       adminWrap.style.display = 'none';
+     }
+   }
+ }
+
+ // Venue admin invite modal
+ function openVenueInvite() {
+   const checked = document.querySelectorAll('.venue-player-check:checked');
+   if (checked.length === 0) return;
+   const listEl = document.getElementById('invite-player-list');
+   let lines = '';
+   checked.forEach(cb => {
+     const parts = cb.value.split('|');
+     lines += parts[0] + ' &mdash; ' + parts[1] + '<br>';
+   });
+   listEl.innerHTML = lines;
+   document.getElementById('venue-invite-modal').style.display = 'flex';
+ }
+
+ function closeVenueInvite() {
+   document.getElementById('venue-invite-modal').style.display = 'none';
+   document.getElementById('invite-copy-confirm').style.display = 'none';
+ }
+
+ function copyInviteText() {
+   const listEl = document.getElementById('invite-player-list');
+   const text = 'Matched Players \u2014 Pieces Game Night\n\nHi Laura,\n\nHere are the selected players:\n\n' +
+     listEl.innerText + '\n\n\u2014 Sent via A Friendly Game \u00b7 afriendlygame.com';
+   navigator.clipboard.writeText(text).then(() => {
+     document.getElementById('invite-copy-confirm').style.display = 'block';
+   }).catch(() => {
+     alert('Please copy the text manually.');
+   });
+ }
+
+ // Wire up checkbox state to enable/disable invite button
+ document.addEventListener('change', function(e) {
+   if (e.target.classList.contains('venue-player-check')) {
+     const anyChecked = document.querySelectorAll('.venue-player-check:checked').length > 0;
+     const btn = document.getElementById('venue-invite-btn');
+     if (btn) {
+       btn.disabled = !anyChecked;
+       btn.style.opacity = anyChecked ? '1' : '0.4';
+       btn.style.cursor = anyChecked ? 'pointer' : 'default';
+     }
+   }
+ });
+
  // ========== UNIFIED TIER START ==========
  // Visual selection feedback for tier/path cards
  // Returns a promise that resolves after a brief visual delay
@@ -2903,7 +3150,7 @@
  function startTier(tier, isOnlineFlow) {
  state.tier = tier;
  state.isOnlineFlow = isOnlineFlow;
- state.path = isOnlineFlow ? 'online' : 'event';
+ if (state.path !== 'venue') state.path = isOnlineFlow ? 'online' : 'event';
  state.questionIndex = 0;
  state.privacyBannerShown = false; // Reset for new tier
  
@@ -3016,7 +3263,8 @@
    }
  }
  
- const tierLabels = { warm: 'Event Match', warmer: 'Getting Warmer', warmest: 'Getting Warmest', findyourpeople: 'Find Your People' };
+ const warmLabel = state.path === 'venue' ? 'Venue Match' : 'Event Match';
+ const tierLabels = { warm: warmLabel, warmer: 'Getting Warmer', warmest: 'Getting Warmest', findyourpeople: 'Find Your People' };
  const tierLabel = tierLabels[state.tier] || '';
  document.getElementById('question-counter').textContent = `${tierLabel} - Question ${currentPos} of ${total}`;
  document.getElementById('progress-fill').style.width = `${(currentPos / total) * 100}%`;
@@ -3783,6 +4031,7 @@
  }
  
  goToSection('section-welcome-back');
+ checkVenueAdmin();
  
  // Play their animal sound as a welcome
  playAnimalSound(state.animal.name);
@@ -5421,8 +5670,35 @@ Respond with JSON only, no other text:
  }
  function confirmAgeGate() {
    document.getElementById('age-gate-modal').style.display = 'none';
-   if (_ageGateDestination) goToSection(_ageGateDestination);
+   const dest = _ageGateDestination;
    _ageGateDestination = null;
+   if (!dest) return;
+   if (dest.startsWith('path:')) {
+     checkPathEntry(dest.replace('path:', ''));
+   } else {
+     goToSection(dest);
+   }
+ }
+
+ // Called after age gate confirms — checks for returning user before entering path
+ function checkPathEntry(path) {
+   // If already loaded in session, go straight to welcome-back
+   if (state.name && state.animal) {
+     showWelcomeBack();
+     return;
+   }
+   // Try loading from localStorage
+   if (loadSession()) {
+     showWelcomeBack();
+     return;
+   }
+   // No session — route to the correct first screen for this path
+   const destinations = {
+     event: 'section-event-select',
+     online: 'section-online-tiers',
+     venue: 'section-venue-select'
+   };
+   goToSection(destinations[path] || 'section-landing');
  }
  function denyAgeGate() {
    document.getElementById('age-gate-modal').style.display = 'none';
