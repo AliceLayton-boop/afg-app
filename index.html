@@ -3476,9 +3476,6 @@
  if (textarea) {
  state.answers[currentQ.id] = textarea.value;
  saveSession();
- // Fire clarification check — called here because onblur alone is unreliable on mobile when tapping Next
- // Safe because checkForClarification now checks question index and discards if user has moved on
- checkForClarification(currentQ.id);
  }
 
  // If clarification was triggered and unanswered, show soft warning then auto-advance
@@ -5504,6 +5501,16 @@ Respond with JSON only, no other text:
 
  const existingText = ta ? ta.value : '';
  voiceTarget = { btnId, taId, qid, base: existingText, sessionBase: existingText };
+ // Suppress media session before mic start — prevents Android ping on recognition activation
+ try {
+     if ('mediaSession' in navigator) {
+         navigator.mediaSession.metadata = null;
+         navigator.mediaSession.playbackState = 'none';
+         navigator.mediaSession.setActionHandler('play', null);
+         navigator.mediaSession.setActionHandler('pause', null);
+         navigator.mediaSession.setActionHandler('stop', null);
+     }
+ } catch(e) {}
  try {
      recognition.start();
      btn.classList.add('recording');
