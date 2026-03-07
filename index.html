@@ -3452,6 +3452,8 @@
  if (_nextQuestionLocked) return;
  _nextQuestionLocked = true;
  setTimeout(() => { _nextQuestionLocked = false; }, 600);
+ // Stop mic if active — leaving it running causes Android pinging and kills animal sounds
+ if (isRecording) stopVoice();
  // Save any text input before moving
  const currentQ = state.currentQuestions[state.questionIndex];
 
