@@ -2958,7 +2958,10 @@
  if (currentAudio) {
    currentAudio.volume = 0;
    currentAudio = null;
-   try { if ('mediaSession' in navigator) { navigator.mediaSession.metadata = null; navigator.mediaSession.playbackState = 'none'; } } catch(e) {}
+   // Do NOT suppress mediaSession when navigating TO section-callsign — it would kill animal sounds on that screen
+   if (sectionId !== 'section-callsign') {
+     try { if ('mediaSession' in navigator) { navigator.mediaSession.metadata = null; navigator.mediaSession.playbackState = 'none'; } } catch(e) {}
+   }
  }
  const currentSection = document.querySelector('.section.active');
  if (currentSection) {
@@ -3447,11 +3450,13 @@
  saveSession();
  }
 
- function nextQuestion() {
+ async function nextQuestion() {
  // Guard against double-fire on Android (touch events can trigger multiple rapid calls)
  if (_nextQuestionLocked) return;
  _nextQuestionLocked = true;
- setTimeout(() => { _nextQuestionLocked = false; }, 600);
+ // Note: for text/text-voice questions we extend this lock through the clarification await below
+ // The 600ms covers radio/checkbox auto-advance; text questions re-lock during API call
+ const _quickUnlock = setTimeout(() => { _nextQuestionLocked = false; }, 600);
  // Save any text input before moving
  const currentQ = state.currentQuestions[state.questionIndex];
 
@@ -3476,9 +3481,13 @@
  if (textarea) {
  state.answers[currentQ.id] = textarea.value;
  saveSession();
- // Fire clarification check — called here because onblur alone is unreliable on mobile when tapping Next
- // Safe because checkForClarification now checks question index and discards if user has moved on
- checkForClarification(currentQ.id);
+ // Fire clarification check and WAIT for it — async so we can block Next until API returns
+ // Safe because checkForClarification checks question index and discards if user has moved on
+ clearTimeout(_quickUnlock); // Cancel the 600ms unlock — we'll hold the lock through the API call
+ _nextQuestionLocked = true;
+ await checkForClarification(currentQ.id);
+ // Re-arm a short lock to prevent double-tap during the subsequent render
+ setTimeout(() => { _nextQuestionLocked = false; }, 600);
  }
 
  // If clarification was triggered and unanswered, show soft warning then auto-advance
