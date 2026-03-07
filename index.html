@@ -1504,7 +1504,7 @@
   <!-- To field -->
   <div style="margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid rgba(101,56,26,0.4);">
    <span style="color:#D57553; font-size:0.85em; margin-right:8px;">To</span>
-   <span style="color:#DEC089; font-size:0.9em;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d9b5b8acabb899aaadb5a9b0bcbabcaaf7bab6b4">[email&#160;protected]</a></span>
+   <span style="color:#DEC089; font-size:0.9em;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6a060b1f180b2a191e061a030f090f1944090507">[email&#160;protected]</a></span>
   </div>
   <!-- Subject -->
   <div style="margin-bottom:10px; padding-bottom:10px; border-bottom:1px solid rgba(101,56,26,0.4);">
@@ -3686,9 +3686,9 @@
  function renderAnimalOptions(containerId) {
  const container = document.getElementById(containerId);
  container.innerHTML = animals.map(a => 
- `<label class="option-item" onclick="selectAnimal('${a.name}', '${containerId}')" data-animal="${a.name}">
+ `<button type="button" class="option-item" onclick="selectAnimal('${a.name}', '${containerId}')" data-animal="${a.name}" style="width:100%; text-align:left; background:rgba(101,56,26,0.3); border:2px solid #65381A; border-radius:10px; cursor:pointer; display:flex; align-items:center; gap:12px; padding:12px 15px; font-family:'EB Garamond',Georgia,serif; font-size:1em; color:#DEC089;">
  <span class="animal-icon">${a.svg}</span> ${a.name}
- </label>`
+ </button>`
  ).join('');
  }
 
