@@ -3476,6 +3476,9 @@
  if (textarea) {
  state.answers[currentQ.id] = textarea.value;
  saveSession();
+ // Fire clarification check — called here because onblur alone is unreliable on mobile when tapping Next
+ // Safe because checkForClarification now checks question index and discards if user has moved on
+ checkForClarification(currentQ.id);
  }
 
  // If clarification was triggered and unanswered, show soft warning then auto-advance
@@ -4281,6 +4284,7 @@
   const textarea = document.getElementById('text-' + qid);
   if (!textarea) return;
   const answer = textarea.value.trim();
+  const questionIndexAtCall = state.questionIndex; // Capture so we can detect navigation away
 
   // If answer changed since clarification box was shown, remove stale box
   const existingBox = document.getElementById('clarify-box-' + qid);
@@ -4339,6 +4343,11 @@
    const result = await response.json();
    afgLog('clarify: response clear=' + result.clear + (result._debug ? ' [' + result._debug + ']' : ''), result.clear === false ? '#ff0' : '#0f0');
 
+   // Only show if user hasn't moved to a different question while waiting
+   if (state.questionIndex !== questionIndexAtCall) {
+    afgLog('clarify: question changed while waiting, discarding', '#888');
+    return;
+   }
    // Only show if textarea still has same answer (user didn't change it while waiting)
    const currentAnswer = (document.getElementById('text-' + qid) || {}).value;
    if (currentAnswer && currentAnswer.trim() !== answer) {
