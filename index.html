@@ -6201,7 +6201,7 @@ Respond with JSON only, no other text:
      const tileClass = isNew ? 'activity-tile new' : isPending ? 'activity-tile sent' : isLater ? 'activity-tile later' : 'activity-tile';
      const statusText = isNew ? 'wants to meet up!' :
        isPending ? 'Request sent -- waiting' :
-       isLater ? 'Said they'll find you later' :
+       isLater ? "Said they'll find you later" :
        'Active conversation';
      html += `
        <div class="${tileClass}" onclick="openChat('${item.name}', '${item.animal}')">
