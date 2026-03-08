@@ -6927,8 +6927,8 @@ document.addEventListener('scroll', function() {
       <div class="chat-request-msg" id="chat-request-msg"></div>
       <div class="chat-request-actions">
         <button type="button" class="chat-action-btn chat-action-reply" onclick="respondToRequest('accepted')">Reply</button>
-        <button type="button" class="chat-action-btn chat-action-later" onclick="respondToRequest('later')">I'm mid-game — I'll find you later!</button>
-        <button type="button" class="chat-action-btn chat-action-ignore" onclick="respondToRequest('ignored')">Not right now</button>
+        <button type="button" class="chat-action-btn chat-action-later" onclick="respondToRequest('later')">I can't just now -- I'll ping you later!</button>
+        <button type="button" class="chat-action-btn chat-action-ignore" onclick="respondToRequest('ignored')">Ignore</button>
       </div>
     </div>
     <!-- Thread view (shown for active conversations) -->
@@ -6941,6 +6941,7 @@ document.addEventListener('scroll', function() {
           <button type="button" class="chat-send-btn" onclick="sendMessage()">➤</button>
         </div>
         <div class="chat-char-count"><span id="chat-char-count">200</span> chars left</div>
+        <div style="margin-top:6px; font-size:0.95em; color:#D57553; text-align:center;">Play your animal callsign when you reach the meetup spot!</div>
       </div>
     </div>
   </div>
