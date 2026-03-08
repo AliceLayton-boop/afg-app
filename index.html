@@ -5452,7 +5452,7 @@ Respond with JSON only, no other text:
  // Resolve all async match scoring, then filter and sort
  const matches = await Promise.all(matchPromises);
  return matches
- .filter(m => !m.hardVeto && m.compatibility >= 70)
+ .filter(m => !m.hardVeto && m.compatibility >= 40)
  .sort((a, b) => b.compatibility - a.compatibility)
  .slice(0, 10);
  
