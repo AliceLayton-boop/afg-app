@@ -2173,6 +2173,17 @@
   <div class="card-nav-title">Your Matches</div>
 </div>
 
+ <!-- Activity section: match requests and messages — shown above matches -->
+ <div class="activity-section" id="activity-section" style="display:none;">
+   <div class="activity-header">
+     <span class="activity-title">Activity</span>
+     <button type="button" class="mute-btn" id="mute-btn" onclick="toggleMute()">🔔 Mute</button>
+   </div>
+   <div class="activity-grid" id="activity-grid">
+     <div class="activity-empty">No activity yet -- reach out to a match!</div>
+   </div>
+ </div>
+
  <div id="matches-content">
  <div class="loading">
  <div class="spinner"></div>
@@ -2186,17 +2197,6 @@
  </div>
  <div id="matches-upgrade-banner" style="display:none; margin-top:15px; text-align:center; padding:14px 18px; background:rgba(219,173,75,0.12); border:1px solid rgba(219,173,75,0.4); border-radius:12px;">
  <p style="color:#DEC089; font-size:0.95em; margin:0;">Want stronger matches? <a href="#" onclick="upgradeTier('warmer'); return false;" style="color:#DBAD4B; text-decoration:none; font-weight:500;">Go Warmer for stronger matches →</a></p>
- </div>
-
- <!-- Activity section: match requests and messages -->
- <div class="activity-section" id="activity-section" style="display:none;">
-   <div class="activity-header">
-     <span class="activity-title">Activity</span>
-     <button type="button" class="mute-btn" id="mute-btn" onclick="toggleMute()">🔔 Mute</button>
-   </div>
-   <div class="activity-grid" id="activity-grid">
-     <div class="activity-empty">No activity yet — reach out to a match!</div>
-   </div>
  </div>
 
  </div>
