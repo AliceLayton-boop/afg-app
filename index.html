@@ -1067,7 +1067,295 @@
  color: #9BBF6B;
  cursor: default;
  }
- 
+
+/* ========== MESSAGING SYSTEM STYLES ========== */
+
+.activity-section {
+    margin-top: 24px;
+    border-top: 1px solid #65381A;
+    padding-top: 18px;
+}
+
+.activity-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.activity-title {
+    color: #DBAD4B;
+    font-size: 1.1em;
+}
+
+.mute-btn {
+    background: transparent;
+    border: 1px solid #65381A;
+    border-radius: 20px;
+    color: #DEC089;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 0.85em;
+    padding: 5px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mute-btn:hover { border-color: #DBAD4B; color: #DBAD4B; }
+.mute-btn.muted { border-color: #D57553; color: #D57553; }
+
+.activity-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.activity-tile {
+    padding: 14px 10px;
+    border: 2px solid #65381A;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    background: linear-gradient(135deg, #3D5A4A 0%, #2D4A3A 100%);
+    position: relative;
+}
+
+.activity-tile:hover { filter: brightness(1.15); transform: translateY(-2px); }
+.activity-tile.new { border-color: #DBAD4B; background: linear-gradient(135deg, rgba(219,173,75,0.15) 0%, #2D4A3A 100%); }
+.activity-tile.sent { background: linear-gradient(135deg, #6B7D3A 0%, #5A6A30 100%); }
+.activity-tile.later { border-color: #D57553; }
+
+.activity-tile-name {
+    display: block;
+    color: #DBAD4B;
+    font-family: 'Aunt Mildred MVB SC', Georgia, serif;
+    font-size: 0.95em;
+    letter-spacing: 0.03em;
+    margin-bottom: 4px;
+}
+
+.activity-tile-status {
+    display: block;
+    color: #DEC089;
+    font-size: 0.8em;
+    font-style: italic;
+    line-height: 1.3;
+}
+
+.activity-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: #D57553;
+    color: #fff;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.7em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'EB Garamond', Georgia, serif;
+}
+
+.activity-empty {
+    color: #DEC089;
+    font-size: 0.9em;
+    font-style: italic;
+    opacity: 0.7;
+    text-align: center;
+    padding: 10px 0;
+    grid-column: span 2;
+}
+
+/* Chat overlay modal */
+.chat-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 1000;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.chat-overlay.open { display: flex; }
+
+.chat-panel {
+    background: linear-gradient(180deg, rgba(45,74,62,0.98) 0%, rgba(26,47,35,0.99) 100%);
+    border: 2px solid #65381A;
+    border-radius: 20px 20px 0 0;
+    width: 100%;
+    max-width: 500px;
+    max-height: 75vh;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.chat-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #65381A;
+}
+
+.chat-panel-name {
+    color: #DBAD4B;
+    font-family: 'Aunt Mildred MVB SC', Georgia, serif;
+    font-size: 1.2em;
+}
+
+.chat-close-btn {
+    background: transparent;
+    border: 1px solid #65381A;
+    border-radius: 50%;
+    color: #DEC089;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.chat-close-btn:hover { border-color: #DBAD4B; color: #DBAD4B; }
+
+.chat-request-msg {
+    background: rgba(101,56,26,0.3);
+    border: 1px solid #65381A;
+    border-radius: 10px;
+    padding: 14px;
+    color: #DEC089;
+    font-size: 0.95em;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.chat-request-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-action-btn {
+    padding: 12px;
+    border-radius: 20px;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+}
+
+.chat-action-reply { background: #8C4427; color: #DEC089; border-color: #8C4427; }
+.chat-action-reply:hover { background: #a35230; border-color: #a35230; }
+.chat-action-later { background: transparent; color: #D57553; border-color: #D57553; }
+.chat-action-later:hover { border-color: #DBAD4B; color: #DBAD4B; }
+.chat-action-ignore { background: transparent; color: #DEC089; border-color: #65381A; opacity: 0.7; }
+.chat-action-ignore:hover { opacity: 1; }
+
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 80px;
+}
+
+.chat-bubble {
+    max-width: 85%;
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+.chat-bubble.mine {
+    background: rgba(140,68,39,0.5);
+    border: 1px solid #8C4427;
+    color: #DEC089;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+}
+
+.chat-bubble.theirs {
+    background: rgba(101,56,26,0.3);
+    border: 1px solid #65381A;
+    color: #DEC089;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+}
+
+.chat-bubble-time {
+    font-size: 0.75em;
+    opacity: 0.6;
+    margin-top: 4px;
+    display: block;
+}
+
+.chat-input-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-end;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 10px 14px;
+    background: rgba(13,26,20,0.5);
+    border: 2px solid #65381A;
+    border-radius: 14px;
+    color: #DEC089;
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 0.95em;
+    resize: none;
+    min-height: 44px;
+    max-height: 100px;
+}
+
+.chat-input:focus { outline: none; border-color: #DBAD4B; }
+
+.chat-send-btn {
+    background: #8C4427;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    color: #DEC089;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.chat-send-btn:hover { background: #a35230; }
+
+.chat-char-count {
+    font-size: 0.75em;
+    color: #DEC089;
+    opacity: 0.5;
+    text-align: right;
+    margin-top: 4px;
+}
+
+.chat-pending-note {
+    color: #D57553;
+    font-size: 0.85em;
+    font-style: italic;
+    text-align: center;
+    padding: 10px 0;
+}
+
  /* Values/Interests selection styling */
  .selection-grid {
  display: grid;
@@ -1899,6 +2187,18 @@
  <div id="matches-upgrade-banner" style="display:none; margin-top:15px; text-align:center; padding:14px 18px; background:rgba(219,173,75,0.12); border:1px solid rgba(219,173,75,0.4); border-radius:12px;">
  <p style="color:#DEC089; font-size:0.95em; margin:0;">Want stronger matches? <a href="#" onclick="upgradeTier('warmer'); return false;" style="color:#DBAD4B; text-decoration:none; font-weight:500;">Go Warmer for stronger matches →</a></p>
  </div>
+
+ <!-- Activity section: match requests and messages -->
+ <div class="activity-section" id="activity-section" style="display:none;">
+   <div class="activity-header">
+     <span class="activity-title">Activity</span>
+     <button type="button" class="mute-btn" id="mute-btn" onclick="toggleMute()">🔔 Mute</button>
+   </div>
+   <div class="activity-grid" id="activity-grid">
+     <div class="activity-empty">No activity yet — reach out to a match!</div>
+   </div>
+ </div>
+
  </div>
  <div class="privacy-footer">
  <a href="#" onclick="showPrivacyDetails(); return false;">Privacy</a>
@@ -2957,6 +3257,8 @@
  function goToSection(sectionId) {
  // Stop callsign loop when navigating away
  if (callsignLooping) stopCallsignLoop();
+ // Stop message polling when leaving matches screen
+ if (sectionId !== 'section-matches' && typeof stopPolling === 'function') stopPolling();
  // Silence any playing audio to prevent Android media session pinging
  if (currentAudio) {
    currentAudio.volume = 0;
@@ -5163,6 +5465,7 @@ Respond with JSON only, no other text:
  async function viewMatches() {
  closeHubMenu();
  goToSection('section-matches');
+ startPolling(); // begin checking for messages while on matches screen
  
  const matchesContent = document.getElementById('matches-content');
  matchesContent.innerHTML = `<div class="loading"><div class="spinner"></div><p>Finding your people...</p></div>`;
@@ -5782,54 +6085,364 @@ Respond with JSON only, no other text:
  }
  }
 
+ // ========== MESSAGING SYSTEM ==========
+
+ // State for messaging
+ let messagingState = {
+   muted: false,
+   pollingInterval: null,
+   activeChatThread: null, // { name, animal, messageId (if incoming request) }
+   activityItems: [] // array of { name, animal, status, messages[], messageId, isIncoming }
+ };
+
+ // Play the AFG jingle (placeholder — swap file when Kris delivers)
+ // JINGLE HOOK: replace 'sounds/jingle.mp3' with final file path when ready
+ function playJingle() {
+   if (messagingState.muted) return;
+   try {
+     const audio = new Audio('sounds/jingle.mp3');
+     audio.volume = 0.7;
+     currentAudio = audio;
+     audio.onended = () => { if (currentAudio === audio) currentAudio = null; };
+     audio.play().catch(() => {
+       // Jingle file not yet deployed — silent fail is correct
+       if (currentAudio === audio) currentAudio = null;
+     });
+   } catch(e) {}
+ }
+
+ // Toggle mute
+ function toggleMute() {
+   messagingState.muted = !messagingState.muted;
+   const btn = document.getElementById('mute-btn');
+   if (btn) {
+     btn.textContent = messagingState.muted ? '🔕 Unmute' : '🔔 Mute';
+     btn.classList.toggle('muted', messagingState.muted);
+   }
+ }
+
+ // Start polling for new messages (call when entering matches screen)
+ function startPolling() {
+   stopPolling(); // clear any existing interval
+   checkForMessages(); // immediate check
+   messagingState.pollingInterval = setInterval(checkForMessages, 30000);
+ }
+
+ // Stop polling (call when leaving matches screen)
+ function stopPolling() {
+   if (messagingState.pollingInterval) {
+     clearInterval(messagingState.pollingInterval);
+     messagingState.pollingInterval = null;
+   }
+ }
+
+ // Poll Supabase for messages involving this user
+ async function checkForMessages() {
+   if (!state.name || !state.animal) return;
+   try {
+     const animalName = typeof state.animal === 'object' ? state.animal.name : state.animal;
+
+     // Fetch all messages where user is sender or recipient
+     const { data: msgs } = await db
+       .from('messages')
+       .select('*')
+       .or(`and(sender_name.ilike.${state.name},sender_animal.eq.${animalName}),and(recipient_name.ilike.${state.name},recipient_animal.eq.${animalName})`)
+       .order('created_at', { ascending: true });
+
+     if (!msgs || msgs.length === 0) return;
+
+     // Group messages into threads by conversation partner
+     const threads = {};
+     msgs.forEach(msg => {
+       const isMine = msg.sender_name.toLowerCase() === state.name.toLowerCase();
+       const partnerName = isMine ? msg.recipient_name : msg.sender_name;
+       const partnerAnimal = isMine ? msg.recipient_animal : msg.sender_animal;
+       const key = `${partnerName}|${partnerAnimal}`;
+       if (!threads[key]) {
+         threads[key] = { name: partnerName, animal: partnerAnimal, messages: [], hasUnread: false, latestStatus: msg.status, isIncoming: !isMine, firstMessageId: msg.id };
+       }
+       threads[key].messages.push({ ...msg, isMine });
+       if (!msg.read && !isMine) threads[key].hasUnread = true;
+       threads[key].latestStatus = msg.status;
+     });
+
+     // Check for new unread items — play jingle if any
+     const hadUnread = messagingState.activityItems.some(i => i.hasUnread);
+     const hasUnread = Object.values(threads).some(t => t.hasUnread);
+     if (hasUnread && !hadUnread) playJingle();
+
+     // Update activityItems
+     messagingState.activityItems = Object.values(threads);
+     renderActivityTiles();
+
+   } catch(err) {
+     console.error('Message poll error:', err);
+   }
+ }
+
+ // Render the activity tile grid on the matches screen
+ function renderActivityTiles() {
+   const section = document.getElementById('activity-section');
+   const grid = document.getElementById('activity-grid');
+   if (!section || !grid) return;
+
+   const items = messagingState.activityItems;
+   if (items.length === 0) {
+     section.style.display = 'none';
+     return;
+   }
+
+   section.style.display = 'block';
+   let html = '';
+   items.forEach(item => {
+     const isNew = item.hasUnread;
+     const isPending = item.latestStatus === 'pending' && !item.isIncoming;
+     const isLater = item.latestStatus === 'later';
+     const tileClass = isNew ? 'activity-tile new' : isPending ? 'activity-tile sent' : isLater ? 'activity-tile later' : 'activity-tile';
+     const statusText = isNew ? 'wants to meet up!' :
+       isPending ? 'Request sent — waiting' :
+       isLater ? 'Said they'll find you later' :
+       'Active conversation';
+     html += `
+       <div class="${tileClass}" onclick="openChat('${item.name}', '${item.animal}')">
+         ${isNew ? '<div class="activity-badge">!</div>' : ''}
+         <span class="activity-tile-name">${item.name} the ${item.animal}</span>
+         <span class="activity-tile-status">${statusText}</span>
+       </div>`;
+   });
+
+   grid.innerHTML = html;
+ }
+
+ // Send the initial preset reach-out message
  async function sendIntroduction(matchName, matchAnimal, btnId) {
- const btn = document.getElementById(btnId);
- if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
+   const btn = document.getElementById(btnId);
+   if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
 
- if (!state.email || !state.allowContact) {
- alert('You need to have contact enabled to reach out. Check your profile settings.');
- if (btn) { btn.disabled = false; btn.textContent = `Reach out to ${matchName} the ${matchAnimal}`; }
- return;
+   if (!state.allowContact) {
+     alert('You need contact enabled to reach out. Check your profile settings.');
+     if (btn) { btn.disabled = false; btn.textContent = `Reach out to ${matchName} the ${matchAnimal}`; }
+     return;
+   }
+
+   const animalName = typeof state.animal === 'object' ? state.animal.name : state.animal;
+   const eventName = state.event || 'this event';
+   const presetMsg = `Hey, I'm ${state.name} the ${animalName}! You just showed up as a match for me in A Friendly Game. I'm here at ${eventName} — want to meet up?`;
+
+   try {
+     const { error } = await db.from('messages').insert({
+       sender_name: state.name,
+       sender_animal: animalName,
+       recipient_name: matchName,
+       recipient_animal: matchAnimal,
+       content: presetMsg,
+       status: 'pending'
+     });
+
+     if (error) throw error;
+
+     if (btn) {
+       btn.classList.add('sent');
+       btn.textContent = `Request sent to ${matchName} the ${matchAnimal}!`;
+     }
+
+     // Add to local activity state immediately
+     const existing = messagingState.activityItems.find(i => i.name === matchName && i.animal === matchAnimal);
+     if (!existing) {
+       messagingState.activityItems.push({
+         name: matchName, animal: matchAnimal,
+         messages: [{ sender_name: state.name, sender_animal: animalName, content: presetMsg, isMine: true }],
+         hasUnread: false, latestStatus: 'pending', isIncoming: false
+       });
+       renderActivityTiles();
+     }
+
+   } catch(err) {
+     console.error('Send error:', err);
+     alert('Something went wrong. Please try again.');
+     if (btn) { btn.disabled = false; btn.textContent = `Reach out to ${matchName} the ${matchAnimal}`; }
+   }
  }
 
- try {
- // Look up match's email from Supabase
- const { data: matchUser } = await db
- .from('responses')
- .select('email, allow_contact')
- .ilike('name', matchName)
- .eq('animal', matchAnimal)
- .maybeSingle();
+ // Open the chat overlay for a given conversation partner
+ async function openChat(partnerName, partnerAnimal) {
+   messagingState.activeChatThread = { name: partnerName, animal: partnerAnimal };
 
- if (!matchUser?.email || !matchUser?.allow_contact) {
- alert(`${matchName} the ${matchAnimal} hasn't enabled contact yet. Try again later or find them at the event!`);
- if (btn) { btn.disabled = false; btn.textContent = `Reach out to ${matchName} the ${matchAnimal}`; }
- return;
+   const thread = messagingState.activityItems.find(i => i.name === partnerName && i.animal === partnerAnimal);
+   const overlay = document.getElementById('chat-overlay');
+   const panelName = document.getElementById('chat-panel-name');
+   panelName.textContent = `${partnerName} the ${partnerAnimal}`;
+
+   // Mark messages as read in Supabase
+   const animalName = typeof state.animal === 'object' ? state.animal.name : state.animal;
+   try {
+     await db.from('messages').update({ read: true })
+       .eq('recipient_name', state.name)
+       .eq('recipient_animal', animalName)
+       .eq('sender_name', partnerName)
+       .eq('sender_animal', partnerAnimal);
+     if (thread) { thread.hasUnread = false; renderActivityTiles(); }
+   } catch(e) {}
+
+   // Decide which view to show
+   const requestView = document.getElementById('chat-request-view');
+   const threadView = document.getElementById('chat-thread-view');
+
+   // Incoming pending request with no reply yet — show accept/ignore screen
+   if (thread && thread.isIncoming && thread.latestStatus === 'pending') {
+     requestView.style.display = 'block';
+     threadView.style.display = 'none';
+     const msgEl = document.getElementById('chat-request-msg');
+     const firstMsg = thread.messages[0];
+     msgEl.textContent = firstMsg ? firstMsg.content : `${partnerName} the ${partnerAnimal} wants to meet up!`;
+   } else {
+     // Active thread view
+     requestView.style.display = 'none';
+     threadView.style.display = 'flex';
+     renderChatThread(thread);
+   }
+
+   overlay.classList.add('open');
  }
 
- await fetch('https://lammxquhngmfmtxnqzdl.supabase.co/functions/v1/send-match-email', {
- method: 'POST',
- headers: { 'Content-Type': 'application/json' },
- body: JSON.stringify({
- action: 'introduce',
- to: matchUser.email,
- toCallsign: `${matchName} the ${matchAnimal}`,
- fromCallsign: `${state.name} the ${state.animal.name}`,
- fromEmail: state.email,
- event: state.event || null,
- compatibility: state.matches.find(m => m.name === matchName && m.animal === matchAnimal)?.compatibility
- })
- });
+ // Render message bubbles in the thread view
+ function renderChatThread(thread) {
+   const messagesEl = document.getElementById('chat-messages');
+   const pendingNote = document.getElementById('chat-pending-note');
+   const inputArea = document.getElementById('chat-input-area');
 
- if (btn) {
- btn.classList.add('sent');
- btn.textContent = `Introduction sent to ${matchName} the ${matchAnimal}!`;
+   if (!thread || thread.messages.length === 0) {
+     messagesEl.innerHTML = '';
+     return;
+   }
+
+   // Show pending note if we sent a request and they haven't replied
+   const isPending = thread.latestStatus === 'pending' && !thread.isIncoming;
+   if (pendingNote) pendingNote.style.display = isPending ? 'block' : 'none';
+   if (inputArea) inputArea.style.display = isPending ? 'none' : 'block';
+
+   let html = '';
+   thread.messages.forEach(msg => {
+     const time = msg.created_at ? new Date(msg.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '';
+     const cls = msg.isMine ? 'mine' : 'theirs';
+     html += `<div class="chat-bubble ${cls}">${escapeHtml(msg.content)}<span class="chat-bubble-time">${time}</span></div>`;
+   });
+   messagesEl.innerHTML = html;
+   messagesEl.scrollTop = messagesEl.scrollHeight;
  }
- } catch (err) {
- console.error('Introduction error:', err);
- alert('Something went wrong. Please try again.');
- if (btn) { btn.disabled = false; btn.textContent = `Reach out to ${matchName} the ${matchAnimal}`; }
+
+ // Respond to an incoming request (Reply / Later / Ignore)
+ async function respondToRequest(responseType) {
+   const thread = messagingState.activityItems.find(i =>
+     i.name === messagingState.activeChatThread?.name &&
+     i.animal === messagingState.activeChatThread?.animal
+   );
+   if (!thread) return;
+
+   const animalName = typeof state.animal === 'object' ? state.animal.name : state.animal;
+
+   try {
+     // Update the original message status
+     await db.from('messages').update({ status: responseType })
+       .eq('sender_name', thread.name)
+       .eq('sender_animal', thread.animal)
+       .eq('recipient_name', state.name)
+       .eq('recipient_animal', animalName)
+       .eq('status', 'pending');
+
+     thread.latestStatus = responseType;
+
+     if (responseType === 'later') {
+       // Send auto-reply
+       const laterMsg = `Caught me mid-game! Definitely interested — find me later?`;
+       await db.from('messages').insert({
+         sender_name: state.name,
+         sender_animal: animalName,
+         recipient_name: thread.name,
+         recipient_animal: thread.animal,
+         content: laterMsg,
+         status: 'later'
+       });
+       thread.messages.push({ sender_name: state.name, content: laterMsg, isMine: true });
+       thread.isIncoming = false;
+       renderActivityTiles();
+       closeChat();
+
+     } else if (responseType === 'ignored') {
+       // Remove from activity tiles
+       messagingState.activityItems = messagingState.activityItems.filter(i =>
+         !(i.name === thread.name && i.animal === thread.animal)
+       );
+       renderActivityTiles();
+       closeChat();
+
+     } else if (responseType === 'accepted') {
+       // Switch to thread view so they can type a reply
+       thread.isIncoming = false;
+       const requestView = document.getElementById('chat-request-view');
+       const threadView = document.getElementById('chat-thread-view');
+       requestView.style.display = 'none';
+       threadView.style.display = 'flex';
+       renderChatThread(thread);
+     }
+   } catch(err) {
+     console.error('Response error:', err);
+   }
  }
+
+ // Send a message in an active thread
+ async function sendMessage() {
+   const input = document.getElementById('chat-input');
+   const text = input?.value?.trim();
+   if (!text) return;
+
+   const thread = messagingState.activityItems.find(i =>
+     i.name === messagingState.activeChatThread?.name &&
+     i.animal === messagingState.activeChatThread?.animal
+   );
+   if (!thread) return;
+
+   const animalName = typeof state.animal === 'object' ? state.animal.name : state.animal;
+
+   try {
+     const { error } = await db.from('messages').insert({
+       sender_name: state.name,
+       sender_animal: animalName,
+       recipient_name: thread.name,
+       recipient_animal: thread.animal,
+       content: text,
+       status: 'accepted'
+     });
+     if (error) throw error;
+
+     thread.messages.push({ sender_name: state.name, content: text, isMine: true, created_at: new Date().toISOString() });
+     input.value = '';
+     updateCharCount();
+     renderChatThread(thread);
+   } catch(err) {
+     console.error('Send message error:', err);
+   }
+ }
+
+ // Close the chat overlay
+ function closeChat() {
+   const overlay = document.getElementById('chat-overlay');
+   if (overlay) overlay.classList.remove('open');
+   messagingState.activeChatThread = null;
+ }
+
+ function handleChatOverlayClick(event) {
+   if (event.target === document.getElementById('chat-overlay')) closeChat();
+ }
+
+ function updateCharCount() {
+   const input = document.getElementById('chat-input');
+   const counter = document.getElementById('chat-char-count');
+   if (input && counter) counter.textContent = 200 - (input.value?.length || 0);
+ }
+
+ function escapeHtml(str) {
+   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
  }
 
  // ========== UTILITIES ==========
@@ -6301,6 +6914,37 @@ document.addEventListener('scroll', function() {
  </div>
  </div>
  </div>
+
+<!-- ========== CHAT OVERLAY ========== -->
+<div class="chat-overlay" id="chat-overlay" onclick="handleChatOverlayClick(event)">
+  <div class="chat-panel" onclick="event.stopPropagation()">
+    <div class="chat-panel-header">
+      <span class="chat-panel-name" id="chat-panel-name"></span>
+      <button type="button" class="chat-close-btn" onclick="closeChat()">✕</button>
+    </div>
+    <!-- Request view (shown for incoming requests not yet responded to) -->
+    <div id="chat-request-view">
+      <div class="chat-request-msg" id="chat-request-msg"></div>
+      <div class="chat-request-actions">
+        <button type="button" class="chat-action-btn chat-action-reply" onclick="respondToRequest('accepted')">Reply</button>
+        <button type="button" class="chat-action-btn chat-action-later" onclick="respondToRequest('later')">I'm mid-game — I'll find you later!</button>
+        <button type="button" class="chat-action-btn chat-action-ignore" onclick="respondToRequest('ignored')">Not right now</button>
+      </div>
+    </div>
+    <!-- Thread view (shown for active conversations) -->
+    <div id="chat-thread-view" style="display:none; flex-direction:column; flex:1;">
+      <div class="chat-messages" id="chat-messages"></div>
+      <div class="chat-pending-note" id="chat-pending-note" style="display:none;">Request sent — waiting for them to reply</div>
+      <div id="chat-input-area">
+        <div class="chat-input-row">
+          <textarea class="chat-input" id="chat-input" placeholder="Keep it to time and place — where can they find you?" maxlength="200" oninput="updateCharCount()"></textarea>
+          <button type="button" class="chat-send-btn" onclick="sendMessage()">➤</button>
+        </div>
+        <div class="chat-char-count"><span id="chat-char-count">200</span> chars left</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ========== DEBUG PANEL ========== -->
 <div id="afg-debug" style="display:none;
