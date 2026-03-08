@@ -5452,7 +5452,7 @@ Respond with JSON only, no other text:
  // Resolve all async match scoring, then filter and sort
  const matches = await Promise.all(matchPromises);
  return matches
- .filter(m => !m.hardVeto && m.compatibility >= 40)
+ .filter(m => !m.hardVeto && m.compatibility >= 70)
  .sort((a, b) => b.compatibility - a.compatibility)
  .slice(0, 10);
  
@@ -6936,12 +6936,12 @@ document.addEventListener('scroll', function() {
       <div class="chat-messages" id="chat-messages"></div>
       <div class="chat-pending-note" id="chat-pending-note" style="display:none;">Request sent — waiting for them to reply</div>
       <div id="chat-input-area">
+        <div style="padding:10px 4px 4px 4px; font-size:1.1em; color:#D57553; text-align:center; font-family:'EB Garamond',Georgia,serif; font-style:italic;">Play your animal callsign when you reach the meetup spot!</div>
         <div class="chat-input-row">
           <textarea class="chat-input" id="chat-input" placeholder="Keep it to time and place — where can they find you?" maxlength="200" oninput="updateCharCount()"></textarea>
           <button type="button" class="chat-send-btn" onclick="sendMessage()">➤</button>
         </div>
         <div class="chat-char-count"><span id="chat-char-count">200</span> chars left</div>
-        <div style="margin-top:6px; font-size:0.95em; color:#D57553; text-align:center;">Play your animal callsign when you reach the meetup spot!</div>
       </div>
     </div>
   </div>
