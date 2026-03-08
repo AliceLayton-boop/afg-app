@@ -2051,19 +2051,20 @@
  <button type="button" class="btn btn-primary" onclick="completeRegistration()" style="width:100%; margin-top:16px; margin-bottom:4px;">Create My Callsign &rarr;</button>
 
  <div class="privacy-box" style="margin-top:20px; padding:20px; background:rgba(155, 191, 107, 0.1); border-color:#65381A;">
- <p class="description" style="margin-bottom:6px; color:#DBAD4B; font-size:1.1em;">Where can we notify you of matches?</p>
- <p class="description" style="margin-bottom:14px; font-size:0.95em; color:#DEC089;">This is how we notify you of matches when you're away from the app.</p>
+ <p class="description" style="margin-bottom:14px; color:#DBAD4B; font-size:1.1em;">Where can we notify you of matches?</p>
+
+ <label style="display:flex; align-items:center; gap:12px; cursor:pointer; margin-bottom:16px;">
+ <input type="checkbox" id="allow-contact" checked style="width:20px; height:20px; accent-color:#DBAD4B;" onclick="toggleContactPreference(event)">
+ <span style="font-size:1em; color:#DBAD4B;">My matches are allowed to message me here in the app.</span>
+ </label>
+
+ <p class="description" style="margin-bottom:14px; font-size:0.95em; color:#DEC089;">We notify you of matches by email when you're away from the app.</p>
  <input type="email" class="text-input" style="min-height:auto; margin-bottom:10px;" id="user-email" placeholder="Your email address..." onkeydown="if(event.key==='Enter'){event.preventDefault();confirmEmail();}">
- <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+ <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
   <button type="button" onclick="confirmEmail()" style="padding:8px 20px; background:#8C4427; color:#DEC089; border:none; border-radius:20px; font-family:'EB Garamond',Georgia,serif; font-size:0.95em; cursor:pointer;">Confirm</button>
   <span id="email-confirm-msg" style="font-size:0.9em; color:#9BBF6B; display:none;">✓ Got it</span>
  </div>
- 
- <label style="display:flex; align-items:center; gap:12px; cursor:pointer; margin-bottom:15px;">
- <input type="checkbox" id="allow-contact" checked style="width:20px; height:20px; accent-color:#DBAD4B;" onclick="toggleContactPreference(event)">
- <span style="font-size:1em; color:#DBAD4B;">My matches are allowed to message me here.</span>
- </label>
- 
+
  <p style="font-size:0.95em; color:#DEC089; line-height:1.5;">Your email is never shown to others. We use it only to notify you of matches. You can ignore or decline any message at any time. <a href="#" onclick="showDeleteInfo(); return false;" style="color:#9BBF6B;">Delete anytime</a>.</p>
  </div>
  
@@ -4244,7 +4245,7 @@
       // If user is trying to uncheck (checkbox was checked before this click)
       if (!checkbox.checked) {
         // Show warning and potentially revert
-        const proceed = confirm("Without this, we cannot connect you with your matches. Your email is still private - we just use it to send match notifications.\n\nAre you sure you want to disable match messages?");
+        const proceed = confirm("Without this, your matches won't be able to send you messages in the app.\n\nAre you sure?");
         if (!proceed) {
           // User cancelled - restore checked state
           checkbox.checked = true;
