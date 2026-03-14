@@ -4602,8 +4602,9 @@
 
  // Called on textarea blur for text-voice questions
  async function checkForClarification(qid) {
-  // Don't trigger if mic is active — blur fires when user taps the mic button
-  if (isRecording) { afgLog('clarify: skipped (mic active)', '#888'); return; }
+  // Note: do NOT guard on isRecording here. Clarification is intentionally triggered
+  // from recognition.onresult while the mic is active — that's the only way it fires
+  // for voice input, since the user taps Next rather than stopping the mic manually.
 
   const textarea = document.getElementById('text-' + qid);
   if (!textarea) return;
