@@ -5856,7 +5856,12 @@ Respond with JSON only, no other text:
  if (btn) btn.classList.remove('recording');
  const ta = document.getElementById(voiceTarget.taId);
  if (ta) {
- ta.value = voiceTarget.base.trim();
+ // Use the actual displayed textarea content (includes interim results) rather than
+ // voiceTarget.base alone — short phrases like "it depends" arrive only as interim
+ // results and never accumulate in voiceTarget.base, so using base alone leaves the
+ // field empty and clarification never triggers.
+ const displayedValue = ta.value.trim();
+ ta.value = displayedValue || voiceTarget.base.trim();
  state.answers[voiceTarget.qid] = ta.value;
  saveSession();
  }
