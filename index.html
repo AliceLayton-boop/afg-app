@@ -399,15 +399,15 @@
  }
  
  .tier-card.warm {
- background: rgba(155, 191, 107, 0.5);
+ background: rgba(120, 155, 85, 0.55);
  }
  
  .tier-card.warmer {
- background: rgba(113, 148, 91, 0.5);
+ background: rgba(90, 125, 70, 0.55);
  }
  
  .tier-card.warmest {
- background: rgba(71, 101, 83, 0.5);
+ background: rgba(61, 90, 65, 0.6);
  }
  
  .tier-card.findyourpeople {
@@ -1828,7 +1828,7 @@
  
  <div class="options-grid">
  <button type="button" class="option-btn" onclick="selectEvent('geekway')">Geekway to the West</button>
- <button type="button" class="option-btn" onclick="selectEvent('gencon')">GenCon</button>
+ <button type="button" class="option-btn" onclick="selectEvent('bggspring')">BGG Spring</button>
  </div>
  <div style="text-align:center; margin-top:10px;">
   <button type="button" class="option-btn" onclick="selectEvent('other')" style="background:rgba(101,56,26,0.15); border-color:rgba(101,56,26,0.5); color:#DEC089; font-size:0.9em; padding:10px 20px; width:auto;">+ Another event</button>
@@ -3342,7 +3342,7 @@
  }
  state.event = eventName;
  state.path = 'event';
- const names = { geekway: 'Geekway to the West', gencon: 'GenCon' };
+ const names = { geekway: 'Geekway to the West', bggspring: 'BGG Spring' };
  document.getElementById('selected-event-name').textContent = names[eventName] || eventName;
  goToSection('section-event-tiers');
  }
