@@ -5814,7 +5814,7 @@ Respond with JSON only, no other text:
      state.answers[voiceTarget.qid] = ta.value;
      // Trigger clarification debounce on voice input — oninput doesn't fire when JS sets ta.value directly
      clearTimeout(clarifyDebounceTimer);
-     clarifyDebounceTimer = setTimeout(() => checkForClarification(voiceTarget ? voiceTarget.qid : null), 1500);
+     clarifyDebounceTimer = setTimeout(() => checkForClarification(voiceTarget ? voiceTarget.qid : null), 400); // Shorter than typed debounce — voice answer is complete when speech pauses
  };
  recognition.onerror = () => stopVoice();
  recognition.onend = () => {
