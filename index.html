@@ -6097,25 +6097,134 @@ Respond with JSON only, no other text:
    activityItems: [] // array of { name, animal, status, messages[], messageId, isIncoming }
  };
 
- // Play the AFG jingle (placeholder -- swap file when Kris delivers)
- // JINGLE HOOK: replace 'sounds/jingle.mp3' with final file path when ready
- function playJingle() {
-   if (messagingState.muted) return;
-   try {
-     const audio = new Audio('sounds/jingle.mp3');
-     audio.volume = 0.7;
-     currentAudio = audio;
-     audio.onended = () => { if (currentAudio === audio) currentAudio = null; };
-     audio.play().catch(() => {
-       // Jingle file not yet deployed -- silent fail is correct
-       if (currentAudio === audio) currentAudio = null;
-     });
-   } catch(e) {}
+ // SYNCOPATION TUNING: adjust this value (ms) to change the duet feel for same-animal notifications
+ // 300ms = echo, 500ms = response, 900ms = two separate calls. Tune by ear on device.
+ const SAME_ANIMAL_OFFSET_MS = 500;
+
+ // LOOP GAP TUNING: gap (ms) between repetitions of the incoming sound loop
+ // 4000ms = 4 seconds between plays. Increase to be less insistent, decrease to be more urgent.
+ const INCOMING_LOOP_GAP_MS = 4000;
+
+ // LOOP MAX TUNING: how many times the sound plays before stopping automatically
+ // 3 = plays three times then stops. Like a phone ringing a few times before voicemail.
+ const INCOMING_LOOP_MAX = 3;
+
+ // State for the incoming sound loop
+ let incomingLooping = false;
+ let incomingLoopTimeout = null;
+ let incomingLoopAnimal = null;
+ let incomingLoopCount = 0;
+
+ // Stop the incoming sound loop (call when user opens the chat, mutes, or max plays reached)
+ function stopIncomingLoop() {
+   incomingLooping = false;
+   incomingLoopAnimal = null;
+   incomingLoopCount = 0;
+   if (incomingLoopTimeout) {
+     clearTimeout(incomingLoopTimeout);
+     incomingLoopTimeout = null;
+   }
  }
+
+ // Internal: play one cycle of the incoming loop, then schedule the next if under the cap
+ function _incomingLoopCycle(url, vol, myAnimal, theirAnimal) {
+   if (!incomingLooping) return;
+   if (incomingLoopCount >= INCOMING_LOOP_MAX) { stopIncomingLoop(); return; }
+
+   incomingLoopCount++;
+
+   // Silence any currently playing audio
+   if (currentAudio) { currentAudio.volume = 0; currentAudio = null; }
+   if (currentTimeout) { clearTimeout(currentTimeout); currentTimeout = null; }
+
+   const audio1 = new Audio(url);
+   audio1.volume = vol;
+   currentAudio = audio1;
+
+   audio1.onended = () => {
+     if (currentAudio === audio1) currentAudio = null;
+     // Schedule next cycle after gap (unless same-animal duet is still playing)
+     if (incomingLooping && myAnimal !== theirAnimal) {
+       incomingLoopTimeout = setTimeout(() => _incomingLoopCycle(url, vol, myAnimal, theirAnimal), INCOMING_LOOP_GAP_MS);
+     }
+   };
+
+   // Safety ceiling per cycle
+   const safetyCeiling = setTimeout(() => {
+     if (currentAudio === audio1) { audio1.volume = 0; currentAudio = null; }
+     if (incomingLooping) {
+       incomingLoopTimeout = setTimeout(() => _incomingLoopCycle(url, vol, myAnimal, theirAnimal), INCOMING_LOOP_GAP_MS);
+     }
+   }, 30000);
+
+   audio1.play().catch(() => {
+     clearTimeout(safetyCeiling);
+     if (currentAudio === audio1) currentAudio = null;
+     if (incomingLooping) {
+       incomingLoopTimeout = setTimeout(() => _incomingLoopCycle(url, vol, myAnimal, theirAnimal), INCOMING_LOOP_GAP_MS);
+     }
+   });
+
+   // Same-animal duet: play second instance offset by SAME_ANIMAL_OFFSET_MS
+   if (myAnimal === theirAnimal) {
+     setTimeout(() => {
+       if (!incomingLooping) return;
+       const audio2 = new Audio(url);
+       audio2.volume = vol;
+       audio2.onended = () => {
+         // Schedule next cycle after the second track ends
+         if (incomingLooping) {
+           incomingLoopTimeout = setTimeout(() => _incomingLoopCycle(url, vol, myAnimal, theirAnimal), INCOMING_LOOP_GAP_MS);
+         }
+       };
+       audio2.play().catch(() => {
+         if (incomingLooping) {
+           incomingLoopTimeout = setTimeout(() => _incomingLoopCycle(url, vol, myAnimal, theirAnimal), INCOMING_LOOP_GAP_MS);
+         }
+       });
+       setTimeout(() => { audio2.volume = 0; }, 30000);
+     }, SAME_ANIMAL_OFFSET_MS);
+   }
+ }
+
+ // Start the incoming sound loop for a given sender animal.
+ // Plays up to INCOMING_LOOP_MAX times, or until stopIncomingLoop() is called.
+ function playIncomingSound(senderAnimal) {
+   if (messagingState.muted) return;
+   const myAnimal = typeof state.animal === 'object' ? state.animal.name.toLowerCase() : (state.animal || '').toLowerCase();
+   const theirAnimal = (senderAnimal || '').toLowerCase();
+   const url = animalSoundUrls[theirAnimal];
+   if (!url) return;
+
+   // If already looping for this same animal, don't restart
+   if (incomingLooping && incomingLoopAnimal === theirAnimal) return;
+
+   // Stop any existing loop before starting a new one
+   stopIncomingLoop();
+
+   incomingLooping = true;
+   incomingLoopAnimal = theirAnimal;
+   incomingLoopCount = 0;
+   _incomingLoopCycle(url, animalVolumes[theirAnimal] || 0.6, myAnimal, theirAnimal);
+ }
+
+ // JINGLE HOOK: when jazz clip is delivered, call playJingle() for new-match notifications
+ // Replace 'sounds/jingle.mp3' with final file path and uncomment when ready
+ // function playJingle() {
+ //   if (messagingState.muted) return;
+ //   try {
+ //     const audio = new Audio('sounds/jingle.mp3');
+ //     audio.volume = 0.7;
+ //     currentAudio = audio;
+ //     audio.onended = () => { if (currentAudio === audio) currentAudio = null; };
+ //     audio.play().catch(() => { if (currentAudio === audio) currentAudio = null; });
+ //   } catch(e) {}
+ // }
 
  // Toggle mute
  function toggleMute() {
    messagingState.muted = !messagingState.muted;
+   if (messagingState.muted) stopIncomingLoop(); // Muting stops any active incoming loop immediately
    const btn = document.getElementById('mute-btn');
    if (btn) {
      btn.textContent = messagingState.muted ? '🔕 Unmute' : '🔔 Mute';
@@ -6168,10 +6277,11 @@ Respond with JSON only, no other text:
        threads[key].latestStatus = msg.status;
      });
 
-     // Check for new unread items -- play jingle if any
+     // Check for new unread items -- play incoming animal sound if any
      const hadUnread = messagingState.activityItems.some(i => i.hasUnread);
-     const hasUnread = Object.values(threads).some(t => t.hasUnread);
-     if (hasUnread && !hadUnread) playJingle();
+     const newUnreadThread = Object.values(threads).find(t => t.hasUnread);
+     const hasUnread = !!newUnreadThread;
+     if (hasUnread && !hadUnread) playIncomingSound(newUnreadThread.animal);
 
      // Update activityItems
      messagingState.activityItems = Object.values(threads);
@@ -6268,6 +6378,7 @@ Respond with JSON only, no other text:
 
  // Open the chat overlay for a given conversation partner
  async function openChat(partnerName, partnerAnimal) {
+   stopIncomingLoop(); // User opened the chat -- stop the incoming sound loop
    messagingState.activeChatThread = { name: partnerName, animal: partnerAnimal };
 
    const thread = messagingState.activityItems.find(i => i.name === partnerName && i.animal === partnerAnimal);
