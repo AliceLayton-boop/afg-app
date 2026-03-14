@@ -5811,6 +5811,9 @@ Respond with JSON only, no other text:
      voiceTarget.base = final;
      ta.value = final + interim;
      state.answers[voiceTarget.qid] = ta.value;
+     // Trigger clarification debounce on voice input — oninput doesn't fire when JS sets ta.value directly
+     clearTimeout(clarifyDebounceTimer);
+     clarifyDebounceTimer = setTimeout(() => checkForClarification(voiceTarget ? voiceTarget.qid : null), 1500);
  };
  recognition.onerror = () => stopVoice();
  recognition.onend = () => {
@@ -5865,9 +5868,8 @@ Respond with JSON only, no other text:
  state.answers[voiceTarget.qid] = ta.value;
  saveSession();
  }
- // Trigger clarification after voice input — user won’t blur the textarea after speaking
- const qid = voiceTarget.qid;
- setTimeout(() => checkForClarification(qid), 300);
+ // Clarification is triggered from recognition.onresult while the user is still on the question.
+ // Do NOT fire it here — by the time stopVoice() is called from nextQuestion(), the DOM is gone.
  }
  voiceTarget = null;
  try { if (recognition) recognition.stop(); } catch(e) {}
